@@ -1,18 +1,41 @@
+import 'dart:io';
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:plarneit/utils/constants.dart';
+import 'package:plarneit/utils/filehandling.dart';
 
 import 'daypage.dart';
 
 void main() {
+
   runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
   // This widget is the root of your application.
+
+  createApplicationStorageJson() async {
+    // creates a json file for storage:
+    String path = await localPath;
+
+    File jsonFile = File("$path/$JSON_FILE_NAME");
+    if (!jsonFile.existsSync()) {
+      jsonFile.createSync();
+      writeToJson({
+        "tasks": {
+        },
+        "notes": {
+        }
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
+
+    createApplicationStorageJson();
+
     double screenWidth = window.physicalSize.width;
     return MaterialApp(
       debugShowCheckedModeBanner: false,
@@ -20,7 +43,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primaryColor: COLOR_WHITE,
         accentColor: COLOR_INDIAN_RED,
-        textTheme: TEXT_THEME_DEFAULT,
+        textTheme: screenWidth > 500 ? TEXT_THEME_DEFAULT : TEXT_THEME_SMALL,
         fontFamily: "Montserrat"
       ),
       home: DayPage(DateTime.now()),

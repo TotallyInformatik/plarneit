@@ -67,3 +67,6 @@ const Map<int, String> MONTH_TO_STRING = {
   11: "November",
   12: "December"
 };
+
+// Json Constants:
+const String JSON_FILE_NAME = "localstorage.json";
