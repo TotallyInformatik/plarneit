@@ -7,11 +7,11 @@ import 'utils/constants.dart';
 
 class DayWidgetContainer extends StatefulWidget {
 
-  List<UserMadeWidget> startingWidgets;
-  DateTime date;
-  int nextWidgetId; // should always be set to startinWidgets.length
+  final List<UserMadeWidget> startingWidgets;
+  final DateTime date;
+  final int nextWidgetId; // should always be set to startingWidgets.length
 
-  DayWidgetContainer({Key key, this.startingWidgets, this.date, this.nextWidgetId}) : super(key: key);
+  const DayWidgetContainer({Key key, this.startingWidgets, this.date, this.nextWidgetId}) : super(key: key);
 
 
   @override
@@ -23,7 +23,18 @@ class DayWidgetContainer extends StatefulWidget {
 
 class _DayWidgetContainerState extends State<DayWidgetContainer> {
 
+
   final ScrollController _scrollController = ScrollController();
+  int _nextWidgetId;
+  List<UserMadeWidget> _widgets;
+
+  @override
+  void initState() {
+    super.initState();
+    this._nextWidgetId = this.widget.nextWidgetId;
+    this._widgets = this.widget.startingWidgets;
+
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -38,15 +49,15 @@ class _DayWidgetContainerState extends State<DayWidgetContainer> {
                   icon: Icon(Icons.add_rounded),
                   tooltip: "Add task",
                   onPressed: () {
-                    print("aaaa");
                     setState(() {
                       List<UserMadeWidget> newWidgets = [];
-                      newWidgets.addAll(this.widget.startingWidgets);
+                      newWidgets.addAll(this._widgets);
 
                       newWidgets.add(UserMadeWidget(urgency: UrgencyTypes.NOT_URGENT_AT_ALL, title: "", description: "", id: this.widget.nextWidgetId, date: DateTime(1), starttime: TimeOfDay(hour: 13, minute: 2), endtime: TimeOfDay(hour: 13, minute: 2)));
 
-                      this.widget.nextWidgetId++;
-                      this.widget.startingWidgets = newWidgets;
+                      this._nextWidgetId++;
+                      this._widgets = newWidgets;
+                      print(this._widgets);
                     });
                   }
               ),
@@ -63,14 +74,14 @@ class _DayWidgetContainerState extends State<DayWidgetContainer> {
                       controller: _scrollController,
                       padding: EdgeInsets.all(listContainerInnerPadding),
                       scrollDirection: Axis.horizontal,
-                      children: this.widget.startingWidgets.length == 0 ?
+                      children: this._widgets.length == 0 ?
                       <Widget>[
                         Container(
                             width: widgetSize,
                             child: Text("Nothing to do for now!", style: Theme.of(context).textTheme.headline2)
                         )
                       ]
-                          : this.widget.startingWidgets
+                          : this._widgets
                   )
               )
           )]
