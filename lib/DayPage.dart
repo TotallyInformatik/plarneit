@@ -49,7 +49,7 @@ class DayPage extends StatelessWidget {
               SliverList(
                 delegate: SliverChildListDelegate(
                   [
-                    DayWidgetContainer([], this.date)
+                    DayWidgetContainer(startingWidgets: [], date: this.date, nextWidgetId: 0)
                     // need to read from json file to set widgets
                   ],
                 ),

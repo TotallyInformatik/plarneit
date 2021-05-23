@@ -9,15 +9,13 @@ class DayWidgetContainer extends StatefulWidget {
 
   List<UserMadeWidget> startingWidgets;
   DateTime date;
+  int nextWidgetId; // should always be set to startinWidgets.length
 
-  DayWidgetContainer(List<UserMadeWidget> widgets, DateTime date) {
-    this.startingWidgets = widgets;
-    this.date = date;
-  }
+  DayWidgetContainer({Key key, this.startingWidgets, this.date, this.nextWidgetId}) : super(key: key);
 
 
   @override
-  _DayWidgetContainerState createState() => _DayWidgetContainerState(this.startingWidgets, this.date);
+  _DayWidgetContainerState createState() => _DayWidgetContainerState();
 
 
 
@@ -25,14 +23,7 @@ class DayWidgetContainer extends StatefulWidget {
 
 class _DayWidgetContainerState extends State<DayWidgetContainer> {
 
-  List<UserMadeWidget> _widgets;
   final ScrollController _scrollController = ScrollController();
-  DateTime date;
-
-  _DayWidgetContainerState(List<UserMadeWidget> widgets, DateTime date) {
-    this._widgets = widgets;
-    this.date = date;
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -44,15 +35,18 @@ class _DayWidgetContainerState extends State<DayWidgetContainer> {
           Row(
             children: [
               IconButton(
-                  icon: Icon(Icons.add),
+                  icon: Icon(Icons.add_rounded),
                   tooltip: "Add task",
                   onPressed: () {
                     print("aaaa");
                     setState(() {
                       List<UserMadeWidget> newWidgets = [];
-                      newWidgets.addAll(_widgets);
+                      newWidgets.addAll(this.widget.startingWidgets);
 
-                      _widgets = newWidgets;
+                      newWidgets.add(UserMadeWidget(urgency: UrgencyTypes.NOT_URGENT_AT_ALL, title: "", description: "", id: this.widget.nextWidgetId, date: DateTime(1), starttime: TimeOfDay(hour: 13, minute: 2), endtime: TimeOfDay(hour: 13, minute: 2)));
+
+                      this.widget.nextWidgetId++;
+                      this.widget.startingWidgets = newWidgets;
                     });
                   }
               ),
@@ -69,14 +63,14 @@ class _DayWidgetContainerState extends State<DayWidgetContainer> {
                       controller: _scrollController,
                       padding: EdgeInsets.all(listContainerInnerPadding),
                       scrollDirection: Axis.horizontal,
-                      children: _widgets.length == 0 ?
+                      children: this.widget.startingWidgets.length == 0 ?
                       <Widget>[
                         Container(
                             width: widgetSize,
                             child: Text("Nothing to do for now!", style: Theme.of(context).textTheme.headline2)
                         )
                       ]
-                          : _widgets
+                          : this.widget.startingWidgets
                   )
               )
           )]

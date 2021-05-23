@@ -49,6 +49,9 @@ const double widgetPadding = 10.0;
 const double widgetInnerPadding = 30.0;
 const double widgetBorderRadius = 30.0;
 
+// dialog box Layout:
+const double innerPadding = 20;
+
 
 // Other Constants:
 

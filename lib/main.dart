@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:plarneit/utils/constants.dart';
 import 'package:plarneit/utils/filehandling.dart';
 
-import 'daypage.dart';
+import 'DayPage.dart';
 
 void main() {
 
