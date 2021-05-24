@@ -2,9 +2,12 @@ import 'package:flutter/material.dart';
 
 // UI CONSTANTS
 
+// TODO: rework colors...
+
 const COLOR_WHITE = Color.fromRGBO(255, 255, 255, 1);
 const COLOR_WHITESMOKE = Color.fromRGBO(245, 245, 245, 1);
 const COLOR_INDIAN_RED = Color.fromRGBO(186, 71, 63, 1);
+const COLOR_INDIAN_RED_LIGHT = Color.fromRGBO(212, 97, 97, 1);
 const FONT_COLOR = Color.fromRGBO(10, 10, 10, 1);
 
 const VERY_URGENT_COLOR = Color.fromRGBO(138, 39, 32, 1);
@@ -54,22 +57,6 @@ const double innerPadding = 20;
 
 
 // Other Constants:
-
-
-const Map<int, String> MONTH_TO_STRING = {
-  1: "January",
-  2: "February",
-  3: "March",
-  4: "April",
-  5: "May",
-  6: "June",
-  7: "Juli",
-  8: "August",
-  9: "September",
-  10: "October",
-  11: "November",
-  12: "December"
-};
 
 // Json Constants:
 const String JSON_FILE_NAME = "localstorage.json";

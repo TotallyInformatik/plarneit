@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:plarneit/UrgencyTypes.dart';
 import 'package:plarneit/utils/spacing.dart';
+import 'Dialogs.dart';
 import 'UserMadeWidgets.dart';
 import 'utils/constants.dart';
 
@@ -48,17 +49,30 @@ class _DayWidgetContainerState extends State<DayWidgetContainer> {
               IconButton(
                   icon: Icon(Icons.add_rounded),
                   tooltip: "Add task",
-                  onPressed: () {
-                    setState(() {
-                      List<UserMadeWidget> newWidgets = [];
-                      newWidgets.addAll(this._widgets);
+                  onPressed: () async {
+                    Map widgetInformation = await showEditDialog(context);
 
-                      newWidgets.add(UserMadeWidget(urgency: UrgencyTypes.NOT_URGENT_AT_ALL, title: "", description: "", id: this.widget.nextWidgetId, date: DateTime(1), starttime: TimeOfDay(hour: 13, minute: 2), endtime: TimeOfDay(hour: 13, minute: 2)));
+                    if (widgetInformation.length > 0) {
 
-                      this._nextWidgetId++;
-                      this._widgets = newWidgets;
-                      print(this._widgets);
-                    });
+                      setState(() {
+                        List<UserMadeWidget> newWidgets = [];
+                        newWidgets.addAll(this._widgets);
+
+                        newWidgets.add(UserMadeWidget(
+                          urgency: UrgencyTypes.NOT_URGENT_AT_ALL,
+                          id: this.widget.nextWidgetId,
+                          date: this.widget.date,
+                          title: widgetInformation["title"],
+
+
+                        ));
+
+                        this._nextWidgetId++;
+                        this._widgets = newWidgets;
+                        print(this._widgets);
+                      });
+
+                    }
                   }
               ),
             ],

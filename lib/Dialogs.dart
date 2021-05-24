@@ -7,7 +7,7 @@ import 'utils/constants.dart';
 import 'UrgencyTypes.dart';
 
 // base function
-Future<Map> showCustomDialog(BuildContext context, String title, List<Widget> content, List<Widget> actions) async {
+Future<Map> showCustomDialog(BuildContext context, String title, List<Widget> content, List<Widget> actions, {GlobalKey<FormState> formKey}) async {
 
   ScrollController _scrollController = ScrollController();
 
@@ -25,6 +25,7 @@ Future<Map> showCustomDialog(BuildContext context, String title, List<Widget> co
             isAlwaysShown: true,
             controller: _scrollController,
             child: ListView(
+              shrinkWrap: true,
               controller: _scrollController,
               children: [
                 Container(
@@ -34,21 +35,29 @@ Future<Map> showCustomDialog(BuildContext context, String title, List<Widget> co
                       children: [
                         Padding( // title
                             padding: EdgeInsets.only(top: innerPadding, bottom: innerPadding),
-                            child: Text(title)
+                            child: Text(title, style: Theme.of(context).textTheme.headline4)
                         ),
-                        Padding( // content
-                            padding: EdgeInsets.all(innerPadding),
-                            child: Column(
-                                children: content
-                            )
-                        ),
-                        Padding( // actions
-                            padding: EdgeInsets.only(top: innerPadding),
-                            child: Row(
-                                mainAxisSize: MainAxisSize.max,
-                                crossAxisAlignment: CrossAxisAlignment.end,
-                                children: actions.map((action) => Expanded(child: action)).toList()
-                            )
+                        Form(
+                          key: formKey,
+                          child: Column(
+                            children: [
+                              Padding( // content
+                                  padding: EdgeInsets.all(innerPadding),
+                                  child: Column(
+                                      children: content
+                                  )
+                              ),
+                              Padding( // actions
+                                  padding: EdgeInsets.only(top: innerPadding),
+                                  child: Row(
+                                      mainAxisSize: MainAxisSize.max,
+                                      crossAxisAlignment: CrossAxisAlignment.end,
+                                      children: actions.map((action) => Expanded(child: action)).toList()
+                                  )
+                              ),
+                            ]
+                          )
+
                         )
                       ]
                   ),
@@ -68,16 +77,28 @@ Future<Map> showEditDialog(BuildContext context) async {
   TimePickerController startTimeController = TimePickerController();
   TimePickerController endTimeController = TimePickerController();
 
+  final _formKey = GlobalKey<FormState>();
+
+
+  Function textFieldValidator = (String value) {
+    if (value == null || value.isEmpty) {
+      return "required field";
+    }
+    return null;
+  };
+
   return await showCustomDialog(context,
     "Edit Content",
     [
-      TextField(
+      TextFormField(
+          validator: textFieldValidator,
           decoration: InputDecoration(
               hintText: "Please enter a title"
           ),
           controller: titleController
       ),
-      TextField(
+      TextFormField(
+          validator: textFieldValidator,
           decoration: InputDecoration(
               hintText: "Please enter a description"
           ),
@@ -102,15 +123,18 @@ Future<Map> showEditDialog(BuildContext context) async {
       IconButton(
         icon: Icon(Icons.done_rounded),
         onPressed: () {
-          Navigator.of(context).pop({
-            "title": titleController.text,
-            "description": descriptionController.text,
-            "start-time": startTimeController.selectedTime,
-            "end-time": startTimeController.selectedTime
-          });
+          if (_formKey.currentState.validate()) {
+            Navigator.of(context).pop({
+              "title": titleController.text,
+              "description": descriptionController.text,
+              "start-time": startTimeController.selectedTime,
+              "end-time": startTimeController.selectedTime
+            });
+          }
         },
       )
-    ]
+    ],
+    formKey: _formKey
   );
 }
 
