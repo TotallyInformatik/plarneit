@@ -1,18 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:plarneit/EditingController.dart';
 import 'package:plarneit/UrgencyTypes.dart';
 import 'package:plarneit/utils/spacing.dart';
 import 'Dialogs.dart';
-import 'UserMadeWidgets.dart';
+import 'TaskWidget.dart';
 import 'utils/constants.dart';
 
 class DayWidgetContainer extends StatefulWidget {
 
-  final List<UserMadeWidget> startingWidgets;
+  final List<TaskWidget> startingWidgets;
   final DateTime date;
   final int nextWidgetId; // should always be set to startingWidgets.length
+  final String title;
 
-  const DayWidgetContainer({Key key, this.startingWidgets, this.date, this.nextWidgetId}) : super(key: key);
+  const DayWidgetContainer({Key key, this.startingWidgets, this.date, this.nextWidgetId, this.title}) : super(key: key);
 
 
   @override
@@ -27,14 +29,14 @@ class _DayWidgetContainerState extends State<DayWidgetContainer> {
 
   final ScrollController _scrollController = ScrollController();
   int _nextWidgetId;
-  List<UserMadeWidget> _widgets;
+  List<TaskWidget> _widgets;
+  EditingController _eController = EditingController();
 
   @override
   void initState() {
     super.initState();
     this._nextWidgetId = this.widget.nextWidgetId;
     this._widgets = this.widget.startingWidgets;
-
   }
 
   @override
@@ -44,38 +46,46 @@ class _DayWidgetContainerState extends State<DayWidgetContainer> {
 
     return Column(
         children: [
-          Row(
-            children: [
-              IconButton(
-                  icon: Icon(Icons.add_rounded),
-                  tooltip: "Add task",
-                  onPressed: () async {
-                    Map widgetInformation = await showEditDialog(context);
+          Padding(
+            padding: EdgeInsets.only(left: sidePadding),
+            child: Row(
+              children: [
+                Text(this.widget.title, style: Theme.of(context).primaryTextTheme.headline2,),
+                IconButton(
+                    iconSize: iconSize,
+                    icon: Icon(Icons.add_rounded),
+                    tooltip: "Add task",
+                    onPressed: () async {
+                      Map widgetInformation = await showEditDialog(context);
 
-                    if (widgetInformation.length > 0) {
+                      if (widgetInformation != null) {
 
-                      setState(() {
-                        List<UserMadeWidget> newWidgets = [];
-                        newWidgets.addAll(this._widgets);
+                        setState(() {
+                          List<TaskWidget> newWidgets = [];
+                          newWidgets.addAll(this._widgets);
 
-                        newWidgets.add(UserMadeWidget(
-                          urgency: UrgencyTypes.NOT_URGENT_AT_ALL,
-                          id: this.widget.nextWidgetId,
-                          date: this.widget.date,
-                          title: widgetInformation["title"],
+                          newWidgets.add(TaskWidget(widgetInformation: widgetInformation, date: this.widget.date, id: this._nextWidgetId, eController: this._eController));
 
+                          this._nextWidgetId++;
+                          this._widgets = newWidgets;
+                          print(this._widgets);
+                        });
 
-                        ));
-
-                        this._nextWidgetId++;
-                        this._widgets = newWidgets;
-                        print(this._widgets);
-                      });
-
+                      }
                     }
-                  }
-              ),
-            ],
+                ),
+                IconButton(
+                  iconSize: iconSize - 15,
+                  icon: this._eController.isEditing ? Icon(Icons.edit_off) : Icon(Icons.edit),
+                  tooltip: "Edit task",
+                  onPressed: () {
+                    this.setState(() {
+                      this._eController.reverseIsEditing();
+                    });
+                  },
+                )
+              ],
+            )
           ),
           Container(
               constraints: BoxConstraints.expand(
@@ -92,7 +102,7 @@ class _DayWidgetContainerState extends State<DayWidgetContainer> {
                       <Widget>[
                         Container(
                             width: widgetSize,
-                            child: Text("Nothing to do for now!", style: Theme.of(context).textTheme.headline2)
+                            child: Text("Nothing to do for now!", style: Theme.of(context).primaryTextTheme.bodyText2)
                         )
                       ]
                           : this._widgets

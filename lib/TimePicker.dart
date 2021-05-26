@@ -14,8 +14,9 @@ class TimePicker extends StatefulWidget {
 
   final String title;
   final TimePickerController controller;
+  final TimeOfDay time;
 
-  const TimePicker({Key key, this.title, this.controller}) : super(key: key);
+  const TimePicker({Key key, this.title, this.controller, this.time}) : super(key: key);
 
   @override
   State<StatefulWidget> createState() => _TimePickerState();
@@ -24,7 +25,13 @@ class TimePicker extends StatefulWidget {
 
 class _TimePickerState extends State<TimePicker> {
 
-  TimeOfDay _selectedTime = TimeOfDay(hour: 00, minute: 00);
+  TimeOfDay _selectedTime;
+
+  @override
+  void initState() {
+    super.initState();
+    this._selectedTime = this.widget.time != null ? this.widget.time : TimeOfDay(hour: 00, minute: 00);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -34,7 +41,7 @@ class _TimePickerState extends State<TimePicker> {
       child: Row(
 
         children: [
-          Text("${this.widget.title}:"),
+          Text("${this.widget.title}", style: Theme.of(context).primaryTextTheme.headline6),
           Padding(
               padding: EdgeInsets.only(left: 10),
               child: InkWell(
@@ -48,14 +55,14 @@ class _TimePickerState extends State<TimePicker> {
                             data: ThemeData.light().copyWith(
                               colorScheme: ColorScheme.light(
                                 // change the border color
-                                primary: COLOR_INDIAN_RED,
+                                primary: FONT_COLOR,
                                 // change the text color
-                                onSurface: COLOR_INDIAN_RED,
+                                onSurface: FONT_COLOR,
                               ),
                               // button colors
                               buttonTheme: ButtonThemeData(
                                 colorScheme: ColorScheme.light(
-                                  primary: COLOR_INDIAN_RED,
+                                  primary: FONT_COLOR,
                                 ),
                               ),
                             ),
@@ -72,7 +79,7 @@ class _TimePickerState extends State<TimePicker> {
                   }
                 },
                 child: Container(
-                    child: Text(timeToString(this._selectedTime))
+                    child: Text(timeToString(this._selectedTime), style: Theme.of(context).primaryTextTheme.bodyText1)
                 )
               )
           )

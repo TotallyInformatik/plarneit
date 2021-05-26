@@ -1,5 +1,8 @@
+import 'dart:ffi';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:plarneit/TaskWidget.dart';
 import 'package:plarneit/utils/spacing.dart';
 import 'TimePicker.dart';
 import 'utils/constants.dart';
@@ -35,7 +38,7 @@ Future<Map> showCustomDialog(BuildContext context, String title, List<Widget> co
                       children: [
                         Padding( // title
                             padding: EdgeInsets.only(top: innerPadding, bottom: innerPadding),
-                            child: Text(title, style: Theme.of(context).textTheme.headline4)
+                            child: Text(title, style: Theme.of(context).primaryTextTheme.headline4)
                         ),
                         Form(
                           key: formKey,
@@ -71,11 +74,13 @@ Future<Map> showCustomDialog(BuildContext context, String title, List<Widget> co
 
 }
 
-Future<Map> showEditDialog(BuildContext context) async {
+Future<Map> showEditDialog(BuildContext context, {String title, String description, TimeOfDay starttime, TimeOfDay endtime}) async {
   TextEditingController titleController = TextEditingController();
   TextEditingController descriptionController = TextEditingController();
   TimePickerController startTimeController = TimePickerController();
   TimePickerController endTimeController = TimePickerController();
+  titleController.text = title;
+  descriptionController.text = description;
 
   final _formKey = GlobalKey<FormState>();
 
@@ -91,33 +96,35 @@ Future<Map> showEditDialog(BuildContext context) async {
     "Edit Content",
     [
       TextFormField(
-          validator: textFieldValidator,
-          decoration: InputDecoration(
-              hintText: "Please enter a title"
-          ),
-          controller: titleController
+        validator: textFieldValidator,
+        decoration: InputDecoration(
+            hintText: "Please enter a title"
+        ),
+        controller: titleController
       ),
       TextFormField(
-          validator: textFieldValidator,
-          decoration: InputDecoration(
-              hintText: "Please enter a description"
-          ),
-          controller: descriptionController
+        validator: textFieldValidator,
+        decoration: InputDecoration(
+            hintText: "Please enter a description"
+        ),
+        controller: descriptionController
       ),
       TimePicker(
         title: "start time:",
-        controller: startTimeController
+        controller: startTimeController,
+        time: starttime,
       ),
       TimePicker(
-          title: "end time:",
-          controller: endTimeController
+        title: "end time:",
+        controller: endTimeController,
+        time: endtime,
       )
     ],
     [
       IconButton(
         icon: Icon(Icons.cancel_rounded),
         onPressed: () {
-          Navigator.of(context).pop({});
+          Navigator.of(context).pop(null);
         },
       ),
       IconButton(
@@ -125,10 +132,10 @@ Future<Map> showEditDialog(BuildContext context) async {
         onPressed: () {
           if (_formKey.currentState.validate()) {
             Navigator.of(context).pop({
-              "title": titleController.text,
-              "description": descriptionController.text,
-              "start-time": startTimeController.selectedTime,
-              "end-time": startTimeController.selectedTime
+              TaskWidget.titleTag: titleController.text,
+              TaskWidget.descriptionTag: descriptionController.text,
+              TaskWidget.starttimeTag: startTimeController.selectedTime,
+              TaskWidget.endtimeTag: endTimeController.selectedTime
             });
           }
         },

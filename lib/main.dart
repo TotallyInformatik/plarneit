@@ -43,8 +43,9 @@ class MyApp extends StatelessWidget {
       title: 'plarneit',
       theme: ThemeData(
         primaryColor: COLOR_WHITE,
-        accentColor: COLOR_INDIAN_RED,
-        textTheme: screenWidth > 500 ? TEXT_THEME_DEFAULT : TEXT_THEME_SMALL,
+        accentColor: COLOR_WHITESMOKE,
+        accentTextTheme: screenWidth > 500 ? TEXT_THEME_DEFAULT_WHITE : TEXT_THEME_SMALL_WHITE,
+        primaryTextTheme: screenWidth > 500 ? TEXT_THEME_DEFAULT : TEXT_THEME_SMALL,
         fontFamily: "Montserrat"
       ),
       home: DayPage(DateTime.now()),
