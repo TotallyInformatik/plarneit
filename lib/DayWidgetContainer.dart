@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:plarneit/DayPageDate.dart';
 import 'package:plarneit/EditingController.dart';
 import 'package:plarneit/UrgencyTypes.dart';
+import 'package:plarneit/UserMadeWidget/WidgetInformation.dart';
 import 'package:plarneit/utils/spacing.dart';
 import 'Dialogs.dart';
-import 'TaskWidget.dart';
+import 'UserMadeWidget/TaskWidget.dart';
+import 'UserMadeWidget/UserMadeWidgetBase.dart';
 import 'utils/constants.dart';
 
 class DayWidgetContainer extends StatefulWidget {
@@ -29,7 +32,7 @@ class _DayWidgetContainerState extends State<DayWidgetContainer> {
 
   final ScrollController _scrollController = ScrollController();
   int _nextWidgetId;
-  List<TaskWidget> _widgets;
+  List<StatefulWidget> _widgets;
   EditingController _eController = EditingController();
 
   @override
@@ -56,15 +59,17 @@ class _DayWidgetContainerState extends State<DayWidgetContainer> {
                     icon: Icon(Icons.add_rounded),
                     tooltip: "Add task",
                     onPressed: () async {
-                      Map widgetInformation = await showEditDialog(context);
+                      TaskInformation widgetInformation = await showTaskEditDialog(context);
 
                       if (widgetInformation != null) {
 
                         setState(() {
-                          List<TaskWidget> newWidgets = [];
+                          List<StatefulWidget> newWidgets = [];
                           newWidgets.addAll(this._widgets);
 
-                          newWidgets.add(TaskWidget(widgetInformation: widgetInformation, date: this.widget.date, id: this._nextWidgetId, eController: this._eController));
+                          // TODO: use if statement to decide whether to add Note WIdget or TaskWIdget
+
+                          newWidgets.add(TaskWidget(widgetInformation, this._eController, this._nextWidgetId));
 
                           this._nextWidgetId++;
                           this._widgets = newWidgets;
@@ -77,7 +82,7 @@ class _DayWidgetContainerState extends State<DayWidgetContainer> {
                 IconButton(
                   iconSize: iconSize - 15,
                   icon: this._eController.isEditing ? Icon(Icons.edit_off) : Icon(Icons.edit),
-                  tooltip: "Edit task",
+                  tooltip: "Edit task", // TODO: change this
                   onPressed: () {
                     this.setState(() {
                       this._eController.reverseIsEditing();
@@ -94,19 +99,22 @@ class _DayWidgetContainerState extends State<DayWidgetContainer> {
               child: Scrollbar(
                   isAlwaysShown: true,
                   controller: _scrollController,
-                  child: ListView(
-                      controller: _scrollController,
-                      padding: EdgeInsets.all(listContainerInnerPadding),
-                      scrollDirection: Axis.horizontal,
-                      children: this._widgets.length == 0 ?
-                      <Widget>[
-                        Container(
-                            width: widgetSize,
-                            child: Text("Nothing to do for now!", style: Theme.of(context).primaryTextTheme.bodyText2)
-                        )
-                      ]
-                          : this._widgets
-                  )
+                  child: DayPageDate(
+                      date: this.widget.date,
+                      child: ListView(
+                          controller: _scrollController,
+                          padding: EdgeInsets.all(listContainerInnerPadding),
+                          scrollDirection: Axis.horizontal,
+                          children: this._widgets.length == 0 ?
+                          <Widget>[
+                            Container(
+                                width: widgetSize,
+                                child: Text("No Tasks for now!", style: Theme.of(context).primaryTextTheme.bodyText2) // TODO: change this
+                            )
+                          ]
+                              : this._widgets
+                      )
+                  ),
               )
           )]
     );

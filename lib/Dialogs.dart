@@ -2,7 +2,8 @@ import 'dart:ffi';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-import 'package:plarneit/TaskWidget.dart';
+import 'package:plarneit/UserMadeWidget/WidgetInformation.dart';
+import 'file:///C:/Users/Ruine/OneDrive/Desktop/Rui/Programming/CodingProjects/Unfinished/plarneit/lib/UserMadeWidget/TaskWidget.dart';
 import 'package:plarneit/utils/spacing.dart';
 import 'TimePicker.dart';
 import 'utils/constants.dart';
@@ -10,11 +11,11 @@ import 'utils/constants.dart';
 import 'UrgencyTypes.dart';
 
 // base function
-Future<Map> showCustomDialog(BuildContext context, String title, List<Widget> content, List<Widget> actions, {GlobalKey<FormState> formKey}) async {
+Future<dynamic> showCustomDialog(BuildContext context, String title, List<Widget> content, List<Widget> actions, {GlobalKey<FormState> formKey}) async {
 
   ScrollController _scrollController = ScrollController();
 
-  return showDialog<Map>(
+  return showDialog<dynamic>(
     context: context,
     barrierDismissible: false,
     builder: (BuildContext context) {
@@ -74,11 +75,8 @@ Future<Map> showCustomDialog(BuildContext context, String title, List<Widget> co
 
 }
 
-Future<Map> showEditDialog(BuildContext context, {String title, String description, TimeOfDay starttime, TimeOfDay endtime}) async {
-  TextEditingController titleController = TextEditingController();
-  TextEditingController descriptionController = TextEditingController();
-  TimePickerController startTimeController = TimePickerController();
-  TimePickerController endTimeController = TimePickerController();
+Future<TaskInformation> showEditDialog(BuildContext context, TextEditingController titleController, TextEditingController descriptionController, Function onSubmit, List<Widget> additionalInput, {String title, String description}) async {
+
   titleController.text = title;
   descriptionController.text = description;
 
@@ -92,34 +90,27 @@ Future<Map> showEditDialog(BuildContext context, {String title, String descripti
     return null;
   };
 
-  return await showCustomDialog(context,
-    "Edit Content",
-    [
-      TextFormField(
+  List<Widget> input = [
+    TextFormField(
         validator: textFieldValidator,
         decoration: InputDecoration(
             hintText: "Please enter a title"
         ),
         controller: titleController
-      ),
-      TextFormField(
+    ),
+    TextFormField(
         validator: textFieldValidator,
         decoration: InputDecoration(
             hintText: "Please enter a description"
         ),
         controller: descriptionController
-      ),
-      TimePicker(
-        title: "start time:",
-        controller: startTimeController,
-        time: starttime,
-      ),
-      TimePicker(
-        title: "end time:",
-        controller: endTimeController,
-        time: endtime,
-      )
-    ],
+    ),
+  ];
+  input.addAll(additionalInput);
+
+  return await showCustomDialog(context,
+    "Edit Content",
+    input,
     [
       IconButton(
         icon: Icon(Icons.cancel_rounded),
@@ -131,12 +122,7 @@ Future<Map> showEditDialog(BuildContext context, {String title, String descripti
         icon: Icon(Icons.done_rounded),
         onPressed: () {
           if (_formKey.currentState.validate()) {
-            Navigator.of(context).pop({
-              TaskWidget.titleTag: titleController.text,
-              TaskWidget.descriptionTag: descriptionController.text,
-              TaskWidget.starttimeTag: startTimeController.selectedTime,
-              TaskWidget.endtimeTag: endTimeController.selectedTime
-            });
+            onSubmit();
           }
         },
       )
@@ -146,3 +132,31 @@ Future<Map> showEditDialog(BuildContext context, {String title, String descripti
 }
 
 
+
+Future<TaskInformation> showTaskEditDialog(BuildContext context, {String title, String description, TimeOfDay starttime, TimeOfDay endtime}) {
+  TextEditingController titleController = TextEditingController();
+  TextEditingController descriptionController = TextEditingController();
+  TimePickerController startTimeController = TimePickerController();
+  TimePickerController endTimeController = TimePickerController();
+
+  return showEditDialog(
+    context,
+    titleController,
+    descriptionController,
+    () => Navigator.of(context).pop(TaskInformation(titleController.text, descriptionController.text, startTimeController.selectedTime, endTimeController.selectedTime)),
+    [
+      TimePicker(
+        title: "start time:",
+        controller: startTimeController,
+        time: starttime,
+      ),
+      TimePicker(
+        title: "end time:",
+        controller: endTimeController,
+        time: endtime,
+      )
+    ],
+    title: title,
+    description: description
+  );
+}
