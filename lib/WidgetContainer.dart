@@ -1,38 +1,44 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:plarneit/DayPageDate.dart';
-import 'package:plarneit/EditingController.dart';
+import 'package:plarneit/Controllers.dart';
 import 'package:plarneit/UrgencyTypes.dart';
+import 'package:plarneit/UserMadeWidget/NoteWidget.dart';
 import 'package:plarneit/UserMadeWidget/WidgetInformation.dart';
+import 'package:plarneit/utils/conversion.dart';
 import 'package:plarneit/utils/spacing.dart';
 import 'Dialogs.dart';
 import 'UserMadeWidget/TaskWidget.dart';
 import 'UserMadeWidget/UserMadeWidgetBase.dart';
 import 'utils/constants.dart';
 
-class DayWidgetContainer extends StatefulWidget {
+enum WidgetContainerTypes {
+  TASKS,
+  NOTES
+}
 
-  final List<TaskWidget> startingWidgets;
+class WidgetContainer extends StatefulWidget {
+
+  final List<UserMadeWidgetBase> startingWidgets;
   final DateTime date;
   final int nextWidgetId; // should always be set to startingWidgets.length
   final String title;
+  final WidgetContainerTypes type;
 
-  const DayWidgetContainer({Key key, this.startingWidgets, this.date, this.nextWidgetId, this.title}) : super(key: key);
+  const WidgetContainer(this.startingWidgets, this.date, this.nextWidgetId, this.title, this.type, {Key key}) : super(key: key);
 
 
   @override
-  _DayWidgetContainerState createState() => _DayWidgetContainerState();
-
-
+  _WidgetContainerState createState() => _WidgetContainerState();
 
 }
 
-class _DayWidgetContainerState extends State<DayWidgetContainer> {
+class _WidgetContainerState extends State<WidgetContainer> {
 
 
   final ScrollController _scrollController = ScrollController();
   int _nextWidgetId;
-  List<StatefulWidget> _widgets;
+  List<UserMadeWidgetBase> _widgets;
   EditingController _eController = EditingController();
 
   @override
@@ -57,32 +63,34 @@ class _DayWidgetContainerState extends State<DayWidgetContainer> {
                 IconButton(
                     iconSize: iconSize,
                     icon: Icon(Icons.add_rounded),
-                    tooltip: "Add task",
+                    tooltip: "Add ${enumToString(this.widget.type).toLowerCase()}",
                     onPressed: () async {
-                      TaskInformation widgetInformation = await showTaskEditDialog(context);
+                      List<UserMadeWidgetBase> newWidgets = [];
+                      newWidgets.addAll(this._widgets);
 
-                      if (widgetInformation != null) {
 
-                        setState(() {
-                          List<StatefulWidget> newWidgets = [];
-                          newWidgets.addAll(this._widgets);
-
-                          // TODO: use if statement to decide whether to add Note WIdget or TaskWIdget
-
-                          newWidgets.add(TaskWidget(widgetInformation, this._eController, this._nextWidgetId));
-
-                          this._nextWidgetId++;
-                          this._widgets = newWidgets;
-                          print(this._widgets);
-                        });
-
+                      switch (this.widget.type) {
+                        case WidgetContainerTypes.TASKS:
+                          WidgetInformation widgetInformation = await showTaskEditDialog(context);
+                          if (widgetInformation != null) { newWidgets.add(TaskWidget(widgetInformation, this._eController, this._nextWidgetId)); }
+                          break;
+                        case WidgetContainerTypes.NOTES:
+                          WidgetInformation widgetInformation = await showNoteEditDialog(context);
+                          if (widgetInformation != null) { newWidgets.add(NoteWidget(widgetInformation, this._eController, this._nextWidgetId)); }
+                          break;
                       }
+
+                      setState(() {
+                        this._nextWidgetId++;
+                        this._widgets = newWidgets;
+                        print(this._widgets.toString());
+                      });
                     }
                 ),
                 IconButton(
                   iconSize: iconSize - 15,
                   icon: this._eController.isEditing ? Icon(Icons.edit_off) : Icon(Icons.edit),
-                  tooltip: "Edit task", // TODO: change this
+                  tooltip: "Edit ${enumToString(this.widget.type).toLowerCase()}",
                   onPressed: () {
                     this.setState(() {
                       this._eController.reverseIsEditing();
@@ -109,7 +117,7 @@ class _DayWidgetContainerState extends State<DayWidgetContainer> {
                           <Widget>[
                             Container(
                                 width: widgetSize,
-                                child: Text("No Tasks for now!", style: Theme.of(context).primaryTextTheme.bodyText2) // TODO: change this
+                                child: Text("No ${enumToString(this.widget.type).toLowerCase()} for now!", style: Theme.of(context).primaryTextTheme.bodyText2)
                             )
                           ]
                               : this._widgets

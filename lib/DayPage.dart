@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:plarneit/utils/conversion.dart';
 import 'package:plarneit/utils/spacing.dart';
-import 'DayWidgetContainer.dart';
+import 'WidgetContainer.dart';
 import 'utils/constants.dart';
 
 class DayPage extends StatelessWidget {
@@ -29,14 +29,14 @@ class DayPage extends StatelessWidget {
                       style: Theme.of(context).accentTextTheme.headline1,
                       textAlign: TextAlign.left
                   ),
-                  background: Image(image: AssetImage("assets/images/forest1.jpg"), fit: BoxFit.cover,),
+                  background: Image(image: AssetImage("assets/images/forest1.jpg"), fit: BoxFit.cover),
                 ),
               ),
               SliverList(
                 delegate: SliverChildListDelegate(
                   [
-                    DayWidgetContainer(startingWidgets: [], date: this.date, nextWidgetId: 0, title: "Tasks:"),
-                    DayWidgetContainer(startingWidgets: [], date: this.date, nextWidgetId: 0, title: "Notes:")
+                    WidgetContainer([], this.date, 0, "Tasks:", WidgetContainerTypes.TASKS),
+                    WidgetContainer([], this.date, 0, "Notes:", WidgetContainerTypes.NOTES)
                   ],
                 ),
               )

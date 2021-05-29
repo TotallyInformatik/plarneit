@@ -11,6 +11,7 @@ const COLOR_INDIAN_RED_LIGHT = Color.fromRGBO(212, 97, 97, 1);
 const FONT_COLOR = Color.fromRGBO(10, 10, 10, 1);
 const WHITE_FONT_COLOR = Colors.white;
 const TASK_COLOR = Color.fromRGBO(40, 40, 40, 1);
+const STANDARD_NOTE_COLOR = Color.fromRGBO(245, 235, 125, 1);
 
 // @deprecated
 const VERY_URGENT_COLOR = Color.fromRGBO(138, 39, 32, 1);

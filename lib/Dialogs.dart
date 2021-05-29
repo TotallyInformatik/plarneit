@@ -2,20 +2,21 @@ import 'dart:ffi';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:flutter_colorpicker/flutter_colorpicker.dart';
 import 'package:plarneit/UserMadeWidget/WidgetInformation.dart';
-import 'file:///C:/Users/Ruine/OneDrive/Desktop/Rui/Programming/CodingProjects/Unfinished/plarneit/lib/UserMadeWidget/TaskWidget.dart';
+import 'Controllers.dart';
 import 'package:plarneit/utils/spacing.dart';
-import 'TimePicker.dart';
+import 'Picker/TimePicker.dart';
 import 'utils/constants.dart';
 
 import 'UrgencyTypes.dart';
 
 // base function
-Future<dynamic> showCustomDialog(BuildContext context, String title, List<Widget> content, List<Widget> actions, {GlobalKey<FormState> formKey}) async {
+Future<T> showCustomDialog<T>(BuildContext context, String title, List<Widget> content, List<Widget> actions, {GlobalKey<FormState> formKey}) async {
 
   ScrollController _scrollController = ScrollController();
 
-  return showDialog<dynamic>(
+  return showDialog<T>(
     context: context,
     barrierDismissible: false,
     builder: (BuildContext context) {
@@ -75,7 +76,7 @@ Future<dynamic> showCustomDialog(BuildContext context, String title, List<Widget
 
 }
 
-Future<TaskInformation> showEditDialog(BuildContext context, TextEditingController titleController, TextEditingController descriptionController, Function onSubmit, List<Widget> additionalInput, {String title, String description}) async {
+Future<T> showEditDialog<T extends WidgetInformation>(BuildContext context, TextEditingController titleController, TextEditingController descriptionController, Function onSubmit, List<Widget> additionalInput, {String title, String description}) async {
 
   titleController.text = title;
   descriptionController.text = description;
@@ -108,7 +109,7 @@ Future<TaskInformation> showEditDialog(BuildContext context, TextEditingControll
   ];
   input.addAll(additionalInput);
 
-  return await showCustomDialog(context,
+  return await showCustomDialog<T>(context,
     "Edit Content",
     input,
     [
@@ -136,27 +137,44 @@ Future<TaskInformation> showEditDialog(BuildContext context, TextEditingControll
 Future<TaskInformation> showTaskEditDialog(BuildContext context, {String title, String description, TimeOfDay starttime, TimeOfDay endtime}) {
   TextEditingController titleController = TextEditingController();
   TextEditingController descriptionController = TextEditingController();
-  TimePickerController startTimeController = TimePickerController();
-  TimePickerController endTimeController = TimePickerController();
+  TimePickerController startTimeController = TimePickerController(initialTime: starttime);
+  TimePickerController endTimeController = TimePickerController(initialTime: endtime);
 
-  return showEditDialog(
+  return showEditDialog<TaskInformation>(
     context,
     titleController,
     descriptionController,
-    () => Navigator.of(context).pop(TaskInformation(titleController.text, descriptionController.text, startTimeController.selectedTime, endTimeController.selectedTime)),
+    () => Navigator.of(context).pop(TaskInformation(titleController.text, descriptionController.text, startTimeController.value, endTimeController.value)),
     [
       TimePicker(
-        title: "start time:",
-        controller: startTimeController,
-        time: starttime,
+        "start time:",
+        startTimeController
       ),
       TimePicker(
-        title: "end time:",
-        controller: endTimeController,
-        time: endtime,
+        "end time:",
+        endTimeController
       )
     ],
     title: title,
     description: description
   );
 }
+
+Future<NotesInformation> showNoteEditDialog(BuildContext context, {String title, String description, Color color}) {
+  TextEditingController titleController = TextEditingController();
+  TextEditingController descriptionController = TextEditingController();
+  ColorPickerController colorPickerController = ColorPickerController(initialColor: color);
+
+  return showEditDialog<NotesInformation>(
+      context,
+      titleController,
+      descriptionController,
+          () => Navigator.of(context).pop(NotesInformation(titleController.text, descriptionController.text, colorPickerController.value)),
+      [
+        ColorPicker(pickerColor: color, onColorChanged: (Color newColor) => { colorPickerController.value = newColor })
+      ],
+      title: title,
+      description: description
+  );
+}
+

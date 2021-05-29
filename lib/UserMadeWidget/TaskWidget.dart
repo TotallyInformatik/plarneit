@@ -1,32 +1,23 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-import 'package:plarneit/DayWidgetContainer.dart';
-import 'package:plarneit/EditingController.dart';
+import 'package:plarneit/Controllers.dart';
 import 'package:plarneit/UserMadeWidget/UserMadeWidgetBase.dart';
 import 'package:plarneit/UserMadeWidget/WidgetInformation.dart';
 import 'package:plarneit/utils/conversion.dart';
-import 'package:plarneit/utils/spacing.dart';
+
 import '../Dialogs.dart';
 import '../utils/constants.dart';
 
-import '../UrgencyTypes.dart';
+class TaskWidget extends UserMadeWidgetBase {
 
-class TaskWidget extends StatefulWidget {
-
-  final WidgetInformation widgetInformation;
-  final int id;
-  final EditingController eController;
-
-  const TaskWidget(this.widgetInformation, this.eController, this.id, {Key key}) : super(key: key);
+  const TaskWidget(WidgetInformation widgetInformation, EditingController eController, int id, {Key key})
+      : super(widgetInformation, eController, id, key: key);
 
   @override
-  State<StatefulWidget> createState() =>
-      _TaskWidget();
-
+  State<StatefulWidget> createState() => _TaskWidgetState();
 }
 
-class _TaskWidget extends State<TaskWidget> {
-
+class _TaskWidgetState extends State<TaskWidget> {
   String _title;
   String _description;
   TimeOfDay _starttime;
@@ -58,28 +49,30 @@ class _TaskWidget extends State<TaskWidget> {
 
   @override
   Widget build(BuildContext context) {
-
     return AnimatedOpacity(
-      duration: Duration(milliseconds: 1000),
-      opacity: !_animationStarted ? 0 : 1,
-      child: UserMadeWidgetBase.returnStandardUMWidgetStructure(context, [
-        Padding(
-          padding: EdgeInsets.only(bottom: timeBottomMargin),
-          child: Text("${timeToString(this._starttime)} - ${timeToString(this._endtime)}", style: Theme.of(context).accentTextTheme.bodyText1)
-        ),
-        Text(this._title, style: Theme.of(context).accentTextTheme.headline5),
-        Text(this._description, style: Theme.of(context).accentTextTheme.bodyText1)
-      ], () async {
-        if (this.widget.eController.isEditing) {
-
-          TaskInformation newWidgetInformation = await showTaskEditDialog(context, title: this._title, description: this._description, starttime: this._starttime, endtime: this._endtime);
-          if (newWidgetInformation != null) {
-            this._updateAttributes(newWidgetInformation);
+        duration: Duration(milliseconds: 1000),
+        opacity: !_animationStarted ? 0 : 1,
+        child: UserMadeWidgetBase.returnStandardBuild(context, [
+          Padding(
+              padding: EdgeInsets.only(bottom: timeBottomMargin),
+              child: Text(
+                  "${timeToString(this._starttime)} - ${timeToString(this._endtime)}",
+                  style: Theme.of(context).accentTextTheme.bodyText1)),
+          Text(this._title, style: Theme.of(context).accentTextTheme.headline5),
+          Text(this._description,
+              style: Theme.of(context).accentTextTheme.bodyText1)
+        ], () async {
+          if (this.widget.eController.isEditing) {
+            TaskInformation newWidgetInformation = await showTaskEditDialog(
+                context,
+                title: this._title,
+                description: this._description,
+                starttime: this._starttime,
+                endtime: this._endtime);
+            if (newWidgetInformation != null) {
+              this._updateAttributes(newWidgetInformation);
+            }
           }
-        }
-
-      }, this.widget.eController)
-    );
+        }, this.widget.eController));
   }
-
 }

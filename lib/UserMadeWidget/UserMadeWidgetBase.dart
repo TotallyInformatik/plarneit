@@ -1,16 +1,36 @@
 import 'package:flutter/material.dart';
 import 'package:plarneit/DayPageDate.dart';
-import 'package:plarneit/EditingController.dart';
+import 'package:plarneit/Controllers.dart';
+import 'package:plarneit/UserMadeWidget/WidgetInformation.dart';
 import 'package:plarneit/utils/constants.dart';
 
-class UserMadeWidgetBase {
+
+class UserMadeWidgetBase extends StatefulWidget {
+
+  final WidgetInformation widgetInformation;
+  final int id;
+  final EditingController eController;
+
+
+  const UserMadeWidgetBase(this.widgetInformation, this.eController, this.id, {Key key}) : super(key: key);
+
+  @override
+  State<StatefulWidget> createState() {
+    throw UnimplementedError("Tried to create instance of base..., cringe");
+  }
+
   static bool updateInJson(BuildContext context) {
     // TODO: implement
 
     DayPageDate.of(context); // use this
   }
 
-  static Widget returnStandardUMWidgetStructure(BuildContext context, List<Widget> children, Function onTap, EditingController editingController) {
+  static Widget returnStandardBuild(
+      BuildContext context,
+      List<Widget> children,
+      Function onTap,
+      EditingController editingController,
+      {Color noteColor}) {
     double containerSize = widgetSize + widgetPadding;
 
     return Container(
@@ -24,7 +44,7 @@ class UserMadeWidgetBase {
                       height: widgetSize,
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.all(Radius.circular(widgetBorderRadius)),
-                        color: TASK_COLOR,
+                        color: noteColor != null ? noteColor : TASK_COLOR,
                       ),
                       child: InkWell(
                           splashColor: Colors.white.withOpacity(0.4),
