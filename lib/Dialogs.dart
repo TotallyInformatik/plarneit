@@ -2,7 +2,6 @@ import 'dart:ffi';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-import 'package:flutter_colorpicker/flutter_colorpicker.dart';
 import 'package:plarneit/UserMadeWidget/WidgetInformation.dart';
 import 'Controllers.dart';
 import 'package:plarneit/utils/spacing.dart';
@@ -171,7 +170,6 @@ Future<NotesInformation> showNoteEditDialog(BuildContext context, {String title,
       descriptionController,
           () => Navigator.of(context).pop(NotesInformation(titleController.text, descriptionController.text, colorPickerController.value)),
       [
-        ColorPicker(pickerColor: color, onColorChanged: (Color newColor) => { colorPickerController.value = newColor })
       ],
       title: title,
       description: description

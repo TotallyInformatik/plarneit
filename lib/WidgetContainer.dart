@@ -89,7 +89,7 @@ class _WidgetContainerState extends State<WidgetContainer> {
                 ),
                 IconButton(
                   iconSize: iconSize - 15,
-                  icon: this._eController.isEditing ? Icon(Icons.edit_off) : Icon(Icons.edit),
+                  icon: this._eController.value ? Icon(Icons.edit_off) : Icon(Icons.edit),
                   tooltip: "Edit ${enumToString(this.widget.type).toLowerCase()}",
                   onPressed: () {
                     this.setState(() {

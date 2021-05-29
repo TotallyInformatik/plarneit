@@ -57,7 +57,7 @@ class _NoteWidgetState extends State<NoteWidget> {
           Text(this._title, style: Theme.of(context).accentTextTheme.headline5),
           Text(this._description, style: Theme.of(context).accentTextTheme.bodyText1)
         ], () async {
-          if (this.widget.eController.isEditing) {
+          if (this.widget.eController.value) {
 
             NotesInformation newWidgetInformation = await showNoteEditDialog(context, title: this._title, description: this._description, color: this._color);
             if (newWidgetInformation != null) {

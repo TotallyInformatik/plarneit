@@ -5,7 +5,7 @@ import 'package:plarneit/UserMadeWidget/WidgetInformation.dart';
 import 'package:plarneit/utils/constants.dart';
 
 
-class UserMadeWidgetBase extends StatefulWidget {
+abstract class UserMadeWidgetBase extends StatefulWidget {
 
   final WidgetInformation widgetInformation;
   final int id;
@@ -15,9 +15,7 @@ class UserMadeWidgetBase extends StatefulWidget {
   const UserMadeWidgetBase(this.widgetInformation, this.eController, this.id, {Key key}) : super(key: key);
 
   @override
-  State<StatefulWidget> createState() {
-    throw UnimplementedError("Tried to create instance of base..., cringe");
-  }
+  State<StatefulWidget> createState();
 
   static bool updateInJson(BuildContext context) {
     // TODO: implement

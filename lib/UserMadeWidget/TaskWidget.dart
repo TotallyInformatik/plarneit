@@ -62,7 +62,7 @@ class _TaskWidgetState extends State<TaskWidget> {
           Text(this._description,
               style: Theme.of(context).accentTextTheme.bodyText1)
         ], () async {
-          if (this.widget.eController.isEditing) {
+          if (this.widget.eController.value) {
             TaskInformation newWidgetInformation = await showTaskEditDialog(
                 context,
                 title: this._title,

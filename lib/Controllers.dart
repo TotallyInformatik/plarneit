@@ -3,6 +3,7 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:plarneit/utils/constants.dart';
 
+
 class PickerController<T> {
 
   T _value;
@@ -16,11 +17,10 @@ class PickerController<T> {
 }
 
 
-class EditingController {
+class EditingController extends PickerController<bool>{ // change this
 
-  bool _isEditing = false;
-  get isEditing { return this._isEditing; }
-  reverseIsEditing() { this._isEditing = !this._isEditing; }
+  EditingController({bool initialStatus}) : super(false, initialValue: initialStatus);
+  reverseIsEditing() { this._value = !this._value; }
 
 }
 

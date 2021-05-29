@@ -74,6 +74,8 @@ const TextTheme TEXT_THEME_SMALL_WHITE = TextTheme(
 
 // App Layout constants:
 
+// TODO: position these constants in their respective classes
+
 // DayPage Layout:
 const double listContainerInnerPadding = 20;
 
