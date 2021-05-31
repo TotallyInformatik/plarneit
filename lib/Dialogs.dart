@@ -163,6 +163,7 @@ Future<TaskInformation> showTaskEditDialog(BuildContext context, {String title, 
 Future<NotesInformation> showNoteEditDialog(BuildContext context, {String title, String description, Color color}) {
   TextEditingController titleController = TextEditingController();
   TextEditingController descriptionController = TextEditingController();
+  // TODO: add better colors
   List<Color> colors = [
     Colors.blue,
     Colors.black,
