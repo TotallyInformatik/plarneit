@@ -52,7 +52,7 @@ class _TaskWidgetState extends State<TaskWidget> {
     return AnimatedOpacity(
         duration: Duration(milliseconds: 1000),
         opacity: !_animationStarted ? 0 : 1,
-        child: UserMadeWidgetBase.returnStandardBuild(context, [
+        child: this.widget.returnStandardBuild(context, [
           Padding(
               padding: EdgeInsets.only(bottom: timeBottomMargin),
               child: Text(
@@ -73,6 +73,6 @@ class _TaskWidgetState extends State<TaskWidget> {
               this._updateAttributes(newWidgetInformation);
             }
           }
-        }, this.widget.eController));
+        }));
   }
 }

@@ -53,7 +53,7 @@ class _NoteWidgetState extends State<NoteWidget> {
     return AnimatedOpacity(
         duration: Duration(milliseconds: 1000),
         opacity: !_animationStarted ? 0 : 1,
-        child: UserMadeWidgetBase.returnStandardBuild(context, [
+        child: this.widget.returnStandardBuild(context, [
           Text(this._title, style: Theme.of(context).accentTextTheme.headline5),
           Text(this._description, style: Theme.of(context).accentTextTheme.bodyText1)
         ], () async {
@@ -66,7 +66,6 @@ class _NoteWidgetState extends State<NoteWidget> {
           }
 
         },
-        this.widget.eController,
         noteColor: this._color)
     );
   }

@@ -30,46 +30,50 @@ class _TimePickerState extends State<TimePicker> {
   @override
   Widget build(BuildContext context) {
 
-    return PickerBase.returnStandardBuild(
+    return this.widget.returnStandardBuild(
       context,
-      this.widget.title,
-    InkWell(
-        borderRadius: BorderRadius.circular(5),
-        onTap: () async {
-          TimeOfDay selectedTime = await showTimePicker(
-              context: context,
-              initialTime: TimeOfDay(hour: this._selectedTime.hour, minute: this._selectedTime.minute),
-              builder: (context, child) {
-                return Theme(
-                    data: ThemeData.light().copyWith(
-                      colorScheme: ColorScheme.light(
-                        // change the border color
-                        primary: FONT_COLOR,
-                        // change the text color
-                        onSurface: FONT_COLOR,
-                      ),
-                      // button colors
-                      buttonTheme: ButtonThemeData(
-                        colorScheme: ColorScheme.light(
-                          primary: FONT_COLOR,
-                        ),
-                      ),
-                    ),
-                    child: child
+      Row(
+        children: [
+          InkWell(
+              borderRadius: BorderRadius.circular(5),
+              onTap: () async {
+                TimeOfDay selectedTime = await showTimePicker(
+                    context: context,
+                    initialTime: TimeOfDay(hour: this._selectedTime.hour, minute: this._selectedTime.minute),
+                    builder: (context, child) {
+                      return Theme(
+                          data: ThemeData.light().copyWith(
+                            colorScheme: ColorScheme.light(
+                              // change the border color
+                              primary: FONT_COLOR,
+                              // change the text color
+                              onSurface: FONT_COLOR,
+                            ),
+                            // button colors
+                            buttonTheme: ButtonThemeData(
+                              colorScheme: ColorScheme.light(
+                                primary: FONT_COLOR,
+                              ),
+                            ),
+                          ),
+                          child: child
+                      );
+                    }
                 );
-              }
-          );
-          if (selectedTime.hour != null && selectedTime.minute != null) {
-            this.widget.controller.value = selectedTime;
-            setState(() {
-              this._selectedTime = selectedTime;
-              print(this._selectedTime);
-            });
-          }
-        },
-        child: Container(
-            child: Text(timeToString(this._selectedTime), style: Theme.of(context).primaryTextTheme.bodyText1))
-        )
+                if (selectedTime.hour != null && selectedTime.minute != null) {
+                  this.widget.controller.value = selectedTime;
+                  setState(() {
+                    this._selectedTime = selectedTime;
+                    print(this._selectedTime);
+                  });
+                }
+              },
+              child: Container(
+                  child: Text(timeToString(this._selectedTime), style: Theme.of(context).primaryTextTheme.bodyText1)
+              )
+          )
+        ]
+      )
     );
 
   }

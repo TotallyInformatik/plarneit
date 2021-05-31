@@ -23,11 +23,10 @@ abstract class UserMadeWidgetBase extends StatefulWidget {
     DayPageDate.of(context); // use this
   }
 
-  static Widget returnStandardBuild(
+  Widget returnStandardBuild(
       BuildContext context,
       List<Widget> children,
       Function onTap,
-      EditingController editingController,
       {Color noteColor}) {
     double containerSize = widgetSize + widgetPadding;
 

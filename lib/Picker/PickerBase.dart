@@ -14,22 +14,18 @@ abstract class PickerBase<T extends PickerController> extends StatefulWidget {
   @override
   State<StatefulWidget> createState();
 
-  static returnStandardBuild(
+  Widget returnStandardBuild(
       BuildContext context,
-      String title,
-      Widget display,
+      Widget display
       ) {
 
     return Padding(
         padding: EdgeInsets.only(top: innerPadding),
-        child: Row(
-
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(title, style: Theme.of(context).primaryTextTheme.headline6),
-            Padding(
-                padding: EdgeInsets.only(left: 10),
-                child: display
-            )
+            Text(this.title, style: Theme.of(context).primaryTextTheme.headline6, textAlign: TextAlign.start,),
+            display
           ],
 
         )

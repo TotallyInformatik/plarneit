@@ -7,38 +7,50 @@ import '../Controllers.dart';
 import '../utils/constants.dart';
 
 
-class _ColorWidget extends StatefulWidget {
+class ColorWidget extends StatefulWidget {
 
-  final int size;
+  final double size;
   final Color color;
+  final Function onTapControllerFunction;
   static final double widgetPadding = 5;
-  static final Color selectedColor = Color.fromRGBO(61, 61, 61, 1);
+  static final Color selectedBorderColor = Color.fromRGBO(61, 61, 61, 1);
 
-  const _ColorWidget(this.size, this.color, {Key key}) : super(key: key);
+  const ColorWidget(this.size, this.color, this.onTapControllerFunction, {Key key}) : super(key: key);
 
   @override
   State<StatefulWidget> createState() => _ColorWidgetState();
 
 }
 
-class _ColorWidgetState extends State<_ColorWidget> {
+class _ColorWidgetState extends State<ColorWidget> {
 
+  /*
   bool _selected = false;
 
   void toggleSelected() {
     this._selected = !this._selected;
   }
+   */
 
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.all(_ColorWidget.widgetPadding),
-      child: Container(
-        decoration: BoxDecoration(
-          color: this.widget.color,
-          borderRadius: BorderRadius.all(Radius.circular(this.widget.size / 2)),
-          border: this._selected ? Border.all(color: _ColorWidget.selectedColor) : null
-        ),
+      padding: EdgeInsets.all(ColorWidget.widgetPadding),
+      child: InkWell(
+        borderRadius: BorderRadius.all(Radius.circular(this.widget.size / 2)),
+        onTap: () {
+          //this.toggleSelected();
+          this.widget.onTapControllerFunction();
+        },
+        child: Container(
+          height: this.widget.size,
+          width: this.widget.size,
+          decoration: BoxDecoration(
+            color: this.widget.color,
+            borderRadius: BorderRadius.all(Radius.circular(this.widget.size / 2)),
+            //border: this._selected ? Border.all(color: ColorWidget.selectedBorderColor) : null
+          ),
+        )
       ),
     );
   }
@@ -47,7 +59,10 @@ class _ColorWidgetState extends State<_ColorWidget> {
 
 
 class ColorPicker extends PickerBase<ColorPickerController> {
-  ColorPicker(String title, ColorPickerController controller) : super(title, controller);
+  final List<Color> colors;
+  final double size;
+
+  ColorPicker(String title, ColorPickerController controller, this.colors, this.size) : super(title, controller);
 
   @override
   State<StatefulWidget> createState() => _ColorPickerState();
@@ -57,22 +72,46 @@ class ColorPicker extends PickerBase<ColorPickerController> {
 class _ColorPickerState extends State<ColorPicker> {
 
   Color _selectedColor;
-  _ColorWidget _selectedColorWidget;
 
   @override
   void initState() {
     super.initState();
-    this._selectedColor = this.widget.controller.value;
+    this._selectedColor = this.widget.controller.selectedColor;
   }
 
   @override
   Widget build(BuildContext context) {
 
-    return PickerBase.returnStandardBuild(
-      context,
-      "Select note color: ",
-      Row(
+    List<ColorWidget> colorChildren = [];
+    for (int i = 0; i<this.widget.colors.length; i++) {
+      Color setColor = new Color.fromRGBO(this.widget.colors[i].red, this.widget.colors[i].green, this.widget.colors[i].blue, this.widget.colors[i].opacity);
+      colorChildren.add(ColorWidget(this.widget.size, setColor, () {
+        this.setState(() {
+          this._selectedColor = setColor;
+        });
+        this.widget.controller.value = i;
+      }));
+    }
 
+    return this.widget.returnStandardBuild(
+      context,
+      Row(
+          children: [
+            Container(
+              child: ColorWidget(this.widget.size + 10, this._selectedColor, () {}),
+            ),
+            Padding(
+              padding: EdgeInsets.only(left: 10),
+              child: Container(
+                height: this.widget.size + ColorWidget.widgetPadding * 2,
+                width: 150,
+                child: ListView(
+                    scrollDirection: Axis.horizontal,
+                    children: colorChildren
+                ),
+              )
+            )
+          ]
       )
     );
 

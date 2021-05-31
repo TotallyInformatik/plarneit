@@ -2,6 +2,7 @@ import 'dart:ffi';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:plarneit/Picker/ColorPicker.dart';
 import 'package:plarneit/UserMadeWidget/WidgetInformation.dart';
 import 'Controllers.dart';
 import 'package:plarneit/utils/spacing.dart';
@@ -162,14 +163,21 @@ Future<TaskInformation> showTaskEditDialog(BuildContext context, {String title, 
 Future<NotesInformation> showNoteEditDialog(BuildContext context, {String title, String description, Color color}) {
   TextEditingController titleController = TextEditingController();
   TextEditingController descriptionController = TextEditingController();
-  ColorPickerController colorPickerController = ColorPickerController(initialColor: color);
+  List<Color> colors = [
+    Colors.blue,
+    Colors.black,
+    Colors.yellow,
+    Colors.red
+  ];
+  ColorPickerController colorPickerController = ColorPickerController(colors, colors.contains(color) ? colors.indexOf(color) : 0);
 
   return showEditDialog<NotesInformation>(
       context,
       titleController,
       descriptionController,
-          () => Navigator.of(context).pop(NotesInformation(titleController.text, descriptionController.text, colorPickerController.value)),
+          () => Navigator.of(context).pop(NotesInformation(titleController.text, descriptionController.text, colorPickerController.selectedColor)),
       [
+        ColorPicker("Select color", colorPickerController, colors, 25.0)
       ],
       title: title,
       description: description
