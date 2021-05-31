@@ -9,8 +9,8 @@ import '../utils/constants.dart';
 
 class NoteWidget extends UserMadeWidgetBase {
 
-  const NoteWidget(WidgetInformation widgetInformation, EditingController eController, int id, {Key key})
-      : super(widgetInformation, eController, id, key: key);
+  const NoteWidget(WidgetInformation widgetInformation, WidgetContainerStatusController statusController, int id, Function widgetDeletionFunction, {Key key})
+      : super(widgetInformation, statusController, id, widgetDeletionFunction, key: key);
 
   @override
   State<StatefulWidget> createState() =>
@@ -18,14 +18,13 @@ class NoteWidget extends UserMadeWidgetBase {
 
 }
 
-class _NoteWidgetState extends State<NoteWidget> {
+class _NoteWidgetState extends UserMadeWidgetBaseState<NotesInformation> {
 
   String _title;
   String _description;
   Color _color;
-  bool _animationStarted = false;
 
-  void _updateAttributes(NotesInformation widgetInformation) {
+  void updateAttributes(NotesInformation widgetInformation) {
     this.setState(() {
       this._title = widgetInformation.title;
       this._description = widgetInformation.description;
@@ -36,37 +35,22 @@ class _NoteWidgetState extends State<NoteWidget> {
   @override
   void initState() {
     super.initState();
-    this._updateAttributes(this.widget.widgetInformation);
-    this.initAnimation();
-  }
-
-  void initAnimation() async {
-    await Future.delayed(Duration(milliseconds: 100));
-    this.setState(() {
-      this._animationStarted = true;
-    });
+    this.updateAttributes(this.widget.widgetInformation);
   }
 
   @override
   Widget build(BuildContext context) {
 
-    return AnimatedOpacity(
-        duration: Duration(milliseconds: 1000),
-        opacity: !_animationStarted ? 0 : 1,
-        child: this.widget.returnStandardBuild(context, [
+    return this.returnStandardBuild(context, [
           Text(this._title, style: Theme.of(context).accentTextTheme.headline5),
           Text(this._description, style: Theme.of(context).accentTextTheme.bodyText1)
         ], () async {
-          if (this.widget.eController.value) {
-
             NotesInformation newWidgetInformation = await showNoteEditDialog(context, title: this._title, description: this._description, color: this._color);
             if (newWidgetInformation != null) {
-              this._updateAttributes(newWidgetInformation);
+              this.updateAttributes(newWidgetInformation);
             }
-          }
-
-        },
-        noteColor: this._color)
+          },
+        noteColor: this._color
     );
   }
 

@@ -10,21 +10,21 @@ import '../utils/constants.dart';
 
 class TaskWidget extends UserMadeWidgetBase {
 
-  const TaskWidget(WidgetInformation widgetInformation, EditingController eController, int id, {Key key})
-      : super(widgetInformation, eController, id, key: key);
+  const TaskWidget(WidgetInformation widgetInformation, WidgetContainerStatusController statusController, int id, Function widgetDeletionFunction, {Key key})
+      : super(widgetInformation, statusController, id, widgetDeletionFunction, key: key);
 
   @override
   State<StatefulWidget> createState() => _TaskWidgetState();
 }
 
-class _TaskWidgetState extends State<TaskWidget> {
+class _TaskWidgetState extends UserMadeWidgetBaseState<TaskInformation> {
   String _title;
   String _description;
   TimeOfDay _starttime;
   TimeOfDay _endtime;
-  bool _animationStarted = false;
 
-  void _updateAttributes(TaskInformation widgetInformation) {
+  @override
+  void updateAttributes(TaskInformation widgetInformation) {
     this.setState(() {
       this._title = widgetInformation.title;
       this._description = widgetInformation.description;
@@ -36,23 +36,12 @@ class _TaskWidgetState extends State<TaskWidget> {
   @override
   void initState() {
     super.initState();
-    this._updateAttributes(this.widget.widgetInformation);
-    this.initAnimation();
-  }
-
-  void initAnimation() async {
-    await Future.delayed(Duration(milliseconds: 100));
-    this.setState(() {
-      this._animationStarted = true;
-    });
+    this.updateAttributes(this.widget.widgetInformation);
   }
 
   @override
   Widget build(BuildContext context) {
-    return AnimatedOpacity(
-        duration: Duration(milliseconds: 1000),
-        opacity: !_animationStarted ? 0 : 1,
-        child: this.widget.returnStandardBuild(context, [
+      return this.returnStandardBuild(context, [
           Padding(
               padding: EdgeInsets.only(bottom: timeBottomMargin),
               child: Text(
@@ -62,17 +51,19 @@ class _TaskWidgetState extends State<TaskWidget> {
           Text(this._description,
               style: Theme.of(context).accentTextTheme.bodyText1)
         ], () async {
-          if (this.widget.eController.value) {
-            TaskInformation newWidgetInformation = await showTaskEditDialog(
-                context,
-                title: this._title,
-                description: this._description,
-                starttime: this._starttime,
-                endtime: this._endtime);
-            if (newWidgetInformation != null) {
-              this._updateAttributes(newWidgetInformation);
-            }
+
+          // editing function
+
+          TaskInformation newWidgetInformation = await showTaskEditDialog(
+              context,
+              title: this._title,
+              description: this._description,
+              starttime: this._starttime,
+              endtime: this._endtime);
+          if (newWidgetInformation != null) {
+            this.updateAttributes(newWidgetInformation);
           }
-        }));
+        }
+      );
   }
 }

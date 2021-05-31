@@ -84,9 +84,6 @@ const double widgetPadding = 10.0;
 const double widgetInnerPadding = 30.0;
 const double widgetBorderRadius = 30.0;
 
-// WidgetContainer Layout:
-const double iconSize = 40;
-const double sidePadding = listContainerInnerPadding;
 
 // Widget Layout:
 const double timeBottomMargin = 10;

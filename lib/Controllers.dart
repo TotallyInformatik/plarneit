@@ -18,10 +18,23 @@ class PickerController<T> {
 }
 
 
-class EditingController extends PickerController<bool>{
+enum ContainerStatus {
+  EDITING,
+  DELETING,
+  STANDBY
+}
 
-  EditingController({bool initialStatus}) : super(false, initialValue: initialStatus);
-  reverseIsEditing() { this._value = !this._value; }
+class WidgetContainerStatusController extends PickerController<ContainerStatus> {
+
+  WidgetContainerStatusController({ContainerStatus initialStatus}) : super(ContainerStatus.STANDBY, initialValue: initialStatus);
+
+  toggleStatus(ContainerStatus status) {
+    if (this._value == status) {
+      this._value = ContainerStatus.STANDBY;
+    } else {
+      this._value = status;
+    }
+  }
 
 }
 

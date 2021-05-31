@@ -19,6 +19,11 @@ enum WidgetContainerTypes {
 
 class WidgetContainer extends StatefulWidget {
 
+  // Layout attributes
+  static final double iconSize = 40;
+  static final double sidePadding = listContainerInnerPadding;
+
+
   final List<UserMadeWidgetBase> startingWidgets;
   final DateTime date;
   final int nextWidgetId; // should always be set to startingWidgets.length
@@ -37,9 +42,29 @@ class _WidgetContainerState extends State<WidgetContainer> {
 
 
   final ScrollController _scrollController = ScrollController();
+
   int _nextWidgetId;
   List<UserMadeWidgetBase> _widgets;
-  EditingController _eController = EditingController();
+  WidgetContainerStatusController _statusController = WidgetContainerStatusController();
+
+  void widgetDeletionFunction(UserMadeWidgetBase widget) {
+    this.setState(() {
+      this._widgets.remove(widget);
+    });
+  }
+
+  IconButton controllerIconButton(int sizeOffset, ContainerStatus status, IconData standrdIcon, IconData turnOffIcon) {
+    return IconButton(
+      iconSize: WidgetContainer.iconSize - sizeOffset,
+      icon: this._statusController.value == status ? Icon(turnOffIcon) : Icon(standrdIcon),
+      tooltip: "Edit ${enumToString(this.widget.type).toLowerCase()}",
+      onPressed: () {
+        this.setState(() {
+          this._statusController.toggleStatus(status);
+        });
+      },
+    );
+  }
 
   @override
   void initState() {
@@ -56,12 +81,12 @@ class _WidgetContainerState extends State<WidgetContainer> {
     return Column(
         children: [
           Padding(
-            padding: EdgeInsets.only(left: sidePadding),
+            padding: EdgeInsets.only(left: WidgetContainer.sidePadding),
             child: Row(
               children: [
                 Text(this.widget.title, style: Theme.of(context).primaryTextTheme.headline2,),
                 IconButton(
-                    iconSize: iconSize,
+                    iconSize: WidgetContainer.iconSize,
                     icon: Icon(Icons.add_rounded),
                     tooltip: "Add ${enumToString(this.widget.type).toLowerCase()}",
                     onPressed: () async {
@@ -72,11 +97,11 @@ class _WidgetContainerState extends State<WidgetContainer> {
                       switch (this.widget.type) {
                         case WidgetContainerTypes.TASKS:
                           WidgetInformation widgetInformation = await showTaskEditDialog(context);
-                          if (widgetInformation != null) { newWidgets.add(TaskWidget(widgetInformation, this._eController, this._nextWidgetId)); }
+                          if (widgetInformation != null) { newWidgets.add(TaskWidget(widgetInformation, this._statusController, this._nextWidgetId, this.widgetDeletionFunction)); }
                           break;
                         case WidgetContainerTypes.NOTES:
                           WidgetInformation widgetInformation = await showNoteEditDialog(context);
-                          if (widgetInformation != null) { newWidgets.add(NoteWidget(widgetInformation, this._eController, this._nextWidgetId)); }
+                          if (widgetInformation != null) { newWidgets.add(NoteWidget(widgetInformation, this._statusController, this._nextWidgetId, this.widgetDeletionFunction)); }
                           break;
                       }
 
@@ -87,16 +112,8 @@ class _WidgetContainerState extends State<WidgetContainer> {
                       });
                     }
                 ),
-                IconButton(
-                  iconSize: iconSize - 15,
-                  icon: this._eController.value ? Icon(Icons.edit_off) : Icon(Icons.edit),
-                  tooltip: "Edit ${enumToString(this.widget.type).toLowerCase()}",
-                  onPressed: () {
-                    this.setState(() {
-                      this._eController.reverseIsEditing();
-                    });
-                  },
-                )
+                controllerIconButton(15, ContainerStatus.EDITING, Icons.edit_rounded, Icons.edit_off),
+                controllerIconButton(10, ContainerStatus.DELETING, Icons.delete_rounded, Icons.delete_forever_rounded)
               ],
             )
           ),
