@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-import 'package:plarneit/DayPageDate.dart';
+import 'package:plarneit/IndentifierWidget.dart';
 import 'package:plarneit/Controllers.dart';
+import 'package:plarneit/JsonHandler.dart';
 import 'package:plarneit/UrgencyTypes.dart';
 import 'package:plarneit/UserMadeWidget/NoteWidget.dart';
 import 'package:plarneit/UserMadeWidget/WidgetInformation.dart';
@@ -97,11 +98,11 @@ class _WidgetContainerState extends State<WidgetContainer> {
                       switch (this.widget.type) {
                         case WidgetContainerTypes.TASKS:
                           WidgetInformation widgetInformation = await showTaskEditDialog(context);
-                          if (widgetInformation != null) { newWidgets.add(TaskWidget(widgetInformation, this._statusController, this._nextWidgetId, this.widgetDeletionFunction)); }
+                          if (widgetInformation != null) { newWidgets.add(TaskWidget(widgetInformation, this._statusController, this._nextWidgetId, this.widgetDeletionFunction, JsonHandlerWidget.of(context).taskHandler, this.widget.date)); }
                           break;
                         case WidgetContainerTypes.NOTES:
                           WidgetInformation widgetInformation = await showNoteEditDialog(context);
-                          if (widgetInformation != null) { newWidgets.add(NoteWidget(widgetInformation, this._statusController, this._nextWidgetId, this.widgetDeletionFunction)); }
+                          if (widgetInformation != null) { newWidgets.add(NoteWidget(widgetInformation, this._statusController, this._nextWidgetId, this.widgetDeletionFunction, JsonHandlerWidget.of(context).noteHandler, this.widget.date)); }
                           break;
                       }
 
@@ -124,8 +125,8 @@ class _WidgetContainerState extends State<WidgetContainer> {
               child: Scrollbar(
                   isAlwaysShown: true,
                   controller: _scrollController,
-                  child: DayPageDate(
-                      date: this.widget.date,
+                  child: Identifier(
+                      identifier: this.widget.date,
                       child: ListView(
                           controller: _scrollController,
                           padding: EdgeInsets.all(listContainerInnerPadding),

@@ -3,8 +3,8 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:plarneit/UrgencyTypes.dart';
+import 'package:plarneit/JsonHandler.dart';
 import 'package:plarneit/utils/constants.dart';
-import 'package:plarneit/utils/filehandling.dart';
 
 import 'DayPage.dart';
 
@@ -16,26 +16,24 @@ void main() {
 class MyApp extends StatelessWidget {
   // This widget is the root of your application.
 
-  createApplicationStorageJson() async {
-    // creates a json file for storage:
-    String path = await localPath;
+  static final String taskStorage = "tasks.json";
+  static final String noteStorage = "notes.json";
+  static final String longtermGoalsStorage = "longterm-goals.json";
+  static final JsonHandlerCollection jsonHandlerCollection = new JsonHandlerCollection(
+      JsonHandler(taskStorage),
+      JsonHandler(noteStorage),
+      JsonHandler(longtermGoalsStorage)
+  );
 
-    File jsonFile = File("$path/$JSON_FILE_NAME");
-    if (!jsonFile.existsSync()) {
-      jsonFile.createSync();
-      writeToJson({
-        "tasks": {
-        },
-        "notes": {
-        }
-      });
-    }
+  void deleteOutdated() {
+
   }
 
   @override
   Widget build(BuildContext context) {
 
-    createApplicationStorageJson();
+    //createApplicationStorageJson();
+    deleteOutdated();
 
     double screenWidth = window.physicalSize.width;
     return MaterialApp(
@@ -48,7 +46,10 @@ class MyApp extends StatelessWidget {
         primaryTextTheme: screenWidth > 500 ? TEXT_THEME_DEFAULT : TEXT_THEME_SMALL,
         fontFamily: "Montserrat"
       ),
-      home: DayPage(DateTime.now()),
+      home: JsonHandlerWidget(
+        jsonHandlers: jsonHandlerCollection,
+        child: DayPage(DateTime.now())
+      ),
     );
   }
 }

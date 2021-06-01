@@ -4,8 +4,6 @@ class WidgetInformation {
 
   static final titleTag = "title";
   static final descriptionTag = "description";
-  static final starttimeTag = "starttime";
-  static final endtimeTag = "endtime";
 
   final String title;
   final String description;

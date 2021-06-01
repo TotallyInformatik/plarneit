@@ -1,27 +1,59 @@
 import 'package:flutter/material.dart';
-import 'package:plarneit/DayPageDate.dart';
+import 'package:plarneit/IndentifierWidget.dart';
 import 'package:plarneit/Controllers.dart';
 import 'package:plarneit/UserMadeWidget/WidgetInformation.dart';
+import 'package:plarneit/JsonHandler.dart';
 import 'package:plarneit/utils/constants.dart';
 
+// TODO: test
 
-abstract class UserMadeWidgetBase extends StatefulWidget {
 
-  final WidgetInformation widgetInformation;
+abstract class UserMadeWidgetBase<T extends WidgetInformation> extends StatefulWidget {
+
+  final T widgetInformation;
   final int id;
   final WidgetContainerStatusController statusController;
   final Function widgetDeletionFunction;
+  final JsonHandler jsonHandler;
+  final DateTime identifier;
 
-  const UserMadeWidgetBase(this.widgetInformation, this.statusController, this.id, this.widgetDeletionFunction, {Key key}) : super(key: key);
+  UserMadeWidgetBase(this.widgetInformation, this.statusController, this.id, this.widgetDeletionFunction, this.jsonHandler, this.identifier, {Key key}) : super(key: key) {
+    initializeJson();
+  }
+
+  Map<String, String> returnJsonBase(WidgetInformation widgetInformation) {
+    return {
+      WidgetInformation.titleTag: this.widgetInformation.title,
+      WidgetInformation.descriptionTag: this.widgetInformation.description
+    };
+  }
+
+  void initializeJson() async {
+    Map currentJsonContent = await this.jsonHandler.readFile();
+    currentJsonContent.putIfAbsent(this.identifier, () => {}); // creates widgets for that day if needed...
+    Map jsonBase = this.returnJsonBase(this.widgetInformation);
+    jsonBase.addAll(this.updateAddition(this.widgetInformation));
+
+    currentJsonContent[this.identifier].putIfAbsent(this.id, () => jsonBase); // this is not static programming (bruh)
+    this.jsonHandler.writeToJson(currentJsonContent);
+  }
+
+  Map updateAddition(T newWidgetInformation);
+
+  void updateJson(T newWidgetInformation) async {
+
+    // TODO: does this work?
+
+    Map toUpdate = this.returnJsonBase(this.widgetInformation);
+    toUpdate.addAll(this.updateAddition(newWidgetInformation));
+
+    Map currentJsonContent = await this.jsonHandler.readFile();
+    currentJsonContent.updateAll((key, value) => toUpdate);
+    this.jsonHandler.writeToJson(currentJsonContent);
+  }
 
   @override
   State<StatefulWidget> createState();
-
-  static bool updateInJson(BuildContext context) {
-    // TODO: implement
-
-    DayPageDate.of(context); // use this
-  }
 }
 
 abstract class UserMadeWidgetBaseState<T extends WidgetInformation> extends State<UserMadeWidgetBase> {
@@ -77,6 +109,12 @@ abstract class UserMadeWidgetBaseState<T extends WidgetInformation> extends Stat
         )
     );
 
+  }
+
+  // should be used in the editing function
+  void updateWidget(T widgetInformation) {
+    this.updateAttributes(widgetInformation);
+    this.widget.updateJson(widgetInformation);
   }
 
   void updateAttributes(T widgetInformation);

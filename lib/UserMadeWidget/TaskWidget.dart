@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:plarneit/Controllers.dart';
+import 'package:plarneit/JsonHandler.dart';
 import 'package:plarneit/UserMadeWidget/UserMadeWidgetBase.dart';
 import 'package:plarneit/UserMadeWidget/WidgetInformation.dart';
 import 'package:plarneit/utils/conversion.dart';
@@ -8,13 +9,29 @@ import 'package:plarneit/utils/conversion.dart';
 import '../Dialogs.dart';
 import '../utils/constants.dart';
 
-class TaskWidget extends UserMadeWidgetBase {
+class TaskWidget extends UserMadeWidgetBase<TaskInformation> {
 
-  const TaskWidget(WidgetInformation widgetInformation, WidgetContainerStatusController statusController, int id, Function widgetDeletionFunction, {Key key})
-      : super(widgetInformation, statusController, id, widgetDeletionFunction, key: key);
+   TaskWidget(TaskInformation widgetInformation, WidgetContainerStatusController statusController, int id, Function widgetDeletionFunction, JsonHandler jsonHandler, DateTime identifier, {Key key})
+      : super(widgetInformation, statusController, id, widgetDeletionFunction, jsonHandler, identifier, key: key);
 
   @override
   State<StatefulWidget> createState() => _TaskWidgetState();
+
+  @override
+  Map jsonAddition() {
+    return {
+      TaskInformation.starttimeTag: this.widgetInformation.starttime,
+      TaskInformation.endtimeTag: this.widgetInformation.endtime
+    };
+  }
+
+  @override
+  Map updateAddition(TaskInformation newWidgetInformation) {
+    return {
+      TaskInformation.starttimeTag: newWidgetInformation.starttime,
+      TaskInformation.endtimeTag: newWidgetInformation.endtime
+    };
+  }
 }
 
 class _TaskWidgetState extends UserMadeWidgetBaseState<TaskInformation> {
@@ -24,7 +41,7 @@ class _TaskWidgetState extends UserMadeWidgetBaseState<TaskInformation> {
   TimeOfDay _endtime;
 
   @override
-  void updateAttributes(TaskInformation widgetInformation) {
+  void updateAttributes (TaskInformation widgetInformation) {
     this.setState(() {
       this._title = widgetInformation.title;
       this._description = widgetInformation.description;
@@ -59,9 +76,10 @@ class _TaskWidgetState extends UserMadeWidgetBaseState<TaskInformation> {
               title: this._title,
               description: this._description,
               starttime: this._starttime,
-              endtime: this._endtime);
+              endtime: this._endtime
+          );
           if (newWidgetInformation != null) {
-            this.updateAttributes(newWidgetInformation);
+            this.updateWidget(newWidgetInformation);
           }
         }
       );
