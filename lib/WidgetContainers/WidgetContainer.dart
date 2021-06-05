@@ -11,9 +11,6 @@ import '../UserInput/Dialogs.dart';
 import '../UserMadeWidget/TaskWidget.dart';
 import '../UserMadeWidget/UserMadeWidgetBase.dart';
 
-// TODO: make super and subclass of WidgetContainers
-// TODO: -> baseBuildStructure takes function as argument to add widgets. Also takes in parameter "widget title" to set words "task" / "notes"
-
 abstract class WidgetContainer extends StatefulWidget {
 
   // Layout attributes
@@ -21,6 +18,7 @@ abstract class WidgetContainer extends StatefulWidget {
   static final double widgetSize = UserMadeWidgetBase.widgetSize;
   static final double widgetPadding = UserMadeWidgetBase.widgetPadding;
   static final double sidePadding = DayPage.listContainerInnerPadding;
+  static final Color widgetContainerBackgroundColor = Color.fromRGBO(240, 240, 240, 0);
 
 
   final Future<Map> startingWidgetsMap;

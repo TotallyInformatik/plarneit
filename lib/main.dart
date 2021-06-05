@@ -103,7 +103,6 @@ class PlarneitApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    _resetJson();
     displayJsonContents();
     deleteOutdated();
 
