@@ -63,6 +63,8 @@ abstract class WidgetContainerState extends State<WidgetContainer> {
 
     // this function works correctly
 
+    int toDeleteIndex;
+
     setState(() {
       List<UserMadeWidgetBase> newWidgets = [];
       newWidgets.addAll(this.widgets);
@@ -70,17 +72,22 @@ abstract class WidgetContainerState extends State<WidgetContainer> {
       UserMadeWidgetBase toDelete;
       for (UserMadeWidgetBase currentWidget in newWidgets) {
 
-        if (currentWidget.id == widget.id) {
-          toDelete = currentWidget;
-          break;
+        if (currentWidget != null) {
+          if (currentWidget.id == widget.id) {
+            toDelete = currentWidget;
+            break;
+          }
         }
 
       }
 
-      newWidgets.removeAt(newWidgets.indexOf(toDelete));
+      toDeleteIndex = newWidgets.indexOf(toDelete);
+      newWidgets[toDeleteIndex] = null;
       this.widgets = newWidgets;
       // this.nextWidgetId--; explicitly DON'T do this
     });
+
+    widget.deleteJson();
 
   }
 
@@ -97,74 +104,69 @@ abstract class WidgetContainerState extends State<WidgetContainer> {
 
   Widget returnStandardBuild(BuildContext context) {
 
-    print("building");
-
     double containerHeight = widgetSize + widgetPadding;
+    List<int> toDeleteIndex = [];
 
-    return Column(
+    Widget result = Column(
         children: [
           Padding(
-            padding: EdgeInsets.only(left: WidgetContainer.sidePadding),
-            child: Row(
-              children: [
-                Text(this.widget.widgetName, style: Theme.of(context).primaryTextTheme.headline2),
-                IconButton(
-                    iconSize: WidgetContainer.iconSize,
-                    icon: Icon(Icons.add_rounded),
-                    tooltip: "Add ${this.widget.widgetName}",
-                    onPressed: () async {
-                      List<UserMadeWidgetBase> newWidgets = [];
-                      newWidgets.addAll(this.widgets);
-                      newWidgets.add(await this.addWidget());
-                      this.widgets = newWidgets;
+              padding: EdgeInsets.only(left: WidgetContainer.sidePadding),
+              child: Row(
+                children: [
+                  Text(this.widget.widgetName, style: Theme.of(context).primaryTextTheme.headline2),
+                  IconButton(
+                      iconSize: WidgetContainer.iconSize,
+                      icon: Icon(Icons.add_rounded),
+                      tooltip: "Add ${this.widget.widgetName}",
+                      onPressed: () async {
+                        List<UserMadeWidgetBase> newWidgets = [];
+                        newWidgets.addAll(this.widgets);
+                        newWidgets.add(await this.addWidget());
+                        this.widgets = newWidgets;
 
-                      setState(() {
-                        this.nextWidgetId++;
-                      });
-                    }
-                ),
-                controllerIconButton(15, ContainerStatus.EDITING, Icons.edit_rounded, Icons.edit_off),
-                controllerIconButton(10, ContainerStatus.DELETING, Icons.delete_rounded, Icons.delete_forever_rounded)
-              ],
-            )
+                        setState(() {
+                          this.nextWidgetId++;
+                        });
+                      }
+                  ),
+                  controllerIconButton(15, ContainerStatus.EDITING, Icons.edit_rounded, Icons.edit_off),
+                  controllerIconButton(10, ContainerStatus.DELETING, Icons.delete_rounded, Icons.delete_forever_rounded)
+                ],
+              )
           ),
           Container(
               constraints: BoxConstraints.expand(
                 height: containerHeight + listContainerInnerPadding * 2,
               ),
               child: Scrollbar(
-                  isAlwaysShown: true,
-                  controller: this.widget._scrollController,
-                  child: Identifier(
-                      identifier: this.widget.date,
-                      child: Row(
-                        children: this.widgets,
-                      )
-                  ),
+                isAlwaysShown: true,
+                controller: this.widget._scrollController,
+                child: Identifier(
+                    identifier: this.widget.date,
+                    child: ListView.builder(
+                      controller: this.widget._scrollController,
+                      padding: EdgeInsets.all(listContainerInnerPadding),
+                      scrollDirection: Axis.horizontal,
+                      itemCount: this.widgets.length,
+                      itemBuilder: (BuildContext context, int index) {
+                        if (this.widgets[index] == null) {
+                          toDeleteIndex.add(index);
+                          return Container();
+                        } else {
+                          return this.widgets[index];
+                        }
+                      },
+                    )
+                ),
               )
           )]
     );
 
-    /*
-    ListView.builder(
-                          controller: this.widget._scrollController,
-                          padding: EdgeInsets.all(listContainerInnerPadding),
-                          scrollDirection: Axis.horizontal,
-                          itemCount: this.getWidgets().toList().length,
-                          itemBuilder: (BuildContext context, int index) {
-                            if (this.getWidgets().toList().length == 0) {
-                              return Container(
-                                  width: widgetSize,
-                                  child: Text("No ${this.widget.widgetName} for now!", style: Theme.of(context).primaryTextTheme.bodyText2)
-                              );
-                            } else {
-                              print("currentWidgets: ${this.getWidgets().toList()[index].id}");
-                              return this.getWidgets().toList()[index];
-                            }
-                          },
-                      )
-     */
+    for (int i in toDeleteIndex) {
+      this.widgets.removeAt(i);
+    }
 
+    return result;
 
   }
 

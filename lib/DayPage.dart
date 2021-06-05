@@ -68,7 +68,7 @@ class DayPage extends StatelessWidget {
                 delegate: SliverChildListDelegate(
                   [
                     TaskContainer(tasks, this.date),
-                    TaskContainer(notes, this.date)
+                    //TaskContainer(notes, this.date)
                   ],
                 ),
               )

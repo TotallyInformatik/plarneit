@@ -55,6 +55,12 @@ abstract class UserMadeWidgetBase<T extends WidgetInformation> extends StatefulW
 
   Map updateAddition(T newWidgetInformation);
 
+  void deleteJson() async {
+    Map<String, dynamic> currentJsonContent = await this.jsonHandler.readFile();
+    currentJsonContent[this.identifier].remove(returnIdString());
+    this.jsonHandler.writeToJson(currentJsonContent);
+  }
+
 
 }
 
