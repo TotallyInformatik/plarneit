@@ -48,34 +48,34 @@ class DayPage extends StatelessWidget {
     Future<Map> tasks = configureTasks(context);
 
     return Scaffold(
-        body: CustomScrollView(
-            slivers: <Widget>[
-              SliverAppBar(
-                backgroundColor: PlarneitApp.TASK_COLOR,
-                pinned: true,
-                expandedHeight: 150.0,
-                collapsedHeight: 80,
-                flexibleSpace: FlexibleSpaceBar(
-                  collapseMode: CollapseMode.pin,
-                  titlePadding: EdgeInsets.only(left: listContainerInnerPadding, bottom: 30),
-                  title: Text(
-                      dateToText(date),
-                      style: Theme.of(context).accentTextTheme.headline1,
-                      textAlign: TextAlign.left
-                  ),
-                  background: Image(image: AssetImage("assets/images/forest1.jpg"), fit: BoxFit.cover),
+      body: CustomScrollView(
+          slivers: <Widget>[
+            SliverAppBar(
+              backgroundColor: PlarneitApp.TASK_COLOR,
+              pinned: true,
+              expandedHeight: 150.0,
+              collapsedHeight: 80,
+              flexibleSpace: FlexibleSpaceBar(
+                collapseMode: CollapseMode.pin,
+                titlePadding: EdgeInsets.only(left: listContainerInnerPadding, bottom: 30),
+                title: Text(
+                    dateToText(date),
+                    style: Theme.of(context).accentTextTheme.headline1,
+                    textAlign: TextAlign.left
                 ),
+                background: Image(image: AssetImage("assets/images/forest1.jpg"), fit: BoxFit.cover),
               ),
-              SliverList(
-                delegate: SliverChildListDelegate(
-                  [
-                    TaskContainer(tasks, this.date),
-                    NoteContainer(notes, this.date)
-                  ],
-                ),
-              )
-            ]
-        )
+            ),
+            SliverList(
+              delegate: SliverChildListDelegate(
+                [
+                  TaskContainer(tasks, this.date),
+                  NoteContainer(notes, this.date)
+                ],
+              ),
+            )
+          ]
+      )
     );
 
   }

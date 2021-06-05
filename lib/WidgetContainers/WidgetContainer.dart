@@ -18,7 +18,7 @@ abstract class WidgetContainer extends StatefulWidget {
   static final double widgetSize = UserMadeWidgetBase.widgetSize;
   static final double widgetPadding = UserMadeWidgetBase.widgetPadding;
   static final double sidePadding = DayPage.listContainerInnerPadding;
-  static final Color widgetContainerBackgroundColor = Color.fromRGBO(240, 240, 240, 0);
+  static final Color widgetContainerBackgroundColor = Color.fromRGBO(240, 240, 240, 1);
 
 
   final Future<Map> startingWidgetsMap;
@@ -101,30 +101,33 @@ abstract class WidgetContainerState extends State<WidgetContainer> {
 
     Widget result = Column(
         children: [
-          Padding(
-              padding: EdgeInsets.only(left: WidgetContainer.sidePadding),
-              child: Row(
-                children: [
-                  Text(this.widget.widgetName, style: Theme.of(context).primaryTextTheme.headline2),
-                  IconButton(
-                      iconSize: WidgetContainer.iconSize,
-                      icon: Icon(Icons.add_rounded),
-                      tooltip: "Add ${this.widget.widgetName}",
-                      onPressed: () async {
-                        List<UserMadeWidgetBase> newWidgets = [];
-                        newWidgets.addAll(this.widgets);
-                        newWidgets.add(await this.addWidget());
-                        this.widgets = newWidgets;
+          Container(
+            color: WidgetContainer.widgetContainerBackgroundColor,
+            child: Padding(
+                padding: EdgeInsets.only(left: WidgetContainer.sidePadding),
+                child: Row(
+                  children: [
+                    Text(this.widget.widgetName, style: Theme.of(context).primaryTextTheme.headline2),
+                    IconButton(
+                        iconSize: WidgetContainer.iconSize,
+                        icon: Icon(Icons.add_rounded),
+                        tooltip: "Add ${this.widget.widgetName}",
+                        onPressed: () async {
+                          List<UserMadeWidgetBase> newWidgets = [];
+                          newWidgets.addAll(this.widgets);
+                          newWidgets.add(await this.addWidget());
+                          this.widgets = newWidgets;
 
-                        setState(() {
-                          this.nextWidgetId++;
-                        });
-                      }
-                  ),
-                  controllerIconButton(15, ContainerStatus.EDITING, Icons.edit_rounded, Icons.edit_off),
-                  controllerIconButton(10, ContainerStatus.DELETING, Icons.delete_rounded, Icons.delete_forever_rounded)
-                ],
-              )
+                          setState(() {
+                            this.nextWidgetId++;
+                          });
+                        }
+                    ),
+                    controllerIconButton(15, ContainerStatus.EDITING, Icons.edit_rounded, Icons.edit_off),
+                    controllerIconButton(10, ContainerStatus.DELETING, Icons.delete_rounded, Icons.delete_forever_rounded)
+                  ],
+                )
+            )
           ),
           Container(
               constraints: BoxConstraints.expand(
