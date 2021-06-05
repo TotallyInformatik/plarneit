@@ -2,9 +2,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:plarneit/Controllers.dart';
-import 'package:plarneit/utils/constants.dart';
+import 'package:plarneit/UserInput/Dialogs.dart';
 
 abstract class PickerBase<T extends PickerController> extends StatefulWidget {
+
+  static final innerPadding = CustomDialogs.innerPadding;
 
   final String title;
   final T controller;

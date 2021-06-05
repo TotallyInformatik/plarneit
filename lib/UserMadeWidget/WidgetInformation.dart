@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-class WidgetInformation {
+abstract class WidgetInformation {
 
   static final titleTag = "title";
   static final descriptionTag = "description";

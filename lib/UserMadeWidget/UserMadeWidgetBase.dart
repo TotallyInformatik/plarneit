@@ -1,17 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:plarneit/IndentifierWidget.dart';
 import 'package:plarneit/Controllers.dart';
+import 'package:plarneit/UserMadeWidget/ID.dart';
 import 'package:plarneit/UserMadeWidget/WidgetInformation.dart';
 import 'package:plarneit/JsonHandler.dart';
-import 'package:plarneit/utils/constants.dart';
-
-// TODO: test
-
+import 'package:plarneit/main.dart';
 
 abstract class UserMadeWidgetBase<T extends WidgetInformation> extends StatefulWidget {
 
+  static final double widgetSize = 200.0;
+  static final double widgetPadding = 10.0;
+  static final double widgetInnerPadding = 30.0;
+  static final double widgetBorderRadius = 30.0;
+
   final T widgetInformation;
-  final int id;
+  final WidgetId id;
   final WidgetContainerStatusController statusController;
   final Function widgetDeletionFunction;
   final JsonHandler jsonHandler;
@@ -20,10 +23,6 @@ abstract class UserMadeWidgetBase<T extends WidgetInformation> extends StatefulW
 
   UserMadeWidgetBase(this.widgetInformation, this.statusController, this.id, this.widgetDeletionFunction, this.jsonHandler, this.identifier, this.widgetIdPrefix, {Key key}) : super(key: key) {
     initializeJson();
-  }
-
-  String returnIdString() {
-    return "${this.widgetIdPrefix}-${this.id}";
   }
 
   Map<String, String> returnJsonBase(WidgetInformation widgetInformation) {
@@ -39,7 +38,7 @@ abstract class UserMadeWidgetBase<T extends WidgetInformation> extends StatefulW
     Map<String, String> jsonBase = this.returnJsonBase(this.widgetInformation);
     jsonBase.addAll(this.updateAddition(this.widgetInformation));
 
-    currentJsonContent[this.identifier].putIfAbsent(returnIdString(), () => jsonBase); // this is not static programming (bruh)
+    currentJsonContent[this.identifier].putIfAbsent(this.id.toString(), () => jsonBase); // this is not static programming (bruh)
     this.jsonHandler.writeToJson(currentJsonContent);
   }
 
@@ -49,7 +48,7 @@ abstract class UserMadeWidgetBase<T extends WidgetInformation> extends StatefulW
     toUpdate.addAll(this.updateAddition(newWidgetInformation));
 
     Map<String, dynamic> currentJsonContent = await this.jsonHandler.readFile();
-    currentJsonContent[this.identifier][this.returnIdString()] = toUpdate;
+    currentJsonContent[this.identifier][this.id.toString()] = toUpdate;
     this.jsonHandler.writeToJson(currentJsonContent);
   }
 
@@ -57,7 +56,7 @@ abstract class UserMadeWidgetBase<T extends WidgetInformation> extends StatefulW
 
   void deleteJson() async {
     Map<String, dynamic> currentJsonContent = await this.jsonHandler.readFile();
-    currentJsonContent[this.identifier].remove(returnIdString());
+    currentJsonContent[this.identifier].remove(this.id.toString());
     this.jsonHandler.writeToJson(currentJsonContent);
   }
 
@@ -81,13 +80,15 @@ abstract class UserMadeWidgetBaseState<T extends WidgetInformation> extends Stat
   Widget returnStandardBuild(
       BuildContext context,
       List<Widget> additionalChildren,
-      {Color noteColor}) {
+      {Color noteColor,
+        bool invertFontColor = false}) {
 
-    double containerSize = widgetSize + widgetPadding;
+    double containerSize = UserMadeWidgetBase.widgetSize + UserMadeWidgetBase.widgetPadding;
 
+    TextTheme theme = invertFontColor ? Theme.of(context).primaryTextTheme : Theme.of(context).accentTextTheme;
     List<Widget> children = [
-      Text(this.title, style: Theme.of(context).accentTextTheme.headline5),
-      Text(this.description, style: Theme.of(context).accentTextTheme.bodyText1)
+      Text(this.title, style: theme.headline5),
+      Text(this.description, style: theme.bodyText1)
     ];
 
     children.addAll(additionalChildren);
@@ -96,18 +97,18 @@ abstract class UserMadeWidgetBaseState<T extends WidgetInformation> extends Stat
         height: containerSize,
         width: containerSize,
         child: Padding(
-            padding: EdgeInsets.all(widgetPadding),
+            padding: EdgeInsets.all(UserMadeWidgetBase.widgetPadding),
             child: Material(
                 child: Ink(
-                    width: widgetSize,
-                    height: widgetSize,
+                    width: UserMadeWidgetBase.widgetSize,
+                    height: UserMadeWidgetBase.widgetSize,
                     decoration: BoxDecoration(
-                      borderRadius: BorderRadius.all(Radius.circular(widgetBorderRadius)),
-                      color: noteColor != null ? noteColor : TASK_COLOR,
+                      borderRadius: BorderRadius.all(Radius.circular(UserMadeWidgetBase.widgetBorderRadius)),
+                      color: noteColor != null ? noteColor : PlarneitApp.TASK_COLOR,
                     ),
                     child: InkWell(
                         splashColor: Colors.white.withOpacity(0.4),
-                        borderRadius: BorderRadius.all(Radius.circular(widgetBorderRadius)),
+                        borderRadius: BorderRadius.all(Radius.circular(UserMadeWidgetBase.widgetBorderRadius)),
                         onTap: () {
                           switch(this.widget.statusController.value) {
                             case ContainerStatus.EDITING:
@@ -121,10 +122,10 @@ abstract class UserMadeWidgetBaseState<T extends WidgetInformation> extends Stat
                           }
                         },
                         child: Container(
-                            width: widgetSize,
-                            height: widgetSize,
+                            width: UserMadeWidgetBase.widgetSize,
+                            height: UserMadeWidgetBase.widgetSize,
                             child: ListView(
-                                padding: EdgeInsets.all(widgetInnerPadding),
+                                padding: EdgeInsets.all(UserMadeWidgetBase.widgetInnerPadding),
                                 scrollDirection: Axis.vertical,
                                 children: children
                             )

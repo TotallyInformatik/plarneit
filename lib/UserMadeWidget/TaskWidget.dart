@@ -2,16 +2,18 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:plarneit/Controllers.dart';
 import 'package:plarneit/JsonHandler.dart';
+import 'package:plarneit/UserMadeWidget/ID.dart';
 import 'package:plarneit/UserMadeWidget/UserMadeWidgetBase.dart';
 import 'package:plarneit/UserMadeWidget/WidgetInformation.dart';
 import 'package:plarneit/utils/conversion.dart';
 
-import '../Dialogs.dart';
-import '../utils/constants.dart';
+import '../UserInput/Dialogs.dart';
 
 class TaskWidget extends UserMadeWidgetBase<TaskInformation> {
 
-   TaskWidget(TaskInformation widgetInformation, WidgetContainerStatusController statusController, int id, Function widgetDeletionFunction, JsonHandler jsonHandler, DateTime identifier, {Key key})
+  static final double timeBottomMargin = 10;
+
+   TaskWidget(TaskInformation widgetInformation, WidgetContainerStatusController statusController, WidgetId id, Function widgetDeletionFunction, JsonHandler jsonHandler, DateTime identifier, {Key key})
       : super(widgetInformation, statusController, id, widgetDeletionFunction, jsonHandler, identifier.xToString(), "task", key: key);
 
   @override
@@ -46,7 +48,7 @@ class _TaskWidgetState extends UserMadeWidgetBaseState<TaskInformation> {
   Widget build(BuildContext context) {
       return this.returnStandardBuild(context, [
           Padding(
-              padding: EdgeInsets.only(bottom: timeBottomMargin),
+              padding: EdgeInsets.only(bottom: TaskWidget.timeBottomMargin),
               child: Text(
                   "${this._starttime.xToString()} - ${this._endtime.xToString()}",
                   style: Theme.of(context).accentTextTheme.bodyText1))
@@ -57,7 +59,7 @@ class _TaskWidgetState extends UserMadeWidgetBaseState<TaskInformation> {
   @override
   void editingFunction() async {
 
-    TaskInformation newWidgetInformation = await showTaskEditDialog(
+    TaskInformation newWidgetInformation = await CustomDialogs.showTaskEditDialog(
         context,
         title: this.title,
         description: this.description,

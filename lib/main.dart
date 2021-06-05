@@ -2,19 +2,79 @@ import 'dart:io';
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
-import 'package:plarneit/UrgencyTypes.dart';
 import 'package:plarneit/JsonHandler.dart';
-import 'package:plarneit/utils/constants.dart';
 
 import 'DayPage.dart';
 
 void main() {
 
-  runApp(MyApp());
+  runApp(PlarneitApp());
 }
 
-class MyApp extends StatelessWidget {
+class PlarneitApp extends StatelessWidget {
   // This widget is the root of your application.
+
+  static final COLOR_WHITE = Color.fromRGBO(255, 255, 255, 1);
+  static final COLOR_WHITESMOKE = Color.fromRGBO(245, 245, 245, 1);
+  static final COLOR_INDIAN_RED = Color.fromRGBO(186, 71, 63, 1);
+  static final COLOR_INDIAN_RED_LIGHT = Color.fromRGBO(212, 97, 97, 1);
+  static final FONT_COLOR = Color.fromRGBO(10, 10, 10, 1);
+  static final WHITE_FONT_COLOR = Colors.white;
+  static final TASK_COLOR = Color.fromRGBO(40, 40, 40, 1);
+  static final STANDARD_NOTE_COLOR = Color.fromRGBO(245, 235, 125, 1);
+
+
+  static final TextTheme TEXT_THEME_DEFAULT = TextTheme(
+      headline1: TextStyle(color: FONT_COLOR, fontWeight: FontWeight.w700, fontSize: 26),
+      headline2: TextStyle(color: FONT_COLOR, fontWeight: FontWeight.w700, fontSize: 22),
+      headline3: TextStyle(color: FONT_COLOR, fontWeight: FontWeight.w700, fontSize: 20),
+      headline4: TextStyle(color: FONT_COLOR, fontWeight: FontWeight.w700, fontSize: 16),
+      headline5: TextStyle(color: FONT_COLOR, fontWeight: FontWeight.w700, fontSize: 14),
+      headline6: TextStyle(color: FONT_COLOR, fontWeight: FontWeight.w700, fontSize: 12),
+      bodyText1: TextStyle(color: FONT_COLOR, fontWeight: FontWeight.w500, fontSize: 14, height: 1.5),
+      bodyText2: TextStyle(color: FONT_COLOR, fontWeight: FontWeight.w500, fontSize: 16, height: 1.5), // change this if needed
+      subtitle1: TextStyle(color: FONT_COLOR, fontWeight: FontWeight.w400, fontSize: 12),
+      subtitle2: TextStyle(color: FONT_COLOR, fontWeight: FontWeight.w400, fontSize: 14) // change if needed
+  );
+
+  static final TextTheme TEXT_THEME_SMALL = TextTheme( // for smaller devices
+      headline1: TextStyle(color: FONT_COLOR, fontWeight: FontWeight.w700, fontSize: 22),
+      headline2: TextStyle(color: FONT_COLOR, fontWeight: FontWeight.w700, fontSize: 20),
+      headline3: TextStyle(color: FONT_COLOR, fontWeight: FontWeight.w700, fontSize: 18),
+      headline4: TextStyle(color: FONT_COLOR, fontWeight: FontWeight.w700, fontSize: 14),
+      headline5: TextStyle(color: FONT_COLOR, fontWeight: FontWeight.w700, fontSize: 12),
+      headline6: TextStyle(color: FONT_COLOR, fontWeight: FontWeight.w700, fontSize: 10),
+      bodyText1: TextStyle(color: FONT_COLOR, fontWeight: FontWeight.w500, fontSize: 12, height: 1.5),
+      bodyText2: TextStyle(color: FONT_COLOR, fontWeight: FontWeight.w500, fontSize: 14, height: 1.5), // change this if needed
+      subtitle1: TextStyle(color: FONT_COLOR, fontWeight: FontWeight.w400, fontSize: 10),
+      subtitle2: TextStyle(color: FONT_COLOR, fontWeight: FontWeight.w400, fontSize: 12) // change if needed
+  );
+
+  static final TextTheme TEXT_THEME_DEFAULT_WHITE = TextTheme(
+      headline1: TextStyle(color: WHITE_FONT_COLOR, fontWeight: FontWeight.w700, fontSize: 26),
+      headline2: TextStyle(color: WHITE_FONT_COLOR, fontWeight: FontWeight.w700, fontSize: 22),
+      headline3: TextStyle(color: WHITE_FONT_COLOR, fontWeight: FontWeight.w700, fontSize: 20),
+      headline4: TextStyle(color: WHITE_FONT_COLOR, fontWeight: FontWeight.w700, fontSize: 16),
+      headline5: TextStyle(color: WHITE_FONT_COLOR, fontWeight: FontWeight.w700, fontSize: 14),
+      headline6: TextStyle(color: WHITE_FONT_COLOR, fontWeight: FontWeight.w700, fontSize: 12),
+      bodyText1: TextStyle(color: WHITE_FONT_COLOR, fontWeight: FontWeight.w500, fontSize: 14, height: 1.5),
+      bodyText2: TextStyle(color: WHITE_FONT_COLOR, fontWeight: FontWeight.w500, fontSize: 14, height: 1.5), // change this if needed
+      subtitle1: TextStyle(color: WHITE_FONT_COLOR, fontWeight: FontWeight.w400, fontSize: 12),
+      subtitle2: TextStyle(color: WHITE_FONT_COLOR, fontWeight: FontWeight.w400, fontSize: 12) // change if needed
+  );
+
+  static final TextTheme TEXT_THEME_SMALL_WHITE = TextTheme(
+      headline1: TextStyle(color: WHITE_FONT_COLOR, fontWeight: FontWeight.w700, fontSize: 22),
+      headline2: TextStyle(color: WHITE_FONT_COLOR, fontWeight: FontWeight.w700, fontSize: 20),
+      headline3: TextStyle(color: WHITE_FONT_COLOR, fontWeight: FontWeight.w700, fontSize: 18),
+      headline4: TextStyle(color: WHITE_FONT_COLOR, fontWeight: FontWeight.w700, fontSize: 14),
+      headline5: TextStyle(color: WHITE_FONT_COLOR, fontWeight: FontWeight.w700, fontSize: 12),
+      headline6: TextStyle(color: WHITE_FONT_COLOR, fontWeight: FontWeight.w700, fontSize: 10),
+      bodyText1: TextStyle(color: WHITE_FONT_COLOR, fontWeight: FontWeight.w500, fontSize: 12, height: 1.5),
+      bodyText2: TextStyle(color: WHITE_FONT_COLOR, fontWeight: FontWeight.w500, fontSize: 14, height: 1.5), // change this if needed
+      subtitle1: TextStyle(color: WHITE_FONT_COLOR, fontWeight: FontWeight.w400, fontSize: 10),
+      subtitle2: TextStyle(color: WHITE_FONT_COLOR, fontWeight: FontWeight.w400, fontSize: 12) // change if needed
+  );
 
   static final String taskStorage = "tasks.json";
   static final String noteStorage = "notes.json";
@@ -43,6 +103,7 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    _resetJson();
     displayJsonContents();
     deleteOutdated();
 

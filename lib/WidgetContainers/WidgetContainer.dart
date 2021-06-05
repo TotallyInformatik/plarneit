@@ -1,17 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:plarneit/DayPage.dart';
 import 'package:plarneit/IndentifierWidget.dart';
 import 'package:plarneit/Controllers.dart';
 import 'package:plarneit/JsonHandler.dart';
-import 'package:plarneit/UrgencyTypes.dart';
 import 'package:plarneit/UserMadeWidget/NoteWidget.dart';
 import 'package:plarneit/UserMadeWidget/WidgetInformation.dart';
 import 'package:plarneit/utils/conversion.dart';
-import 'package:plarneit/utils/spacing.dart';
-import '../Dialogs.dart';
+import '../UserInput/Dialogs.dart';
 import '../UserMadeWidget/TaskWidget.dart';
 import '../UserMadeWidget/UserMadeWidgetBase.dart';
-import '../utils/constants.dart';
 
 // TODO: make super and subclass of WidgetContainers
 // TODO: -> baseBuildStructure takes function as argument to add widgets. Also takes in parameter "widget title" to set words "task" / "notes"
@@ -20,10 +18,12 @@ abstract class WidgetContainer extends StatefulWidget {
 
   // Layout attributes
   static final double iconSize = 40;
-  static final double sidePadding = listContainerInnerPadding;
+  static final double widgetSize = UserMadeWidgetBase.widgetSize;
+  static final double widgetPadding = UserMadeWidgetBase.widgetPadding;
+  static final double sidePadding = DayPage.listContainerInnerPadding;
 
 
-  final Future<List> startingWidgetsMap;
+  final Future<Map> startingWidgetsMap;
   final DateTime date; // should always be set to startingWidgets.length
   final String widgetName;
 
@@ -91,12 +91,6 @@ abstract class WidgetContainerState extends State<WidgetContainer> {
 
   }
 
-  Iterable<UserMadeWidgetBase> getWidgets() sync* {
-    for (UserMadeWidgetBase widget in this.widgets) {
-      yield widget;
-    }
-  }
-
   void initializeWidgets(BuildContext context);
 
   /// should always be async
@@ -104,7 +98,7 @@ abstract class WidgetContainerState extends State<WidgetContainer> {
 
   Widget returnStandardBuild(BuildContext context) {
 
-    double containerHeight = widgetSize + widgetPadding;
+    double containerHeight = WidgetContainer.widgetSize + WidgetContainer.widgetPadding;
     List<int> toDeleteIndex = [];
 
     Widget result = Column(
@@ -136,7 +130,7 @@ abstract class WidgetContainerState extends State<WidgetContainer> {
           ),
           Container(
               constraints: BoxConstraints.expand(
-                height: containerHeight + listContainerInnerPadding * 2,
+                height: containerHeight + WidgetContainer.sidePadding * 2,
               ),
               child: Scrollbar(
                 isAlwaysShown: true,
@@ -145,7 +139,7 @@ abstract class WidgetContainerState extends State<WidgetContainer> {
                     identifier: this.widget.date,
                     child: ListView.builder(
                       controller: this.widget._scrollController,
-                      padding: EdgeInsets.all(listContainerInnerPadding),
+                      padding: EdgeInsets.all(WidgetContainer.sidePadding),
                       scrollDirection: Axis.horizontal,
                       itemCount: this.widgets.length,
                       itemBuilder: (BuildContext context, int index) {

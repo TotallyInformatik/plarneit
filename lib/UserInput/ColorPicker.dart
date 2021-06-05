@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-import 'package:plarneit/Picker/PickerBase.dart';
+import 'package:plarneit/UserInput/PickerBase.dart';
 import 'package:plarneit/utils/conversion.dart';
-import 'package:plarneit/utils/spacing.dart';
 import '../Controllers.dart';
-import '../utils/constants.dart';
 
 
 class ColorWidget extends StatefulWidget {

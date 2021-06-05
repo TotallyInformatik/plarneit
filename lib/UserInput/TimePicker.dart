@@ -1,12 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-import 'package:plarneit/Picker/PickerBase.dart';
+import 'package:plarneit/UserInput/PickerBase.dart';
+import 'package:plarneit/main.dart';
 import 'package:plarneit/utils/conversion.dart';
-import 'package:plarneit/utils/spacing.dart';
 import '../Controllers.dart';
-import '../utils/constants.dart';
 
-import '../UrgencyTypes.dart';
 
 class TimePicker extends PickerBase<TimePickerController> {
 
@@ -45,14 +43,14 @@ class _TimePickerState extends State<TimePicker> {
                           data: ThemeData.light().copyWith(
                             colorScheme: ColorScheme.light(
                               // change the border color
-                              primary: FONT_COLOR,
+                              primary: PlarneitApp.FONT_COLOR,
                               // change the text color
-                              onSurface: FONT_COLOR,
+                              onSurface: PlarneitApp.FONT_COLOR,
                             ),
                             // button colors
                             buttonTheme: ButtonThemeData(
                               colorScheme: ColorScheme.light(
-                                primary: FONT_COLOR,
+                                primary: PlarneitApp.FONT_COLOR,
                               ),
                             ),
                           ),

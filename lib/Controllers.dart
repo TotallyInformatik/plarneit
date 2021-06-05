@@ -1,8 +1,6 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
-import 'package:plarneit/Picker/ColorPicker.dart';
-import 'package:plarneit/utils/constants.dart';
 
 
 class PickerController<T> {

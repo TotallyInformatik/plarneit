@@ -5,12 +5,12 @@ import 'package:plarneit/JsonHandler.dart';
 import 'package:plarneit/UserMadeWidget/UserMadeWidgetBase.dart';
 import 'package:plarneit/UserMadeWidget/WidgetInformation.dart';
 import 'package:plarneit/utils/conversion.dart';
-import '../Dialogs.dart';
-import '../utils/constants.dart';
+import '../UserInput/Dialogs.dart';
+import 'ID.dart';
 
 class NoteWidget extends UserMadeWidgetBase<NotesInformation> {
 
-  NoteWidget(WidgetInformation widgetInformation, WidgetContainerStatusController statusController, int id, Function widgetDeletionFunction, JsonHandler jsonHandler, DateTime identifier, {Key key})
+  NoteWidget(WidgetInformation widgetInformation, WidgetContainerStatusController statusController, WidgetId id, Function widgetDeletionFunction, JsonHandler jsonHandler, DateTime identifier, {Key key})
       : super(widgetInformation, statusController, id, widgetDeletionFunction, jsonHandler, identifier.xToString(), "note", key: key);
 
   @override
@@ -43,13 +43,13 @@ class NoteWidgetState extends UserMadeWidgetBaseState<NotesInformation> {
   Widget build(BuildContext context) {
 
     return this.returnStandardBuild(context, [],
-        noteColor: this._color
+        noteColor: this._color, invertFontColor: true
     );
   }
 
   @override
   void editingFunction() async {
-    NotesInformation newWidgetInformation = await showNoteEditDialog(context, title: this.title, description: this.description, color: this._color);
+    NotesInformation newWidgetInformation = await CustomDialogs.showNoteEditDialog(context, title: this.title, description: this.description, color: this._color);
     if (newWidgetInformation != null) {
       this.updateWidget(newWidgetInformation);
     }
