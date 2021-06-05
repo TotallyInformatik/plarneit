@@ -69,7 +69,7 @@ class _TimePickerState extends State<TimePicker> {
                 }
               },
               child: Container(
-                  child: Text(timeToString(this._selectedTime), style: Theme.of(context).primaryTextTheme.bodyText1)
+                  child: Text(this._selectedTime.xToString(), style: Theme.of(context).primaryTextTheme.bodyText1)
               )
           )
         ]

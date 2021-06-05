@@ -14,8 +14,8 @@ class WidgetInformation {
 
 class TaskInformation extends WidgetInformation {
 
-  static final starttimeTag = "starttime";
-  static final endtimeTag = "endtime";
+  static final starttimeTag = "startTime";
+  static final endtimeTag = "endTime";
 
   final TimeOfDay starttime;
   final TimeOfDay endtime;

@@ -25,14 +25,25 @@ class MyApp extends StatelessWidget {
       JsonHandler(longtermGoalsStorage)
   );
 
+  void _resetJson() {
+    jsonHandlerCollection.noteHandler.writeToJson({});
+    jsonHandlerCollection.taskHandler.writeToJson({});
+    jsonHandlerCollection.longtermGoalsHandler.writeToJson({});
+  }
+
   void deleteOutdated() {
 
   }
 
+  void displayJsonContents() async {
+    print(await jsonHandlerCollection.taskHandler.readFile());
+    print(await jsonHandlerCollection.noteHandler.readFile());
+    print(await jsonHandlerCollection.longtermGoalsHandler.readFile());
+  }
+
   @override
   Widget build(BuildContext context) {
-
-    //createApplicationStorageJson();
+    displayJsonContents();
     deleteOutdated();
 
     double screenWidth = window.physicalSize.width;

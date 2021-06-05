@@ -1,23 +1,63 @@
 import 'package:flutter/material.dart';
 
-String enumToString(Object o) => o.toString().split('.').last;
+extension timeX on TimeOfDay {
+  String xToString() {
+    return "${_convertToString(this.hour)}:${_convertToString(this.minute)}";
+  }
 
-T enumFromString<T>(String key, List<T> values) =>
-    values.firstWhere((v) => key == enumToString(v), orElse: () => null);
+  static String _convertToString(int time) { // only helper function!!!
+    String asString = time.toString();
+    return asString.length > 1 ? asString : "0" + asString;
+  }
 
+  static TimeOfDay fromString(String timeString) {
+    List<String> time = timeString.split(":");
+    return TimeOfDay(hour: int.parse(time[0]), minute: int.parse(time[0]));
+  }
 
-String timeToString(TimeOfDay time) {
-  return "${convertToString(time.hour)}:${convertToString(time.minute)}";
 }
 
-String convertToString(int time) {
-  String asString = time.toString();
-  return asString.length > 1 ? asString : "0" + asString;
+extension colorX on Color {
+  String xToString() {
+    return "#${this.red.toRadixString(16).padLeft(2, "0")}${this.green.toRadixString(16).padLeft(2, "0")}${this.blue.toRadixString(16).padLeft(2, "0")}";
+  }
+
+  static Color fromString(String hexString) {
+    String withoutTag = hexString.substring(1);
+    int red = int.parse("0x${withoutTag.substring(0, 2)}");
+    int green = int.parse("0x${withoutTag.substring(2, 4)}");
+    int blue = int.parse("0x${withoutTag.substring(4)}");
+    return Color.fromARGB(0xFF, red, green, blue);
+  }
 }
 
-TimeOfDay timeFromString(String timeString) {
-  List<String> time = timeString.split(":");
-  return TimeOfDay(hour: int.parse(time[0]), minute: int.parse(time[0]));
+extension dateX on DateTime {
+  String xToString({bool yearOnly = false}) {
+    if (!yearOnly) {
+      return "${this.day}-${this.month}-${this.year}";
+    } else {
+      return "${this.year}";
+    }
+  }
+
+  DateTime fromString(String dateString) {
+    throw UnimplementedError();
+  }
+
+}
+
+class Conversion {
+
+  // enum conversion
+
+  static String enumToString(Object o) => o.toString().split('.').last;
+
+  static T enumFromString<T>(String key, List<T> values) =>
+      values.firstWhere((v) => key == enumToString(v), orElse: () => null);
+
+
+  // color conversion
+
 }
 
 

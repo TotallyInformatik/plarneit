@@ -56,13 +56,13 @@ class JsonHandler {
     return File("$path/${this.fileName}");
   }
 
-  Future<Map> readFile() async {
+  Future<Map<String, dynamic>> readFile() async {
     final file = await localFile;
     final fileExists = await file.exists();
     if (fileExists) {
-      print("file exists");
-      print("file contents:" + file.readAsStringSync());
       return jsonDecode(file.readAsStringSync());
+    } else {
+      print("file does not exist!!!");
     }
   }
 
@@ -71,6 +71,9 @@ class JsonHandler {
     final fileExists = file.exists();
     if (await fileExists) {
       file.writeAsStringSync(jsonEncode(jsonContent));
+      print(await readFile());
+    } else {
+      print("file does not exist!!!");
     }
   }
 

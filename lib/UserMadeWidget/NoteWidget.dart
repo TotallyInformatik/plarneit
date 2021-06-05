@@ -11,55 +11,48 @@ import '../utils/constants.dart';
 class NoteWidget extends UserMadeWidgetBase<NotesInformation> {
 
   NoteWidget(WidgetInformation widgetInformation, WidgetContainerStatusController statusController, int id, Function widgetDeletionFunction, JsonHandler jsonHandler, DateTime identifier, {Key key})
-      : super(widgetInformation, statusController, id, widgetDeletionFunction, jsonHandler, identifier, key: key);
+      : super(widgetInformation, statusController, id, widgetDeletionFunction, jsonHandler, identifier.xToString(), "note", key: key);
 
   @override
   State<StatefulWidget> createState() =>
-      _NoteWidgetState();
+      NoteWidgetState();
 
   @override
-  Map updateAddition(NotesInformation newWidgetInformation) {
-    return {
-      NotesInformation.colorTag: newWidgetInformation.color
-    };
+  Map<String, String> updateAddition(NotesInformation newWidgetInformation) {
+    Map<String, String> result = {};
+    result[NotesInformation.colorTag] = newWidgetInformation.color.xToString();
+
+    return result;
   }
 
 }
 
-class _NoteWidgetState extends UserMadeWidgetBaseState<NotesInformation> {
+class NoteWidgetState extends UserMadeWidgetBaseState<NotesInformation> {
 
-  String _title;
-  String _description;
   Color _color;
 
   void updateAttributes(NotesInformation widgetInformation) {
     this.setState(() {
-      this._title = widgetInformation.title;
-      this._description = widgetInformation.description;
+      this.title = widgetInformation.title;
+      this.description = widgetInformation.description;
       this._color = widgetInformation.color;
     });
   }
 
   @override
-  void initState() {
-    super.initState();
-    this.updateAttributes(this.widget.widgetInformation);
+  Widget build(BuildContext context) {
+
+    return this.returnStandardBuild(context, [],
+        noteColor: this._color
+    );
   }
 
   @override
-  Widget build(BuildContext context) {
-
-    return this.returnStandardBuild(context, [
-          Text(this._title, style: Theme.of(context).accentTextTheme.headline5),
-          Text(this._description, style: Theme.of(context).accentTextTheme.bodyText1)
-        ], () async {
-            NotesInformation newWidgetInformation = await showNoteEditDialog(context, title: this._title, description: this._description, color: this._color);
-            if (newWidgetInformation != null) {
-              this.updateWidget(newWidgetInformation);
-            }
-          },
-        noteColor: this._color
-    );
+  void editingFunction() async {
+    NotesInformation newWidgetInformation = await showNoteEditDialog(context, title: this.title, description: this.description, color: this._color);
+    if (newWidgetInformation != null) {
+      this.updateWidget(newWidgetInformation);
+    }
   }
 
 }

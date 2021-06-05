@@ -15,55 +15,76 @@ abstract class UserMadeWidgetBase<T extends WidgetInformation> extends StatefulW
   final WidgetContainerStatusController statusController;
   final Function widgetDeletionFunction;
   final JsonHandler jsonHandler;
-  final DateTime identifier;
+  final String identifier;
+  final String widgetIdPrefix;
 
-  UserMadeWidgetBase(this.widgetInformation, this.statusController, this.id, this.widgetDeletionFunction, this.jsonHandler, this.identifier, {Key key}) : super(key: key) {
+  UserMadeWidgetBase(this.widgetInformation, this.statusController, this.id, this.widgetDeletionFunction, this.jsonHandler, this.identifier, this.widgetIdPrefix, {Key key}) : super(key: key) {
     initializeJson();
   }
 
+  String returnIdString() {
+    return "${this.widgetIdPrefix}-${this.id}";
+  }
+
   Map<String, String> returnJsonBase(WidgetInformation widgetInformation) {
-    return {
-      WidgetInformation.titleTag: this.widgetInformation.title,
-      WidgetInformation.descriptionTag: this.widgetInformation.description
-    };
+    Map<String, String> result = {};
+    result[WidgetInformation.titleTag] = widgetInformation.title;
+    result[WidgetInformation.descriptionTag] = widgetInformation.description;
+    return result;
   }
 
   void initializeJson() async {
-    Map currentJsonContent = await this.jsonHandler.readFile();
-    currentJsonContent.putIfAbsent(this.identifier, () => {}); // creates widgets for that day if needed...
-    Map jsonBase = this.returnJsonBase(this.widgetInformation);
+    Map<String, dynamic> currentJsonContent = await this.jsonHandler.readFile();
+    currentJsonContent.putIfAbsent(this.identifier, () => Map<String, dynamic>()); // creates widgets for that day if needed...
+    Map<String, String> jsonBase = this.returnJsonBase(this.widgetInformation);
     jsonBase.addAll(this.updateAddition(this.widgetInformation));
 
-    currentJsonContent[this.identifier].putIfAbsent(this.id, () => jsonBase); // this is not static programming (bruh)
+    currentJsonContent[this.identifier].putIfAbsent(returnIdString(), () => jsonBase); // this is not static programming (bruh)
+    this.jsonHandler.writeToJson(currentJsonContent);
+  }
+
+  void updateJson(T newWidgetInformation) async {
+
+    Map<String, dynamic> toUpdate = this.returnJsonBase(newWidgetInformation);
+    toUpdate.addAll(this.updateAddition(newWidgetInformation));
+
+    Map<String, dynamic> currentJsonContent = await this.jsonHandler.readFile();
+    currentJsonContent[this.identifier][this.returnIdString()] = toUpdate;
     this.jsonHandler.writeToJson(currentJsonContent);
   }
 
   Map updateAddition(T newWidgetInformation);
 
-  void updateJson(T newWidgetInformation) async {
 
-    // TODO: does this work?
-
-    Map toUpdate = this.returnJsonBase(this.widgetInformation);
-    toUpdate.addAll(this.updateAddition(newWidgetInformation));
-
-    Map currentJsonContent = await this.jsonHandler.readFile();
-    currentJsonContent.updateAll((key, value) => toUpdate);
-    this.jsonHandler.writeToJson(currentJsonContent);
-  }
-
-  @override
-  State<StatefulWidget> createState();
 }
 
 abstract class UserMadeWidgetBaseState<T extends WidgetInformation> extends State<UserMadeWidgetBase> {
 
+  String title;
+  String description;
+
+  @override
+  void initState() {
+    super.initState();
+    this.updateAttributes(this.widget.widgetInformation);
+  }
+
+  /// should always be async
+  void editingFunction();
+
   Widget returnStandardBuild(
       BuildContext context,
-      List<Widget> children,
-      Function editingFunction,
+      List<Widget> additionalChildren,
       {Color noteColor}) {
+
     double containerSize = widgetSize + widgetPadding;
+
+    List<Widget> children = [
+      Text(this.title, style: Theme.of(context).accentTextTheme.headline5),
+      Text(this.description, style: Theme.of(context).accentTextTheme.bodyText1)
+    ];
+
+    children.addAll(additionalChildren);
 
     return Container(
         height: containerSize,
@@ -84,7 +105,7 @@ abstract class UserMadeWidgetBaseState<T extends WidgetInformation> extends Stat
                         onTap: () {
                           switch(this.widget.statusController.value) {
                             case ContainerStatus.EDITING:
-                              editingFunction();
+                              this.editingFunction();
                               break;
                             case ContainerStatus.DELETING:
                               this.widget.widgetDeletionFunction(this.widget);
