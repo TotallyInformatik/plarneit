@@ -104,7 +104,7 @@ abstract class UserMadeWidgetBaseState<T extends WidgetInformation> extends Stat
                     height: UserMadeWidgetBase.widgetSize,
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.all(Radius.circular(UserMadeWidgetBase.widgetBorderRadius)),
-                      color: noteColor != null ? noteColor : PlarneitApp.TASK_COLOR,
+                      color: noteColor != null ? noteColor : PlarneitApp.DARK_GRAY,
                     ),
                     child: InkWell(
                         splashColor: Colors.white.withOpacity(0.4),

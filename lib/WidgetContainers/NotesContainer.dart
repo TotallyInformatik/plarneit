@@ -32,18 +32,25 @@ class _NoteContainerState extends WidgetContainerState {
           highestIdInt = newId.number;
         }
 
-        this.widgets.add(NoteWidget(
-            NotesInformation(
-                widget.value[WidgetInformation.titleTag],
-                widget.value[WidgetInformation.descriptionTag],
-                colorX.fromString(widget.value[NotesInformation.colorTag])
-            ),
-            this.statusController,
-            newId, // increments id count
-            this.widgetDeletionFunction,
-            JsonHandlerWidget.of(context).noteHandler,
-            this.widget.date
-        ));
+        this.setState(() {
+          List<UserMadeWidgetBase> newWidgets = this.widgets;
+
+          newWidgets.add(NoteWidget(
+              NotesInformation(
+                  widget.value[WidgetInformation.titleTag],
+                  widget.value[WidgetInformation.descriptionTag],
+                  colorX.fromString(widget.value[NotesInformation.colorTag])
+              ),
+              this.statusController,
+              newId, // increments id count
+              this.widgetDeletionFunction,
+              JsonHandlerWidget.of(context).noteHandler,
+              this.widget.date
+          ));
+
+          this.widgets = newWidgets;
+
+        });
       }
     }
     this.nextWidgetId = highestIdInt + 1;
@@ -57,7 +64,9 @@ class _NoteContainerState extends WidgetContainerState {
   @override
   Future<UserMadeWidgetBase<WidgetInformation>> addWidget() async {
     NotesInformation widgetInformation = await CustomDialogs.showNoteEditDialog(context);
-    return NoteWidget(widgetInformation, this.statusController, NoteId(this.nextWidgetId), this.widgetDeletionFunction, JsonHandlerWidget.of(context).noteHandler, this.widget.date);
+    if (widgetInformation != null) {
+      return NoteWidget(widgetInformation, this.statusController, NoteId(this.nextWidgetId), this.widgetDeletionFunction, JsonHandlerWidget.of(context).noteHandler, this.widget.date);
+    }
   }
 
 }

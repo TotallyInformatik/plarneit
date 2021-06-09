@@ -34,19 +34,24 @@ class _TaskContainerState extends WidgetContainerState {
           highestIdInt = newId.number;
         }
 
-        this.widgets.add(TaskWidget(
-            TaskInformation(
-                widget.value[WidgetInformation.titleTag],
-                widget.value[WidgetInformation.descriptionTag],
-                timeX.fromString(widget.value[TaskInformation.starttimeTag]),
-                timeX.fromString(widget.value[TaskInformation.endtimeTag])
-            ),
-            this.statusController,
-            newId, // increments id count
-            this.widgetDeletionFunction,
-            JsonHandlerWidget.of(context).taskHandler,
-            this.widget.date
-        ));
+        this.setState(() {
+          List<UserMadeWidgetBase> newWidgets = this.widgets;
+          newWidgets.add(TaskWidget(
+              TaskInformation(
+                  widget.value[WidgetInformation.titleTag],
+                  widget.value[WidgetInformation.descriptionTag],
+                  timeX.fromString(widget.value[TaskInformation.starttimeTag]),
+                  timeX.fromString(widget.value[TaskInformation.endtimeTag])
+              ),
+              this.statusController,
+              newId, // increments id count
+              this.widgetDeletionFunction,
+              JsonHandlerWidget.of(context).taskHandler,
+              this.widget.date
+          ));
+
+          this.widgets = newWidgets;
+        });
       }
     }
     this.nextWidgetId = highestIdInt + 1;
@@ -60,7 +65,9 @@ class _TaskContainerState extends WidgetContainerState {
   @override
   Future<UserMadeWidgetBase<WidgetInformation>> addWidget() async {
     TaskInformation widgetInformation = await CustomDialogs.showTaskEditDialog(context);
-    return TaskWidget(widgetInformation, this.statusController, TaskId(this.nextWidgetId), this.widgetDeletionFunction, JsonHandlerWidget.of(context).taskHandler, this.widget.date);
+    if (widgetInformation != null) {
+      return TaskWidget(widgetInformation, this.statusController, TaskId(this.nextWidgetId), this.widgetDeletionFunction, JsonHandlerWidget.of(context).taskHandler, this.widget.date);
+    }
   }
 
 }
