@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:plarneit/JsonHandler.dart';
+import 'package:plarneit/Pages/ContainerPages/ContainerPage.dart';
 import 'package:plarneit/Pages/ContainerPages/DayPage.dart';
+import 'package:plarneit/Pages/ContainerPages/LongtermPage.dart';
 import 'package:plarneit/Pages/ContainerPages/Navigationbar.dart';
 import 'package:plarneit/main.dart';
 
@@ -28,6 +30,18 @@ class HomePage extends StatelessWidget {
              */
           )
       );
+  }
+
+  void openPlanningPage(BuildContext context, ContainerPage page) {
+    Navigator.push(
+        context,
+        MaterialPageRoute(
+            builder: (context) => JsonHandlerWidget(
+                jsonHandlers: PlarneitApp.jsonHandlerCollection,
+                child: page
+            )
+        )
+    );
   }
 
   @override
@@ -61,18 +75,8 @@ class HomePage extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [ // TODO: remove buttons that will have to stay unimplemented due to deadline (school project)
-                      homePageButton(context, Icons.assignment_rounded, "Shortterm Planning", () {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => JsonHandlerWidget(
-                                  jsonHandlers: PlarneitApp.jsonHandlerCollection,
-                                  child: DayPage(DateTime.now(), PlarneitApp.jsonHandlerCollection, context)
-                                )
-                            )
-                        );
-                      }),
-                      homePageButton(context, Icons.assignment_rounded, "Longterm Planning", () {}),
+                      homePageButton(context, Icons.assignment_rounded, "Shortterm Planning", () => openPlanningPage(context, DayPage(DateTime.now(), PlarneitApp.jsonHandlerCollection, context))),
+                      homePageButton(context, Icons.assignment_rounded, "Longterm Planning", () => openPlanningPage(context, LongtermPage(DateTime.now(), PlarneitApp.jsonHandlerCollection, context))),
                       homePageButton(context, Icons.settings, "Settings", () {}),
                     ],
                   )

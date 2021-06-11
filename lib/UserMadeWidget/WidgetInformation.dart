@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:plarneit/WidgetContainers/LongtermNotesContainer.dart';
 
 abstract class WidgetInformation {
 
-  static final titleTag = "title";
-  static final descriptionTag = "description";
+  static final String titleTag = "title";
+  static final String descriptionTag = "description";
 
   final String title;
   final String description;
@@ -14,8 +15,8 @@ abstract class WidgetInformation {
 
 class TaskInformation extends WidgetInformation {
 
-  static final starttimeTag = "startTime";
-  static final endtimeTag = "endTime";
+  static final String starttimeTag = "startTime";
+  static final String endtimeTag = "endTime";
 
   final TimeOfDay starttime;
   final TimeOfDay endtime;
@@ -26,11 +27,21 @@ class TaskInformation extends WidgetInformation {
 
 class NotesInformation extends WidgetInformation {
 
-  static final colorTag = "color";
+  static final String colorTag = "color";
 
   final Color color;
 
   NotesInformation(String title, String description, this.color) : super(title, description);
 
+
+}
+
+class LongtermNotesInformation extends NotesInformation {
+
+  static final String termTag = "term";
+
+  final Term term;
+
+  LongtermNotesInformation(String title, String description, Color color, this.term) : super(title, description, color);
 
 }

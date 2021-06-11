@@ -21,7 +21,20 @@ class TaskContainer extends WidgetContainer {
 
 }
 
-class _TaskContainerState extends WidgetContainerState {
+class _TaskContainerState extends WidgetContainerState<TaskInformation> {
+
+
+  @override
+  UserMadeWidgetBase<TaskInformation> createWidget(TaskInformation widgetInformation, WidgetId id) {
+    return TaskWidget(
+        widgetInformation,
+        this.statusController,
+        id,
+        this.widgetDeletionFunction,
+        JsonHandlerWidget.of(context).taskHandler,
+        this.widget.identifier
+    );
+  }
 
   @override
   void initializeWidgets(BuildContext context) async {
@@ -36,18 +49,14 @@ class _TaskContainerState extends WidgetContainerState {
 
         this.setState(() {
           List<UserMadeWidgetBase> newWidgets = this.widgets;
-          newWidgets.add(TaskWidget(
+          newWidgets.add(createWidget(
               TaskInformation(
                   widget.value[WidgetInformation.titleTag],
                   widget.value[WidgetInformation.descriptionTag],
                   timeX.fromString(widget.value[TaskInformation.starttimeTag]),
                   timeX.fromString(widget.value[TaskInformation.endtimeTag])
               ),
-              this.statusController,
-              newId, // increments id count
-              this.widgetDeletionFunction,
-              JsonHandlerWidget.of(context).taskHandler,
-              this.widget.date
+              newId
           ));
 
           this.widgets = newWidgets;
@@ -66,7 +75,7 @@ class _TaskContainerState extends WidgetContainerState {
   Future<UserMadeWidgetBase<WidgetInformation>> addWidget() async {
     TaskInformation widgetInformation = await CustomDialogs.showTaskEditDialog(context);
     if (widgetInformation != null) {
-      return TaskWidget(widgetInformation, this.statusController, TaskId(this.nextWidgetId), this.widgetDeletionFunction, JsonHandlerWidget.of(context).taskHandler, this.widget.date);
+      return createWidget(widgetInformation, TaskId(this.nextWidgetId));
     }
   }
 

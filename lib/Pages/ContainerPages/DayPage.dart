@@ -15,34 +15,8 @@ import '../../WidgetContainers/WidgetContainer.dart';
 class DayPage extends ContainerPage<DateTime> {
 
   static final double listContainerInnerPadding = 20;
-  final BuildContext context;
 
-  DayPage(DateTime date, JsonHandlerCollection jsonCollection, this.context) : super(date, jsonCollection);
-
-
-  Future<Map> configureNotes() async {
-    JsonHandler noteHandler = this.jsonCollection.noteHandler;
-    Map<String, dynamic> jsonContents = await noteHandler.readFile();
-    Map<String, dynamic> noteObjectsMap = jsonContents[this.identifier.xToString()];
-
-    if (noteObjectsMap != null) {
-      return noteObjectsMap;
-    } else {
-      return null;
-    }
-  }
-
-  Future<Map> configureTasks() async {
-    JsonHandler taskHandler = this.jsonCollection.taskHandler;
-    Map<String, dynamic> jsonContents = await taskHandler.readFile();
-    Map<String, dynamic> taskObjectsMap = jsonContents[this.identifier.xToString()];
-
-    if (taskObjectsMap != null) {
-      return taskObjectsMap;
-    } else {
-      return null;
-    }
-  }
+  DayPage(DateTime date, JsonHandlerCollection jsonCollection, context) : super(date, jsonCollection, context);
 
   @override
   Widget build(BuildContext context) {
@@ -50,8 +24,8 @@ class DayPage extends ContainerPage<DateTime> {
     return this.returnStandardBuild(
       context,
       [
-        TaskContainer(this.configureTasks(), this.identifier),
-        NoteContainer(this.configureNotes(), this.identifier)
+        TaskContainer(this.configureObjectsMap(this.jsonCollection.taskHandler, this.identifier.xToString()), this.identifier),
+        NoteContainer(this.configureObjectsMap(this.jsonCollection.noteHandler, this.identifier.xToString()), this.identifier)
       ],
       dateToText(this.identifier)
     );
@@ -68,7 +42,6 @@ class DayPage extends ContainerPage<DateTime> {
     );
   }
 
-  // TODO: change styling, add case for == null
   @override
   void calendarFunction(BuildContext context) async {
     DateTime chosenDate = await showDatePicker(

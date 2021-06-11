@@ -76,6 +76,7 @@ class CustomDialogs {
 
   }
 
+  static final _maxTextLength = 50;
   static Future<T> showEditDialog<T extends WidgetInformation>(BuildContext context, TextEditingController titleController, TextEditingController descriptionController, Function onSubmit, List<Widget> additionalInput, {String title, String description}) async {
 
     titleController.text = title;
@@ -94,6 +95,7 @@ class CustomDialogs {
     List<Widget> input = [
       TextFormField(
           validator: textFieldValidator,
+          maxLength: _maxTextLength,
           decoration: InputDecoration(
               hintText: "Please enter a title"
           ),
@@ -101,6 +103,7 @@ class CustomDialogs {
       ),
       TextFormField(
           validator: textFieldValidator,
+          maxLength: _maxTextLength,
           decoration: InputDecoration(
               hintText: "Please enter a description"
           ),
@@ -131,8 +134,6 @@ class CustomDialogs {
         formKey: _formKey
     );
   }
-
-
 
   static Future<TaskInformation> showTaskEditDialog(BuildContext context, {String title, String description, TimeOfDay starttime, TimeOfDay endtime}) {
     TextEditingController titleController = TextEditingController();
@@ -172,6 +173,7 @@ class CustomDialogs {
     TextEditingController descriptionController = TextEditingController();
     ColorPickerController colorPickerController = ColorPickerController(noteColors, noteColors.contains(color) ? noteColors.indexOf(color) : 0);
 
+
     return showEditDialog<NotesInformation>(
         context,
         titleController,
@@ -185,6 +187,13 @@ class CustomDialogs {
     );
   }
 
-
+  static Future<DateTime> showYearPicker(BuildContext context) {
+    showCustomDialog<DateTime>(
+        context,
+        "Choose year",
+        ,
+        List<Widget> actions, // TODO: implement counter
+    );
+  }
 
 }

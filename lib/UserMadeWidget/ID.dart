@@ -30,7 +30,8 @@ class TaskId extends WidgetId {
   TaskId(int number) : super(number, setPrefix);
 }
 
-class NoteId extends WidgetId {
+class NoteId extends WidgetId { // wird sowohl von Notes als auch von LongtermNotes benutzt
+
   static final String setPrefix = "note";
 
   NoteId(int number) : super(number, setPrefix);

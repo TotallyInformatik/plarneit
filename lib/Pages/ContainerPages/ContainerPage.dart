@@ -12,8 +12,20 @@ abstract class ContainerPage<T> extends StatelessWidget {
 
   final T identifier;
   final JsonHandlerCollection jsonCollection;
+  final BuildContext context;
 
-  ContainerPage(this.identifier, this.jsonCollection, {Key key}) : super(key: key);
+  ContainerPage(this.identifier, this.jsonCollection, this.context, {Key key}) : super(key: key);
+
+  Future<Map> configureObjectsMap(JsonHandler jsonHandler, String identifier) async {
+    Map<String, dynamic> jsonContents = await jsonHandler.readFile();
+    Map<String, dynamic> objectsMap = jsonContents[identifier];
+
+    if (objectsMap != null) {
+      return objectsMap;
+    } else {
+      return null;
+    }
+  }
 
   void nextFunction(BuildContext context);
   void prevFunction(BuildContext context);
@@ -29,12 +41,14 @@ abstract class ContainerPage<T> extends StatelessWidget {
         body: CustomScrollView(
             slivers: <Widget>[
               SliverAppBar(
+                iconTheme: IconThemeData(
+                  color: Colors.white, //change your color here
+                ),
                 backgroundColor: PlarneitApp.DARK_GRAY,
-                pinned: true,
+                pinned: false,
                 expandedHeight: 150.0,
                 collapsedHeight: 80,
                 flexibleSpace: FlexibleSpaceBar(
-                  collapseMode: CollapseMode.pin,
                   titlePadding: EdgeInsets.only(left: ContainerPage.listContainerInnerPadding, bottom: 30),
                   title: Text(
                       title,

@@ -43,7 +43,6 @@ abstract class UserMadeWidgetBase<T extends WidgetInformation> extends StatefulW
   }
 
   void updateJson(T newWidgetInformation) async {
-
     Map<String, dynamic> toUpdate = this.returnJsonBase(newWidgetInformation);
     toUpdate.addAll(this.updateAddition(newWidgetInformation));
 
@@ -63,7 +62,7 @@ abstract class UserMadeWidgetBase<T extends WidgetInformation> extends StatefulW
 
 }
 
-abstract class UserMadeWidgetBaseState<T extends WidgetInformation> extends State<UserMadeWidgetBase> {
+abstract class UserMadeWidgetBaseState<T extends WidgetInformation> extends State<UserMadeWidgetBase<T>> {
 
   String title;
   String description;
@@ -126,6 +125,7 @@ abstract class UserMadeWidgetBaseState<T extends WidgetInformation> extends Stat
                             height: UserMadeWidgetBase.widgetSize,
                             child: ListView(
                                 padding: EdgeInsets.all(UserMadeWidgetBase.widgetInnerPadding),
+                                physics: ClampingScrollPhysics(),
                                 scrollDirection: Axis.vertical,
                                 children: children
                             )

@@ -9,6 +9,8 @@ import 'package:plarneit/UserMadeWidget/WidgetInformation.dart';
 import 'package:plarneit/WidgetContainers/WidgetContainer.dart';
 import 'package:plarneit/utils/conversion.dart';
 
+
+
 class NoteContainer extends WidgetContainer {
 
 
@@ -19,7 +21,20 @@ class NoteContainer extends WidgetContainer {
 
 }
 
-class _NoteContainerState extends WidgetContainerState {
+class _NoteContainerState extends WidgetContainerState<NotesInformation> {
+
+
+  @override
+  UserMadeWidgetBase<NotesInformation> createWidget(NotesInformation widgetInformation, WidgetId id) {
+    return NoteWidget(
+        widgetInformation,
+        this.statusController,
+        id,
+        this.widgetDeletionFunction,
+        JsonHandlerWidget.of(context).noteHandler,
+        this.widget.identifier
+    );
+  }
 
   @override
   void initializeWidgets(BuildContext context) async {
@@ -35,17 +50,13 @@ class _NoteContainerState extends WidgetContainerState {
         this.setState(() {
           List<UserMadeWidgetBase> newWidgets = this.widgets;
 
-          newWidgets.add(NoteWidget(
+          newWidgets.add(createWidget(
               NotesInformation(
                   widget.value[WidgetInformation.titleTag],
                   widget.value[WidgetInformation.descriptionTag],
                   colorX.fromString(widget.value[NotesInformation.colorTag])
               ),
-              this.statusController,
-              newId, // increments id count
-              this.widgetDeletionFunction,
-              JsonHandlerWidget.of(context).noteHandler,
-              this.widget.date
+              newId // increments id count
           ));
 
           this.widgets = newWidgets;
@@ -65,7 +76,7 @@ class _NoteContainerState extends WidgetContainerState {
   Future<UserMadeWidgetBase<WidgetInformation>> addWidget() async {
     NotesInformation widgetInformation = await CustomDialogs.showNoteEditDialog(context);
     if (widgetInformation != null) {
-      return NoteWidget(widgetInformation, this.statusController, NoteId(this.nextWidgetId), this.widgetDeletionFunction, JsonHandlerWidget.of(context).noteHandler, this.widget.date);
+      return createWidget(widgetInformation, NoteId(this.nextWidgetId));
     }
   }
 

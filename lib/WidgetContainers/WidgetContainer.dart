@@ -4,6 +4,7 @@ import 'package:plarneit/IndentifierWidget.dart';
 import 'package:plarneit/Controllers.dart';
 import 'package:plarneit/JsonHandler.dart';
 import 'package:plarneit/Pages/ContainerPages/DayPage.dart';
+import 'package:plarneit/UserMadeWidget/ID.dart';
 import 'package:plarneit/UserMadeWidget/NoteWidget.dart';
 import 'package:plarneit/UserMadeWidget/WidgetInformation.dart';
 import 'package:plarneit/utils/conversion.dart';
@@ -22,20 +23,27 @@ abstract class WidgetContainer extends StatefulWidget {
 
 
   final Future<Map> startingWidgetsMap;
-  final DateTime date; // should always be set to startingWidgets.length
+  final DateTime identifier;
   final String widgetName;
 
   final ScrollController _scrollController = ScrollController();
 
-  WidgetContainer(this.startingWidgetsMap, this.date, this.widgetName, {Key key}) : super(key: key);
+  WidgetContainer(this.startingWidgetsMap, this.identifier, this.widgetName, {Key key}) : super(key: key);
 
 }
 
-abstract class WidgetContainerState extends State<WidgetContainer> {
+abstract class WidgetContainerState<T extends WidgetInformation> extends State<WidgetContainer> {
 
   int nextWidgetId;
   List<UserMadeWidgetBase> widgets;
   final WidgetContainerStatusController statusController = WidgetContainerStatusController();
+
+
+
+  /// should always be async
+  Future<UserMadeWidgetBase> addWidget();
+  void initializeWidgets(BuildContext context);
+  UserMadeWidgetBase<T> createWidget(T widgetInformation, WidgetId id);
 
   IconButton controllerIconButton(int sizeOffset, ContainerStatus status, IconData standrdIcon, IconData turnOffIcon) {
     return IconButton(
@@ -89,11 +97,6 @@ abstract class WidgetContainerState extends State<WidgetContainer> {
 
   }
 
-  void initializeWidgets(BuildContext context);
-
-  /// should always be async
-  Future<UserMadeWidgetBase> addWidget();
-
   Widget returnStandardBuild(BuildContext context) {
 
     double containerHeight = WidgetContainer.widgetSize + WidgetContainer.widgetPadding;
@@ -111,7 +114,6 @@ abstract class WidgetContainerState extends State<WidgetContainer> {
                     IconButton(
                         iconSize: WidgetContainer.iconSize,
                         icon: Icon(Icons.add_rounded),
-                        tooltip: "Add ${this.widget.widgetName}",
                         onPressed: () async {
                           List<UserMadeWidgetBase> newWidgets = [];
                           newWidgets.addAll(this.widgets);
@@ -136,8 +138,8 @@ abstract class WidgetContainerState extends State<WidgetContainer> {
               child: Scrollbar(
                 isAlwaysShown: true,
                 controller: this.widget._scrollController,
-                child: Identifier(
-                    identifier: this.widget.date,
+                child: Identifier<DateTime>( // TODO: remove if needed
+                    identifier: this.widget.identifier,
                     child: ListView.builder(
                       controller: this.widget._scrollController,
                       padding: EdgeInsets.all(WidgetContainer.sidePadding),

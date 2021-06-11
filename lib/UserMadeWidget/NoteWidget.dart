@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:plarneit/Controllers.dart';
 import 'package:plarneit/JsonHandler.dart';
+import 'package:plarneit/UserInput/Dialogs.dart';
 import 'package:plarneit/UserMadeWidget/UserMadeWidgetBase.dart';
 import 'package:plarneit/UserMadeWidget/WidgetInformation.dart';
 import 'package:plarneit/utils/conversion.dart';
-import '../UserInput/Dialogs.dart';
 import 'ID.dart';
 
 class NoteWidget extends UserMadeWidgetBase<NotesInformation> {
@@ -31,6 +31,7 @@ class NoteWidgetState extends UserMadeWidgetBaseState<NotesInformation> {
 
   Color _color;
 
+  @override
   void updateAttributes(NotesInformation widgetInformation) {
     this.setState(() {
       this.title = widgetInformation.title;
@@ -41,7 +42,6 @@ class NoteWidgetState extends UserMadeWidgetBaseState<NotesInformation> {
 
   @override
   Widget build(BuildContext context) {
-
     return this.returnStandardBuild(context, [],
         noteColor: this._color, invertFontColor: true
     );

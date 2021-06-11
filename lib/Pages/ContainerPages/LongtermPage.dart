@@ -1,24 +1,43 @@
-import 'package:flutter/src/widgets/framework.dart';
+import 'package:flutter/material.dart';
 import 'package:plarneit/JsonHandler.dart';
 import 'package:plarneit/Pages/ContainerPages/ContainerPage.dart';
+import 'package:plarneit/UserMadeWidget/WidgetInformation.dart';
+import 'package:plarneit/WidgetContainers/LongtermNotesContainer.dart';
 import 'package:plarneit/WidgetContainers/WidgetContainer.dart';
+import 'package:plarneit/main.dart';
+import 'package:plarneit/utils/conversion.dart';
 
-class LongtermPage extends ContainerPage<int> {
+class LongtermPage extends ContainerPage<DateTime> {
 
-  LongtermPage(int year, JsonHandlerCollection jsonCollection) : super(year, jsonCollection);
-
-
-  @override
-  State<StatefulWidget> createState() {
-    // TODO: implement createState
-    throw UnimplementedError();
-  }
+  LongtermPage(DateTime year, JsonHandlerCollection jsonCollection, BuildContext context) : super(year, jsonCollection, context);
 
   @override
   Widget build(BuildContext context) {
-    // TODO: implement build
-    throw UnimplementedError();
+
+    Future<Map> allLongtermObjects = this.configureObjectsMap(this.jsonCollection.longtermGoalsHandler, this.identifier.xToString(yearOnly: true));
+
+    return this.returnStandardBuild(
+        context,
+        [
+          LongtermNotesContainer(allLongtermObjects, this.identifier, Term.EARLY),
+          LongtermNotesContainer(allLongtermObjects, this.identifier, Term.MID),
+          LongtermNotesContainer(allLongtermObjects, this.identifier, Term.LATE),
+        ],
+        this.identifier.xToString(yearOnly: true)
+    );
   }
+
+  void openPage(BuildContext context, DateTime date) {
+    Navigator.pop(context);
+    Navigator.push(
+        context,
+        MaterialPageRoute(builder: (BuildContext context) => JsonHandlerWidget(
+            jsonHandlers: PlarneitApp.jsonHandlerCollection,
+            child: LongtermPage(date, this.jsonCollection, this.context))
+        )
+    );
+  }
+
 
   @override
   void calendarFunction(BuildContext context) {
@@ -27,17 +46,17 @@ class LongtermPage extends ContainerPage<int> {
 
   @override
   void homeFunction(BuildContext context) {
-    // TODO: implement homeFunction
+    openPage(context, DateTime.now());
   }
 
   @override
   void nextFunction(BuildContext context) {
-    // TODO: implement nextFunction
+    openPage(context, DateTime(this.identifier.year + 1));
   }
 
   @override
   void prevFunction(BuildContext context) {
-    // TODO: implement prevFunction
+    openPage(context, DateTime(this.identifier.year - 1));
   }
 
 }
