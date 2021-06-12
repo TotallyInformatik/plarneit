@@ -22,14 +22,6 @@ class ColorWidget extends StatefulWidget {
 
 class _ColorWidgetState extends State<ColorWidget> {
 
-  /*
-  bool _selected = false;
-
-  void toggleSelected() {
-    this._selected = !this._selected;
-  }
-   */
-
   @override
   Widget build(BuildContext context) {
     return Padding(

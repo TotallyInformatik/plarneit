@@ -81,7 +81,7 @@ class _LongtermNotesContainer extends WidgetContainerState<LongtermNotesInformat
     return this.returnStandardBuild(context);
   }
 
-  /// da alle drei LongtermNotesContainers dieselbe ID nutzen, muss die nächste Identifikationsnummer gefunden werden
+  /// da alle drei LongtermNotesContainers dieselbe ID nutzen, muss immer die nächste Identifikationsnummer gefunden werden, wenn ein Widget hinzugefügt wird
   Future<int> getNextId() async {
 
     int currentHighestId = 1;

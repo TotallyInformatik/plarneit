@@ -26,13 +26,6 @@ class NavigationBar<T> extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          IconButton(
-            icon: Icon(Icons.arrow_back_rounded),
-            tooltip: "back to home page",
-            onPressed: () {
-              Navigator.pop(context);
-            },
-          ),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [

@@ -13,9 +13,6 @@ abstract class PickerBase<T extends PickerController> extends StatefulWidget {
 
   const PickerBase(this.title, this.controller, {Key key}) : super(key: key);
 
-  @override
-  State<StatefulWidget> createState();
-
   Widget returnStandardBuild(
       BuildContext context,
       Widget display

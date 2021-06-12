@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:plarneit/JsonHandler.dart';
 import 'package:plarneit/Pages/ContainerPages/ContainerPage.dart';
+import 'package:plarneit/UserInput/Dialogs.dart';
 import 'package:plarneit/UserMadeWidget/WidgetInformation.dart';
 import 'package:plarneit/WidgetContainers/LongtermNotesContainer.dart';
 import 'package:plarneit/WidgetContainers/WidgetContainer.dart';
@@ -40,8 +41,11 @@ class LongtermPage extends ContainerPage<DateTime> {
 
 
   @override
-  void calendarFunction(BuildContext context) {
-    // TODO: implement calendarFunction
+  void calendarFunction(BuildContext context) async {
+    DateTime chosenYear = await CustomDialogs.showYearPicker(context);
+    if (chosenYear != null) {
+      openPage(context, chosenYear);
+    }
   }
 
   @override

@@ -76,6 +76,13 @@ class CustomDialogs {
 
   }
 
+  static String textFieldValidator(String value) {
+    if (value == null || value.isEmpty) {
+      return "required field";
+    }
+    return null;
+  }
+
   static final _maxTextLength = 50;
   static Future<T> showEditDialog<T extends WidgetInformation>(BuildContext context, TextEditingController titleController, TextEditingController descriptionController, Function onSubmit, List<Widget> additionalInput, {String title, String description}) async {
 
@@ -83,14 +90,6 @@ class CustomDialogs {
     descriptionController.text = description;
 
     final _formKey = GlobalKey<FormState>();
-
-
-    Function textFieldValidator = (String value) {
-      if (value == null || value.isEmpty) {
-        return "required field";
-      }
-      return null;
-    };
 
     List<Widget> input = [
       TextFormField(
@@ -187,12 +186,41 @@ class CustomDialogs {
     );
   }
 
-  static Future<DateTime> showYearPicker(BuildContext context) {
-    showCustomDialog<DateTime>(
-        context,
-        "Choose year",
-        ,
-        List<Widget> actions, // TODO: implement counter
+  static Future<DateTime> showYearPicker(BuildContext context) async {
+    TextEditingController yearController = TextEditingController();
+
+    final _formKey = GlobalKey<FormState>();
+
+    return await showCustomDialog<DateTime>(
+      context,
+      "Choose year",
+      [
+        TextFormField(
+          validator: textFieldValidator,
+          controller: yearController,
+          keyboardType: TextInputType.number,
+          decoration: InputDecoration(
+            hintText: "yyyy"
+          )
+        )
+      ],
+      [
+        IconButton(
+          icon: Icon(Icons.cancel_rounded),
+          onPressed: () {
+            Navigator.of(context).pop(null);
+          },
+        ),
+        IconButton(
+          icon: Icon(Icons.done_rounded),
+          onPressed: () {
+            if (_formKey.currentState.validate()) {
+              Navigator.of(context).pop(DateTime(int.parse(yearController.text)));
+            }
+          },
+        )
+      ],
+      formKey: _formKey
     );
   }
 

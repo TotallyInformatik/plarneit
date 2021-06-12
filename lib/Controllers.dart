@@ -50,3 +50,9 @@ class ColorPickerController extends PickerController<int> {
 class TimePickerController extends PickerController<TimeOfDay> {
   TimePickerController({TimeOfDay initialTime}) : super(TimeOfDay(hour: 00, minute: 00), initialValue: initialTime);
 }
+
+class YearPickerController extends PickerController<DateTime> {
+  void setYear(int year) { this._value = DateTime(year); }
+
+  YearPickerController({DateTime initialYear}) : super(DateTime.now(), initialValue: initialYear);
+}
