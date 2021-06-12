@@ -15,7 +15,6 @@ import '../UserMadeWidget/UserMadeWidgetBase.dart';
 abstract class WidgetContainer extends StatefulWidget {
 
   // Layout attributes
-  static final double iconSize = 40;
   static final double widgetSize = UserMadeWidgetBase.widgetSize;
   static final double widgetPadding = UserMadeWidgetBase.widgetPadding;
   static final double sidePadding = DayPage.listContainerInnerPadding;
@@ -45,9 +44,9 @@ abstract class WidgetContainerState<T extends WidgetInformation> extends State<W
   void initializeWidgets(BuildContext context);
   UserMadeWidgetBase<T> createWidget(T widgetInformation, WidgetId id);
 
-  IconButton controllerIconButton(int sizeOffset, ContainerStatus status, IconData standrdIcon, IconData turnOffIcon) {
+  IconButton controllerIconButton(double sizeOffset, ContainerStatus status, IconData standrdIcon, IconData turnOffIcon) {
     return IconButton(
-      iconSize: WidgetContainer.iconSize - sizeOffset,
+      iconSize: IconTheme.of(context).size - sizeOffset * IconTheme.of(context).size,
       icon: this.statusController.value == status ? Icon(turnOffIcon) : Icon(standrdIcon),
       onPressed: () {
         this.setState(() {
@@ -112,7 +111,7 @@ abstract class WidgetContainerState<T extends WidgetInformation> extends State<W
                   children: [
                     Text(this.widget.widgetName, style: Theme.of(context).primaryTextTheme.headline2),
                     IconButton(
-                        iconSize: WidgetContainer.iconSize,
+                        iconSize: IconTheme.of(context).size,
                         icon: Icon(Icons.add_rounded),
                         onPressed: () async {
                           List<UserMadeWidgetBase> newWidgets = [];
@@ -125,8 +124,8 @@ abstract class WidgetContainerState<T extends WidgetInformation> extends State<W
                           });
                         }
                     ),
-                    controllerIconButton(15, ContainerStatus.EDITING, Icons.edit_rounded, Icons.edit_off),
-                    controllerIconButton(10, ContainerStatus.DELETING, Icons.delete_rounded, Icons.delete_forever_rounded)
+                    controllerIconButton(0.15, ContainerStatus.EDITING, Icons.edit_rounded, Icons.edit_off),
+                    controllerIconButton(0.10, ContainerStatus.DELETING, Icons.delete_rounded, Icons.delete_forever_rounded)
                   ],
                 )
             )
@@ -138,22 +137,19 @@ abstract class WidgetContainerState<T extends WidgetInformation> extends State<W
               child: Scrollbar(
                 isAlwaysShown: true,
                 controller: this.widget._scrollController,
-                child: Identifier<DateTime>( // TODO: remove if needed
-                    identifier: this.widget.identifier,
-                    child: ListView.builder(
-                      controller: this.widget._scrollController,
-                      padding: EdgeInsets.all(WidgetContainer.sidePadding),
-                      scrollDirection: Axis.horizontal,
-                      itemCount: this.widgets.length,
-                      itemBuilder: (BuildContext context, int index) {
-                        if (this.widgets[index] == null) {
-                          toDeleteIndex.add(index);
-                          return Container();
-                        } else {
-                          return this.widgets[index];
-                        }
-                      },
-                    )
+                child: ListView.builder(
+                  controller: this.widget._scrollController,
+                  padding: EdgeInsets.all(WidgetContainer.sidePadding),
+                  scrollDirection: Axis.horizontal,
+                  itemCount: this.widgets.length,
+                  itemBuilder: (BuildContext context, int index) {
+                    if (this.widgets[index] == null) {
+                      toDeleteIndex.add(index);
+                      return Container();
+                    } else {
+                      return this.widgets[index];
+                    }
+                  },
                 ),
               )
           )]

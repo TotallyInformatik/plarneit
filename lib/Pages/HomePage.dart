@@ -16,18 +16,13 @@ class HomePage extends StatelessWidget {
   static final double titleHeight = 0.2;
 
   Widget homePageButton(BuildContext context, IconData icon, String title, Function pressFunction) {
+    print(MediaQuery.of(context).size.width);
     return ElevatedButton.icon(
           onPressed: pressFunction,
           icon: Icon(icon, color: Colors.black),
-          label: Text(title, style: Theme.of(context).primaryTextTheme.headline3),
+          label: Text(title, style: Theme.of(context).primaryTextTheme.headline4),
           style: ButtonStyle(
             backgroundColor: MaterialStateProperty.all<Color>(buttonColor),
-            /*shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                RoundedRectangleBorder(
-                    borderRadius: buttonRadius
-                )
-            )
-             */
           )
       );
   }
@@ -46,7 +41,6 @@ class HomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
 
     return Scaffold(
       body: Container(

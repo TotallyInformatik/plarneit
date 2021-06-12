@@ -93,18 +93,20 @@ class CustomDialogs {
 
     List<Widget> input = [
       TextFormField(
+          style: Theme.of(context).primaryTextTheme.bodyText1,
           validator: textFieldValidator,
           maxLength: _maxTextLength,
           decoration: InputDecoration(
-              hintText: "Please enter a title"
+              hintText: "title"
           ),
           controller: titleController
       ),
       TextFormField(
+          style: Theme.of(context).primaryTextTheme.bodyText1,
           validator: textFieldValidator,
           maxLength: _maxTextLength,
           decoration: InputDecoration(
-              hintText: "Please enter a description"
+              hintText: "description"
           ),
           controller: descriptionController
       ),
@@ -179,7 +181,7 @@ class CustomDialogs {
         descriptionController,
             () => Navigator.of(context).pop(NotesInformation(titleController.text, descriptionController.text, colorPickerController.selectedColor)),
         [
-          ColorPicker("Select color", colorPickerController, noteColors, 25.0)
+          ColorPicker("color", colorPickerController, noteColors, 20.0)
         ],
         title: title,
         description: description

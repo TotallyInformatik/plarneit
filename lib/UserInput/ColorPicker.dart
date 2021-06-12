@@ -93,8 +93,10 @@ class _ColorPickerState extends State<ColorPicker> {
             Padding(
               padding: EdgeInsets.only(left: 10),
               child: Container(
-                height: this.widget.size + ColorWidget.widgetPadding * 2,
-                width: 150,
+                constraints: BoxConstraints.expand(
+                  height: this.widget.size + ColorWidget.widgetPadding * 2,
+                  width: MediaQuery.of(context).size.width * 0.35,
+                ),
                 child: ListView(
                     scrollDirection: Axis.horizontal,
                     children: colorChildren

@@ -13,7 +13,6 @@ void main() {
 }
 
 class PlarneitApp extends StatelessWidget {
-  // This widget is the root of your application.
 
   static final COLOR_WHITE = Color.fromRGBO(255, 255, 255, 1);
   static final COLOR_WHITESMOKE = Color.fromRGBO(245, 245, 245, 1);
@@ -48,6 +47,19 @@ class PlarneitApp extends StatelessWidget {
       subtitle2: TextStyle(color: FONT_COLOR, fontWeight: FontWeight.w400, fontSize: 12) // change if needed
   );
 
+  static final TextTheme TEXT_THEME_SMALLEST = TextTheme( // for even smaller devices
+      headline1: TextStyle(color: FONT_COLOR, fontWeight: FontWeight.w700, fontSize: 20),
+      headline2: TextStyle(color: FONT_COLOR, fontWeight: FontWeight.w700, fontSize: 18.5),
+      headline3: TextStyle(color: FONT_COLOR, fontWeight: FontWeight.w700, fontSize: 15),
+      headline4: TextStyle(color: FONT_COLOR, fontWeight: FontWeight.w700, fontSize: 13),
+      headline5: TextStyle(color: FONT_COLOR, fontWeight: FontWeight.w700, fontSize: 11),
+      headline6: TextStyle(color: FONT_COLOR, fontWeight: FontWeight.w700, fontSize: 10),
+      bodyText1: TextStyle(color: FONT_COLOR, fontWeight: FontWeight.w500, fontSize: 11, height: 1.5),
+      bodyText2: TextStyle(color: FONT_COLOR, fontWeight: FontWeight.w500, fontSize: 14, height: 1.5), // change this if needed
+      subtitle1: TextStyle(color: FONT_COLOR, fontWeight: FontWeight.w400, fontSize: 10),
+      subtitle2: TextStyle(color: FONT_COLOR, fontWeight: FontWeight.w400, fontSize: 12) // change if needed
+  );
+
   static final TextTheme TEXT_THEME_DEFAULT_WHITE = TextTheme(
       headline1: TextStyle(color: WHITE_FONT_COLOR, fontWeight: FontWeight.w700, fontSize: 26),
       headline2: TextStyle(color: WHITE_FONT_COLOR, fontWeight: FontWeight.w700, fontSize: 22),
@@ -74,6 +86,19 @@ class PlarneitApp extends StatelessWidget {
       subtitle2: TextStyle(color: WHITE_FONT_COLOR, fontWeight: FontWeight.w400, fontSize: 12) // change if needed
   );
 
+  static final TextTheme TEXT_THEME_SMALLEST_WHITE = TextTheme(
+      headline1: TextStyle(color: WHITE_FONT_COLOR, fontWeight: FontWeight.w700, fontSize: 20),
+      headline2: TextStyle(color: WHITE_FONT_COLOR, fontWeight: FontWeight.w700, fontSize: 18.5),
+      headline3: TextStyle(color: WHITE_FONT_COLOR, fontWeight: FontWeight.w700, fontSize: 15),
+      headline4: TextStyle(color: WHITE_FONT_COLOR, fontWeight: FontWeight.w700, fontSize: 13),
+      headline5: TextStyle(color: WHITE_FONT_COLOR, fontWeight: FontWeight.w700, fontSize: 11),
+      headline6: TextStyle(color: WHITE_FONT_COLOR, fontWeight: FontWeight.w700, fontSize: 10),
+      bodyText1: TextStyle(color: WHITE_FONT_COLOR, fontWeight: FontWeight.w500, fontSize: 11, height: 1.5),
+      bodyText2: TextStyle(color: WHITE_FONT_COLOR, fontWeight: FontWeight.w500, fontSize: 14, height: 1.5), // change this if needed
+      subtitle1: TextStyle(color: WHITE_FONT_COLOR, fontWeight: FontWeight.w400, fontSize: 10),
+      subtitle2: TextStyle(color: WHITE_FONT_COLOR, fontWeight: FontWeight.w400, fontSize: 12) // change if needed
+  );
+
   static final String taskStorage = "tasks.json";
   static final String noteStorage = "notes.json";
   static final String longtermGoalsStorage = "longterm-goals.json";
@@ -82,6 +107,9 @@ class PlarneitApp extends StatelessWidget {
       JsonHandler(noteStorage),
       JsonHandler(longtermGoalsStorage)
   );
+
+  static final double contentResponseWidth1 = 500;
+  static final double contentResponseWidth2 = 320; // dieses Attribut legt fest, ab wann die Schriftgröße geändert wird
 
   void _resetJson() {
     jsonHandlerCollection.noteHandler.writeToJson({});
@@ -99,21 +127,53 @@ class PlarneitApp extends StatelessWidget {
     print(await jsonHandlerCollection.longtermGoalsHandler.readFile());
   }
 
+  TextTheme determinePrimaryTextTheme(double screenWidth) {
+    if (screenWidth > contentResponseWidth1) {
+      return TEXT_THEME_DEFAULT;
+    } else if (screenWidth > contentResponseWidth2) {
+      return TEXT_THEME_SMALL;
+    } else {
+      return TEXT_THEME_SMALLEST;
+    }
+  }
+
+  TextTheme determineAccentTextTheme(double screenWidth) {
+    if (screenWidth > contentResponseWidth1) {
+      return TEXT_THEME_DEFAULT_WHITE;
+    } else if (screenWidth > contentResponseWidth2) {
+      return TEXT_THEME_SMALL_WHITE;
+    } else {
+      return TEXT_THEME_SMALLEST_WHITE;
+    }
+  }
+
+  double determineIconSize(double screenWidth) {
+    if (screenWidth > contentResponseWidth2) {
+      return 30;
+    } else {
+      return 20;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     displayJsonContents();
     deleteOutdated();
 
-    double screenWidth = window.physicalSize.width;
+    double mediaQueryWidth = window.physicalSize.width / window.devicePixelRatio;
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'plarneit',
       theme: ThemeData(
         primaryColor: COLOR_WHITE,
         accentColor: COLOR_WHITESMOKE,
-        accentTextTheme: screenWidth > 500 ? TEXT_THEME_DEFAULT_WHITE : TEXT_THEME_SMALL_WHITE,
-        primaryTextTheme: screenWidth > 500 ? TEXT_THEME_DEFAULT : TEXT_THEME_SMALL,
-        fontFamily: "Montserrat"
+        accentTextTheme: determineAccentTextTheme(mediaQueryWidth),
+        primaryTextTheme: determinePrimaryTextTheme(mediaQueryWidth),
+        fontFamily: "Montserrat",
+        iconTheme: IconThemeData(
+          size: determineIconSize(mediaQueryWidth),
+          color: Colors.black
+        )
       ),
       home: HomePage()
     );
