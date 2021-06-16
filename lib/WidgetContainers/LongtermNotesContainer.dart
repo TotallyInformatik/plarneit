@@ -6,7 +6,7 @@ import 'package:plarneit/UserMadeWidget/LongtermNotesWidget.dart';
 import 'package:plarneit/UserMadeWidget/NoteWidget.dart';
 import 'package:plarneit/UserMadeWidget/TaskWidget.dart';
 import 'package:plarneit/UserMadeWidget/UserMadeWidgetBase.dart';
-import 'package:plarneit/UserMadeWidget/WidgetInformation.dart';
+import 'file:///C:/Users/Ruine/OneDrive/Desktop/Rui/Programming/CodingProjects/Unfinished/plarneit/lib/Data/WidgetData.dart';
 import 'package:plarneit/WidgetContainers/WidgetContainer.dart';
 import 'package:plarneit/utils/conversion.dart';
 
@@ -27,13 +27,13 @@ class LongtermNotesContainer extends WidgetContainer {
 
 }
 
-class _LongtermNotesContainer extends WidgetContainerState<LongtermNotesInformation> {
+class _LongtermNotesContainer extends WidgetContainerState<LongtermNotesData> {
 
   final Term _term;
   _LongtermNotesContainer(this._term);
 
   @override
-  UserMadeWidgetBase<LongtermNotesInformation> createWidget(LongtermNotesInformation widgetInformation, WidgetId id) {
+  UserMadeWidgetBase<LongtermNotesData> createWidget(LongtermNotesData widgetInformation, WidgetId id) {
     return LongtermNotesWidget(
         widgetInformation,
         this.statusController,
@@ -51,17 +51,17 @@ class _LongtermNotesContainer extends WidgetContainerState<LongtermNotesInformat
 
         WidgetId newId = WidgetId.fromString(widget.key);
 
-        if (Conversion.enumFromString(widget.value[LongtermNotesInformation.termTag], Term.values) == this._term) {
+        if (Conversion.enumFromString(widget.value[LongtermNotesData.termTag], Term.values) == this._term) {
 
           this.setState(() {
             List<UserMadeWidgetBase> newWidgets = this.widgets;
 
             newWidgets.add(createWidget(
-                LongtermNotesInformation(
-                    widget.value[WidgetInformation.titleTag],
-                    widget.value[WidgetInformation.descriptionTag],
-                    colorX.fromString(widget.value[NotesInformation.colorTag]),
-                    Conversion.enumFromString(widget.value[LongtermNotesInformation.termTag], Term.values)
+                LongtermNotesData(
+                    widget.value[WidgetData.titleTag],
+                    widget.value[WidgetData.descriptionTag],
+                    colorX.fromString(widget.value[NotesData.colorTag]),
+                    Conversion.enumFromString(widget.value[LongtermNotesData.termTag], Term.values)
                 ),
                 newId
             ));
@@ -103,11 +103,11 @@ class _LongtermNotesContainer extends WidgetContainerState<LongtermNotesInformat
   }
 
   @override
-  Future<UserMadeWidgetBase<LongtermNotesInformation>> addWidget() async {
-    NotesInformation widgetInformation = await CustomDialogs.showNoteEditDialog(context);
+  Future<UserMadeWidgetBase<LongtermNotesData>> addWidget() async {
+    NotesData widgetInformation = await CustomDialogs.showNoteEditDialog(context);
     if (widgetInformation != null) {
       return createWidget(
-          LongtermNotesInformation(
+          LongtermNotesData(
             widgetInformation.title,
             widgetInformation.description,
             widgetInformation.color,

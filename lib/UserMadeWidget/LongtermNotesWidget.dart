@@ -5,13 +5,13 @@ import 'package:plarneit/UserInput/Dialogs.dart';
 import 'package:plarneit/UserMadeWidget/ID.dart';
 import 'package:plarneit/UserMadeWidget/NoteWidget.dart';
 import 'package:plarneit/UserMadeWidget/UserMadeWidgetBase.dart';
-import 'package:plarneit/UserMadeWidget/WidgetInformation.dart';
+import 'file:///C:/Users/Ruine/OneDrive/Desktop/Rui/Programming/CodingProjects/Unfinished/plarneit/lib/Data/WidgetData.dart';
 import 'package:plarneit/WidgetContainers/LongtermNotesContainer.dart';
 import 'package:plarneit/utils/conversion.dart';
 
-class LongtermNotesWidget extends UserMadeWidgetBase<LongtermNotesInformation> {
+class LongtermNotesWidget extends UserMadeWidgetBase<LongtermNotesData> {
 
-  LongtermNotesWidget(LongtermNotesInformation widgetInformation, WidgetContainerStatusController statusController, WidgetId id, Function widgetDeletionFunction, JsonHandler jsonHandler, DateTime identifier) :
+  LongtermNotesWidget(LongtermNotesData widgetInformation, WidgetContainerStatusController statusController, WidgetId id, Function widgetDeletionFunction, JsonHandler jsonHandler, DateTime identifier) :
         super(widgetInformation, statusController, id, widgetDeletionFunction, jsonHandler, identifier.xToString(yearOnly: true), "note");
 
   @override
@@ -19,17 +19,17 @@ class LongtermNotesWidget extends UserMadeWidgetBase<LongtermNotesInformation> {
       _LongtermNotesWidgetState();
 
   @override
-  Map updateAddition(LongtermNotesInformation newWidgetInformation) {
+  Map updateAddition(LongtermNotesData newWidgetInformation) {
     Map<String, String> result = {};
-    result[NotesInformation.colorTag] = newWidgetInformation.color.xToString();
-    result[LongtermNotesInformation.termTag] = Conversion.enumToString(newWidgetInformation.term);
+    result[NotesData.colorTag] = newWidgetInformation.color.xToString();
+    result[LongtermNotesData.termTag] = Conversion.enumToString(newWidgetInformation.term);
 
     return result;
   }
 
 }
 
-class _LongtermNotesWidgetState extends UserMadeWidgetBaseState<LongtermNotesInformation> {
+class _LongtermNotesWidgetState extends UserMadeWidgetBaseState<LongtermNotesData> {
 
   Color _color;
 
@@ -40,9 +40,9 @@ class _LongtermNotesWidgetState extends UserMadeWidgetBaseState<LongtermNotesInf
 
   @override
   void editingFunction() async {
-    NotesInformation newWidgetInformation = await CustomDialogs.showNoteEditDialog(context, title: this.title, description: this.description, color: this._color);
+    NotesData newWidgetInformation = await CustomDialogs.showNoteEditDialog(context, title: this.title, description: this.description, color: this._color);
     if (newWidgetInformation != null) {
-      this.updateWidget(LongtermNotesInformation(
+      this.updateWidget(LongtermNotesData(
         newWidgetInformation.title,
         newWidgetInformation.description,
         newWidgetInformation.color,
@@ -53,7 +53,7 @@ class _LongtermNotesWidgetState extends UserMadeWidgetBaseState<LongtermNotesInf
 
 
   @override
-  void updateAttributes(LongtermNotesInformation widgetInformation) {
+  void updateAttributes(LongtermNotesData widgetInformation) {
     this.setState(() {
       this.title = widgetInformation.title;
       this.description = widgetInformation.description;

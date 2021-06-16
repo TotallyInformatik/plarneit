@@ -4,6 +4,7 @@ import 'package:plarneit/Pages/ContainerPages/ContainerPage.dart';
 import 'package:plarneit/Pages/ContainerPages/DayPage.dart';
 import 'package:plarneit/Pages/ContainerPages/LongtermPage.dart';
 import 'package:plarneit/Pages/ContainerPages/Navigationbar.dart';
+import 'package:plarneit/Pages/SettingsPage.dart';
 import 'package:plarneit/main.dart';
 
 class HomePage extends StatelessWidget {
@@ -27,7 +28,7 @@ class HomePage extends StatelessWidget {
       );
   }
 
-  void openPlanningPage(BuildContext context, ContainerPage page) {
+  void openPage(BuildContext context, Widget page) {
     Navigator.push(
         context,
         MaterialPageRoute(
@@ -69,9 +70,9 @@ class HomePage extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [ // TODO: remove buttons that will have to stay unimplemented due to deadline (school project)
-                      homePageButton(context, Icons.assignment_rounded, "Shortterm Planning", () => openPlanningPage(context, DayPage(DateTime.now(), PlarneitApp.jsonHandlerCollection, context))),
-                      homePageButton(context, Icons.assignment_rounded, "Longterm Planning", () => openPlanningPage(context, LongtermPage(DateTime.now(), PlarneitApp.jsonHandlerCollection, context))),
-                      homePageButton(context, Icons.settings, "Settings", () {}),
+                      homePageButton(context, Icons.assignment_rounded, "Shortterm Planning", () => openPage(context, DayPage(DateTime.now(), PlarneitApp.jsonHandlerCollection, context))),
+                      homePageButton(context, Icons.assignment_rounded, "Longterm Planning", () => openPage(context, LongtermPage(DateTime.now(), PlarneitApp.jsonHandlerCollection, context))),
+                      homePageButton(context, Icons.settings, "Settings", () => openPage(context, SettingsPage(PlarneitApp.jsonHandlerCollection.settingsHandler.readFile()))),
                     ],
                   )
               )

@@ -2,8 +2,10 @@ import 'dart:io';
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
+import 'package:plarneit/Data/SettingsData.dart';
 import 'package:plarneit/JsonHandler.dart';
 import 'package:plarneit/Pages/HomePage.dart';
+import 'package:plarneit/utils/conversion.dart';
 
 import 'Pages/ContainerPages/DayPage.dart';
 
@@ -102,10 +104,15 @@ class PlarneitApp extends StatelessWidget {
   static final String taskStorage = "tasks.json";
   static final String noteStorage = "notes.json";
   static final String longtermGoalsStorage = "longterm-goals.json";
+  static final String settingsStorage = "settings.json";
   static final JsonHandlerCollection jsonHandlerCollection = new JsonHandlerCollection(
-      JsonHandler(taskStorage),
-      JsonHandler(noteStorage),
-      JsonHandler(longtermGoalsStorage)
+    JsonHandler(taskStorage),
+    JsonHandler(noteStorage),
+    JsonHandler(longtermGoalsStorage),
+    JsonHandler(settingsStorage, initialMap: {
+      SettingsData.autoDeletionPeriodTag: 3.0,
+      SettingsData.deletionPopupTag: true
+    })
   );
 
   static final double contentResponseWidth1 = 500;
@@ -117,7 +124,31 @@ class PlarneitApp extends StatelessWidget {
     jsonHandlerCollection.longtermGoalsHandler.writeToJson({});
   }
 
-  void deleteOutdated() {
+  void deleteWidgets(JsonHandler handler, double autoDeletionPeriod) async {
+    Map contents = await handler.readFile();
+    List<String> toDelete = []; // list of keys to delete from taskhandler
+    for (MapEntry dayEntry in contents.entries) {
+      DateTime currentDate = dateX.fromString(dayEntry.key);
+      DateTime earliestPermittedDate = DateTime.now().subtract(Duration(days: autoDeletionPeriod.toInt()));
+
+      if (currentDate.isBefore(earliestPermittedDate)) {
+        toDelete.add(dayEntry.key);
+      }
+
+    }
+    contents.removeWhere((key, value) => toDelete.contains(key));
+    handler.writeToJson(contents);
+  }
+
+  void deleteOutdatedShorttermWidgets() async {
+
+    Map settings = await jsonHandlerCollection.settingsHandler.readFile();
+    double autoDeletionPeriod = settings[SettingsData.autoDeletionPeriodTag];
+
+    if (autoDeletionPeriod != SettingsData.autoDeletionPeriodMaximumValue) {
+      deleteWidgets(jsonHandlerCollection.taskHandler, autoDeletionPeriod);
+      deleteWidgets(jsonHandlerCollection.noteHandler, autoDeletionPeriod);
+    }
 
   }
 
@@ -125,6 +156,7 @@ class PlarneitApp extends StatelessWidget {
     print(await jsonHandlerCollection.taskHandler.readFile());
     print(await jsonHandlerCollection.noteHandler.readFile());
     print(await jsonHandlerCollection.longtermGoalsHandler.readFile());
+    print(await jsonHandlerCollection.settingsHandler.readFile());
   }
 
   TextTheme determinePrimaryTextTheme(double screenWidth) {
@@ -158,7 +190,7 @@ class PlarneitApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     displayJsonContents();
-    deleteOutdated();
+    deleteOutdatedShorttermWidgets();
 
     double mediaQueryWidth = window.physicalSize.width / window.devicePixelRatio;
     return MaterialApp(
@@ -166,7 +198,7 @@ class PlarneitApp extends StatelessWidget {
       title: 'plarneit',
       theme: ThemeData(
         primaryColor: COLOR_WHITE,
-        accentColor: COLOR_WHITESMOKE,
+        accentColor: DARK_GRAY,
         accentTextTheme: determineAccentTextTheme(mediaQueryWidth),
         primaryTextTheme: determinePrimaryTextTheme(mediaQueryWidth),
         fontFamily: "Montserrat",

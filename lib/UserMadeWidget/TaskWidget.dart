@@ -4,38 +4,38 @@ import 'package:plarneit/Controllers.dart';
 import 'package:plarneit/JsonHandler.dart';
 import 'package:plarneit/UserMadeWidget/ID.dart';
 import 'package:plarneit/UserMadeWidget/UserMadeWidgetBase.dart';
-import 'package:plarneit/UserMadeWidget/WidgetInformation.dart';
+import 'file:///C:/Users/Ruine/OneDrive/Desktop/Rui/Programming/CodingProjects/Unfinished/plarneit/lib/Data/WidgetData.dart';
 import 'package:plarneit/utils/conversion.dart';
 
 import '../UserInput/Dialogs.dart';
 
-class TaskWidget extends UserMadeWidgetBase<TaskInformation> {
+class TaskWidget extends UserMadeWidgetBase<TaskData> {
 
   static final double timeBottomMargin = 10;
 
-   TaskWidget(TaskInformation widgetInformation, WidgetContainerStatusController statusController, WidgetId id, Function widgetDeletionFunction, JsonHandler jsonHandler, DateTime identifier, {Key key})
+   TaskWidget(TaskData widgetInformation, WidgetContainerStatusController statusController, WidgetId id, Function widgetDeletionFunction, JsonHandler jsonHandler, DateTime identifier, {Key key})
       : super(widgetInformation, statusController, id, widgetDeletionFunction, jsonHandler, identifier.xToString(), "task", key: key);
 
   @override
   State<StatefulWidget> createState() => _TaskWidgetState();
 
   @override
-  Map<String, String> updateAddition(TaskInformation newWidgetInformation) {
+  Map<String, String> updateAddition(TaskData newWidgetInformation) {
     Map<String, String> result = {};
-    result[TaskInformation.starttimeTag] = newWidgetInformation.starttime.xToString();
-    result[TaskInformation.endtimeTag] = newWidgetInformation.endtime.xToString();
+    result[TaskData.starttimeTag] = newWidgetInformation.starttime.xToString();
+    result[TaskData.endtimeTag] = newWidgetInformation.endtime.xToString();
 
     return result;
   }
 }
 
-class _TaskWidgetState extends UserMadeWidgetBaseState<TaskInformation> {
+class _TaskWidgetState extends UserMadeWidgetBaseState<TaskData> {
 
   TimeOfDay _starttime;
   TimeOfDay _endtime;
 
   @override
-  void updateAttributes (TaskInformation widgetInformation) {
+  void updateAttributes (TaskData widgetInformation) {
     this.setState(() {
       this.title = widgetInformation.title;
       this.description = widgetInformation.description;
@@ -59,7 +59,7 @@ class _TaskWidgetState extends UserMadeWidgetBaseState<TaskInformation> {
   @override
   void editingFunction() async {
 
-    TaskInformation newWidgetInformation = await CustomDialogs.showTaskEditDialog(
+    TaskData newWidgetInformation = await CustomDialogs.showTaskEditDialog(
         context,
         title: this.title,
         description: this.description,

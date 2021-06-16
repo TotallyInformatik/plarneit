@@ -5,7 +5,7 @@ import 'package:plarneit/UserInput/Dialogs.dart';
 import 'package:plarneit/UserMadeWidget/ID.dart';
 import 'package:plarneit/UserMadeWidget/TaskWidget.dart';
 import 'package:plarneit/UserMadeWidget/UserMadeWidgetBase.dart';
-import 'package:plarneit/UserMadeWidget/WidgetInformation.dart';
+import 'file:///C:/Users/Ruine/OneDrive/Desktop/Rui/Programming/CodingProjects/Unfinished/plarneit/lib/Data/WidgetData.dart';
 import 'package:plarneit/utils/conversion.dart';
 
 import '../IndentifierWidget.dart';
@@ -21,11 +21,11 @@ class TaskContainer extends WidgetContainer {
 
 }
 
-class _TaskContainerState extends WidgetContainerState<TaskInformation> {
+class _TaskContainerState extends WidgetContainerState<TaskData> {
 
 
   @override
-  UserMadeWidgetBase<TaskInformation> createWidget(TaskInformation widgetInformation, WidgetId id) {
+  UserMadeWidgetBase<TaskData> createWidget(TaskData widgetInformation, WidgetId id) {
     return TaskWidget(
         widgetInformation,
         this.statusController,
@@ -50,11 +50,11 @@ class _TaskContainerState extends WidgetContainerState<TaskInformation> {
         this.setState(() {
           List<UserMadeWidgetBase> newWidgets = this.widgets;
           newWidgets.add(createWidget(
-              TaskInformation(
-                  widget.value[WidgetInformation.titleTag],
-                  widget.value[WidgetInformation.descriptionTag],
-                  timeX.fromString(widget.value[TaskInformation.starttimeTag]),
-                  timeX.fromString(widget.value[TaskInformation.endtimeTag])
+              TaskData(
+                  widget.value[WidgetData.titleTag],
+                  widget.value[WidgetData.descriptionTag],
+                  timeX.fromString(widget.value[TaskData.starttimeTag]),
+                  timeX.fromString(widget.value[TaskData.endtimeTag])
               ),
               newId
           ));
@@ -72,8 +72,8 @@ class _TaskContainerState extends WidgetContainerState<TaskInformation> {
   }
 
   @override
-  Future<UserMadeWidgetBase<WidgetInformation>> addWidget() async {
-    TaskInformation widgetInformation = await CustomDialogs.showTaskEditDialog(context);
+  Future<UserMadeWidgetBase<WidgetData>> addWidget() async {
+    TaskData widgetInformation = await CustomDialogs.showTaskEditDialog(context);
     if (widgetInformation != null) {
       return createWidget(widgetInformation, TaskId(this.nextWidgetId));
     }

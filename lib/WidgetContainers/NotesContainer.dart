@@ -5,7 +5,7 @@ import 'package:plarneit/UserMadeWidget/ID.dart';
 import 'package:plarneit/UserMadeWidget/NoteWidget.dart';
 import 'package:plarneit/UserMadeWidget/TaskWidget.dart';
 import 'package:plarneit/UserMadeWidget/UserMadeWidgetBase.dart';
-import 'package:plarneit/UserMadeWidget/WidgetInformation.dart';
+import 'file:///C:/Users/Ruine/OneDrive/Desktop/Rui/Programming/CodingProjects/Unfinished/plarneit/lib/Data/WidgetData.dart';
 import 'package:plarneit/WidgetContainers/WidgetContainer.dart';
 import 'package:plarneit/utils/conversion.dart';
 
@@ -21,11 +21,11 @@ class NoteContainer extends WidgetContainer {
 
 }
 
-class _NoteContainerState extends WidgetContainerState<NotesInformation> {
+class _NoteContainerState extends WidgetContainerState<NotesData> {
 
 
   @override
-  UserMadeWidgetBase<NotesInformation> createWidget(NotesInformation widgetInformation, WidgetId id) {
+  UserMadeWidgetBase<NotesData> createWidget(NotesData widgetInformation, WidgetId id) {
     return NoteWidget(
         widgetInformation,
         this.statusController,
@@ -51,10 +51,10 @@ class _NoteContainerState extends WidgetContainerState<NotesInformation> {
           List<UserMadeWidgetBase> newWidgets = this.widgets;
 
           newWidgets.add(createWidget(
-              NotesInformation(
-                  widget.value[WidgetInformation.titleTag],
-                  widget.value[WidgetInformation.descriptionTag],
-                  colorX.fromString(widget.value[NotesInformation.colorTag])
+              NotesData(
+                  widget.value[WidgetData.titleTag],
+                  widget.value[WidgetData.descriptionTag],
+                  colorX.fromString(widget.value[NotesData.colorTag])
               ),
               newId // increments id count
           ));
@@ -73,8 +73,8 @@ class _NoteContainerState extends WidgetContainerState<NotesInformation> {
   }
 
   @override
-  Future<UserMadeWidgetBase<WidgetInformation>> addWidget() async {
-    NotesInformation widgetInformation = await CustomDialogs.showNoteEditDialog(context);
+  Future<UserMadeWidgetBase<WidgetData>> addWidget() async {
+    NotesData widgetInformation = await CustomDialogs.showNoteEditDialog(context);
     if (widgetInformation != null) {
       return createWidget(widgetInformation, NoteId(this.nextWidgetId));
     }

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:plarneit/JsonHandler.dart';
 import 'package:plarneit/Pages/ContainerPages/ContainerPage.dart';
 import 'package:plarneit/UserInput/Dialogs.dart';
-import 'package:plarneit/UserMadeWidget/WidgetInformation.dart';
+import 'file:///C:/Users/Ruine/OneDrive/Desktop/Rui/Programming/CodingProjects/Unfinished/plarneit/lib/Data/WidgetData.dart';
 import 'package:plarneit/WidgetContainers/LongtermNotesContainer.dart';
 import 'package:plarneit/WidgetContainers/WidgetContainer.dart';
 import 'package:plarneit/main.dart';

@@ -4,13 +4,13 @@ import 'package:plarneit/Controllers.dart';
 import 'package:plarneit/JsonHandler.dart';
 import 'package:plarneit/UserInput/Dialogs.dart';
 import 'package:plarneit/UserMadeWidget/UserMadeWidgetBase.dart';
-import 'package:plarneit/UserMadeWidget/WidgetInformation.dart';
+import 'file:///C:/Users/Ruine/OneDrive/Desktop/Rui/Programming/CodingProjects/Unfinished/plarneit/lib/Data/WidgetData.dart';
 import 'package:plarneit/utils/conversion.dart';
 import 'ID.dart';
 
-class NoteWidget extends UserMadeWidgetBase<NotesInformation> {
+class NoteWidget extends UserMadeWidgetBase<NotesData> {
 
-  NoteWidget(WidgetInformation widgetInformation, WidgetContainerStatusController statusController, WidgetId id, Function widgetDeletionFunction, JsonHandler jsonHandler, DateTime identifier, {Key key})
+  NoteWidget(WidgetData widgetInformation, WidgetContainerStatusController statusController, WidgetId id, Function widgetDeletionFunction, JsonHandler jsonHandler, DateTime identifier, {Key key})
       : super(widgetInformation, statusController, id, widgetDeletionFunction, jsonHandler, identifier.xToString(), "note", key: key);
 
   @override
@@ -18,21 +18,21 @@ class NoteWidget extends UserMadeWidgetBase<NotesInformation> {
       NoteWidgetState();
 
   @override
-  Map<String, String> updateAddition(NotesInformation newWidgetInformation) {
+  Map<String, String> updateAddition(NotesData newWidgetInformation) {
     Map<String, String> result = {};
-    result[NotesInformation.colorTag] = newWidgetInformation.color.xToString();
+    result[NotesData.colorTag] = newWidgetInformation.color.xToString();
 
     return result;
   }
 
 }
 
-class NoteWidgetState extends UserMadeWidgetBaseState<NotesInformation> {
+class NoteWidgetState extends UserMadeWidgetBaseState<NotesData> {
 
   Color _color;
 
   @override
-  void updateAttributes(NotesInformation widgetInformation) {
+  void updateAttributes(NotesData widgetInformation) {
     this.setState(() {
       this.title = widgetInformation.title;
       this.description = widgetInformation.description;
@@ -49,7 +49,7 @@ class NoteWidgetState extends UserMadeWidgetBaseState<NotesInformation> {
 
   @override
   void editingFunction() async {
-    NotesInformation newWidgetInformation = await CustomDialogs.showNoteEditDialog(context, title: this.title, description: this.description, color: this._color);
+    NotesData newWidgetInformation = await CustomDialogs.showNoteEditDialog(context, title: this.title, description: this.description, color: this._color);
     if (newWidgetInformation != null) {
       this.updateWidget(newWidgetInformation);
     }

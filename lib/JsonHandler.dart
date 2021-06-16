@@ -24,8 +24,9 @@ class JsonHandlerCollection {
   final JsonHandler noteHandler;
   final JsonHandler taskHandler;
   final JsonHandler longtermGoalsHandler;
+  final JsonHandler settingsHandler;
 
-  JsonHandlerCollection(this.noteHandler, this.taskHandler, this.longtermGoalsHandler);
+  JsonHandlerCollection(this.noteHandler, this.taskHandler, this.longtermGoalsHandler, this.settingsHandler);
 
 }
 
@@ -33,16 +34,18 @@ class JsonHandler {
 
   final String fileName;
 
-  JsonHandler(this.fileName) {
-    _initializeFile();
+  JsonHandler(this.fileName, {Map initialMap}) {
+    _initializeFile(initialMap: initialMap);
   }
 
-  void _initializeFile() async {
+  void _initializeFile({Map initialMap}) async {
     File jsonFile = await this.localFile;
     if (!jsonFile.existsSync()) {
       jsonFile.createSync();
-      this.writeToJson({
-      });
+      this.writeToJson({});
+      if (initialMap != null) {
+        this.writeToJson(initialMap);
+      }
     }
   }
 

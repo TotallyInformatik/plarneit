@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 
 extension timeX on TimeOfDay {
+
+  static final _connector = ":";
+
   String xToString() {
-    return "${_convertToString(this.hour)}:${_convertToString(this.minute)}";
+    return "${_convertToString(this.hour)}$_connector${_convertToString(this.minute)}";
   }
 
   static String _convertToString(int time) { // only helper function!!!
@@ -11,7 +14,7 @@ extension timeX on TimeOfDay {
   }
 
   static TimeOfDay fromString(String timeString) {
-    List<String> time = timeString.split(":");
+    List<String> time = timeString.split("$_connector");
     return TimeOfDay(hour: int.parse(time[0]), minute: int.parse(time[0]));
   }
 
@@ -32,9 +35,12 @@ extension colorX on Color {
 }
 
 extension dateX on DateTime {
+
+  static final _connector = "-";
+
   String xToString({bool yearOnly = false}) {
     if (!yearOnly) {
-      return "${this.day}-${this.month}-${this.year}";
+      return "${this.day}$_connector${this.month}$_connector${this.year}";
     } else {
       return "${this.year}";
     }
@@ -44,8 +50,9 @@ extension dateX on DateTime {
     return (this.year == other.year && this.month == other.month && this.day == other.day);
   }
 
-  DateTime fromString(String dateString) {
-    throw UnimplementedError();
+  static DateTime fromString(String dateString) {
+    List<String> data = dateString.split("$_connector");
+    return DateTime(int.parse(data[2]), int.parse(data[1]), int.parse(data[0]));
   }
 
 }

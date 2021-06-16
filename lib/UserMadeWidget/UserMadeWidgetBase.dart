@@ -2,11 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:plarneit/IndentifierWidget.dart';
 import 'package:plarneit/Controllers.dart';
 import 'package:plarneit/UserMadeWidget/ID.dart';
-import 'package:plarneit/UserMadeWidget/WidgetInformation.dart';
+import 'file:///C:/Users/Ruine/OneDrive/Desktop/Rui/Programming/CodingProjects/Unfinished/plarneit/lib/Data/WidgetData.dart';
 import 'package:plarneit/JsonHandler.dart';
 import 'package:plarneit/main.dart';
 
-abstract class UserMadeWidgetBase<T extends WidgetInformation> extends StatefulWidget {
+abstract class UserMadeWidgetBase<T extends WidgetData> extends StatefulWidget {
 
   static final double widgetSize = 200.0;
   static final double widgetPadding = 10.0;
@@ -25,10 +25,10 @@ abstract class UserMadeWidgetBase<T extends WidgetInformation> extends StatefulW
     initializeJson();
   }
 
-  Map<String, String> returnJsonBase(WidgetInformation widgetInformation) {
+  Map<String, String> returnJsonBase(WidgetData widgetInformation) {
     Map<String, String> result = {};
-    result[WidgetInformation.titleTag] = widgetInformation.title;
-    result[WidgetInformation.descriptionTag] = widgetInformation.description;
+    result[WidgetData.titleTag] = widgetInformation.title;
+    result[WidgetData.descriptionTag] = widgetInformation.description;
     return result;
   }
 
@@ -62,7 +62,7 @@ abstract class UserMadeWidgetBase<T extends WidgetInformation> extends StatefulW
 
 }
 
-abstract class UserMadeWidgetBaseState<T extends WidgetInformation> extends State<UserMadeWidgetBase<T>> {
+abstract class UserMadeWidgetBaseState<T extends WidgetData> extends State<UserMadeWidgetBase<T>> {
 
   String title;
   String description;

@@ -6,7 +6,7 @@ import 'package:plarneit/JsonHandler.dart';
 import 'package:plarneit/Pages/ContainerPages/DayPage.dart';
 import 'package:plarneit/UserMadeWidget/ID.dart';
 import 'package:plarneit/UserMadeWidget/NoteWidget.dart';
-import 'package:plarneit/UserMadeWidget/WidgetInformation.dart';
+import 'file:///C:/Users/Ruine/OneDrive/Desktop/Rui/Programming/CodingProjects/Unfinished/plarneit/lib/Data/WidgetData.dart';
 import 'package:plarneit/utils/conversion.dart';
 import '../UserInput/Dialogs.dart';
 import '../UserMadeWidget/TaskWidget.dart';
@@ -31,7 +31,7 @@ abstract class WidgetContainer extends StatefulWidget {
 
 }
 
-abstract class WidgetContainerState<T extends WidgetInformation> extends State<WidgetContainer> {
+abstract class WidgetContainerState<T extends WidgetData> extends State<WidgetContainer> {
 
   int nextWidgetId;
   List<UserMadeWidgetBase> widgets;

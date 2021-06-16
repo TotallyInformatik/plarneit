@@ -3,7 +3,7 @@ import 'dart:ffi';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:plarneit/UserInput/ColorPicker.dart';
-import 'package:plarneit/UserMadeWidget/WidgetInformation.dart';
+import 'file:///C:/Users/Ruine/OneDrive/Desktop/Rui/Programming/CodingProjects/Unfinished/plarneit/lib/Data/WidgetData.dart';
 import '../Controllers.dart';
 import 'TimePicker.dart';
 
@@ -84,7 +84,7 @@ class CustomDialogs {
   }
 
   static final _maxTextLength = 50;
-  static Future<T> showEditDialog<T extends WidgetInformation>(BuildContext context, TextEditingController titleController, TextEditingController descriptionController, Function onSubmit, List<Widget> additionalInput, {String title, String description}) async {
+  static Future<T> showEditDialog<T extends WidgetData>(BuildContext context, TextEditingController titleController, TextEditingController descriptionController, Function onSubmit, List<Widget> additionalInput, {String title, String description}) async {
 
     titleController.text = title;
     descriptionController.text = description;
@@ -136,17 +136,17 @@ class CustomDialogs {
     );
   }
 
-  static Future<TaskInformation> showTaskEditDialog(BuildContext context, {String title, String description, TimeOfDay starttime, TimeOfDay endtime}) {
+  static Future<TaskData> showTaskEditDialog(BuildContext context, {String title, String description, TimeOfDay starttime, TimeOfDay endtime}) {
     TextEditingController titleController = TextEditingController();
     TextEditingController descriptionController = TextEditingController();
     TimePickerController startTimeController = TimePickerController(initialTime: starttime);
     TimePickerController endTimeController = TimePickerController(initialTime: endtime);
 
-    return showEditDialog<TaskInformation>(
+    return showEditDialog<TaskData>(
         context,
         titleController,
         descriptionController,
-            () => Navigator.of(context).pop(TaskInformation(titleController.text, descriptionController.text, startTimeController.value, endTimeController.value)),
+            () => Navigator.of(context).pop(TaskData(titleController.text, descriptionController.text, startTimeController.value, endTimeController.value)),
         [
           TimePicker(
               "start time:",
@@ -169,17 +169,17 @@ class CustomDialogs {
     Color.fromRGBO(255, 204, 229, 1),
     Color.fromRGBO(205, 233, 255, 1),
   ];
-  static Future<NotesInformation> showNoteEditDialog(BuildContext context, {String title, String description, Color color}) {
+  static Future<NotesData> showNoteEditDialog(BuildContext context, {String title, String description, Color color}) {
     TextEditingController titleController = TextEditingController();
     TextEditingController descriptionController = TextEditingController();
     ColorPickerController colorPickerController = ColorPickerController(noteColors, noteColors.contains(color) ? noteColors.indexOf(color) : 0);
 
 
-    return showEditDialog<NotesInformation>(
+    return showEditDialog<NotesData>(
         context,
         titleController,
         descriptionController,
-            () => Navigator.of(context).pop(NotesInformation(titleController.text, descriptionController.text, colorPickerController.selectedColor)),
+            () => Navigator.of(context).pop(NotesData(titleController.text, descriptionController.text, colorPickerController.selectedColor)),
         [
           ColorPicker("color", colorPickerController, noteColors, 20.0)
         ],
