@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:plarneit/Data/SettingsData.dart';
 import 'package:plarneit/IndentifierWidget.dart';
 import 'package:plarneit/Controllers.dart';
+import 'package:plarneit/UserInput/Dialogs.dart';
 import 'package:plarneit/UserMadeWidget/ID.dart';
 import 'file:///C:/Users/Ruine/OneDrive/Desktop/Rui/Programming/CodingProjects/Unfinished/plarneit/lib/Data/WidgetData.dart';
 import 'package:plarneit/JsonHandler.dart';
@@ -108,13 +110,17 @@ abstract class UserMadeWidgetBaseState<T extends WidgetData> extends State<UserM
                     child: InkWell(
                         splashColor: Colors.white.withOpacity(0.4),
                         borderRadius: BorderRadius.all(Radius.circular(UserMadeWidgetBase.widgetBorderRadius)),
-                        onTap: () {
+                        onTap: () async {
                           switch(this.widget.statusController.value) {
                             case ContainerStatus.EDITING:
                               this.editingFunction();
                               break;
                             case ContainerStatus.DELETING:
-                              this.widget.widgetDeletionFunction(this.widget);
+                              if ((await JsonHandlerWidget.of(context).settingsHandler.readFile())[SettingsData.deletionPopupTag]) {
+                                CustomDialogs.showConfirmationDialog(context, "Are you sure you want to delete this widget?", () => this.widget.widgetDeletionFunction(this.widget));
+                              } else {
+                                this.widget.widgetDeletionFunction(this.widget);
+                              }
                               break;
                             case ContainerStatus.STANDBY:
                               break;

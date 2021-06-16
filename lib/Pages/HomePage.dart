@@ -69,7 +69,7 @@ class HomePage extends StatelessWidget {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     mainAxisAlignment: MainAxisAlignment.start,
-                    children: [ // TODO: remove buttons that will have to stay unimplemented due to deadline (school project)
+                    children: [
                       homePageButton(context, Icons.assignment_rounded, "Shortterm Planning", () => openPage(context, DayPage(DateTime.now(), PlarneitApp.jsonHandlerCollection, context))),
                       homePageButton(context, Icons.assignment_rounded, "Longterm Planning", () => openPage(context, LongtermPage(DateTime.now(), PlarneitApp.jsonHandlerCollection, context))),
                       homePageButton(context, Icons.settings, "Settings", () => openPage(context, SettingsPage(PlarneitApp.jsonHandlerCollection.settingsHandler.readFile()))),

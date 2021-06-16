@@ -76,6 +76,29 @@ class CustomDialogs {
 
   }
 
+  static Future<bool> showConfirmationDialog(BuildContext context, String description, Function afterConfirmation) async {
+    return await showCustomDialog<bool>(
+      context,
+      "Confirmation",
+      [
+        Text(description)
+      ],
+      [
+        IconButton(
+          icon: Icon(Icons.cancel_rounded),
+          onPressed: () { Navigator.pop(context); },
+        ),
+        IconButton(
+          icon: Icon(Icons.done_rounded),
+          onPressed: () {
+            afterConfirmation();
+            Navigator.pop(context);
+          },
+        )
+      ]
+    );
+  }
+
   static String textFieldValidator(String value) {
     if (value == null || value.isEmpty) {
       return "required field";
