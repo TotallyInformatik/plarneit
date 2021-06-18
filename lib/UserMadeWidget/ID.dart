@@ -1,3 +1,10 @@
+
+///
+/// WidgetId
+/// Classes that ensure that the ids of widgets in json files are always
+/// in the same format
+///
+
 abstract class WidgetId {
   final int number;
   final String prefix;
@@ -30,7 +37,8 @@ class TaskId extends WidgetId {
   TaskId(int number) : super(number, setPrefix);
 }
 
-class NoteId extends WidgetId { // wird sowohl von Notes als auch von LongtermNotes benutzt
+/// NoteId is used by longterm notes as well as standard notes
+class NoteId extends WidgetId {
 
   static final String setPrefix = "note";
 

@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:plarneit/main.dart';
 
-class NavigationBar<T> extends StatelessWidget {
+///
+/// Standard Navigationbar used for ContainerPages
+/// All Functions of Buttons must be defined
+///
+
+class NavigationBar extends StatelessWidget {
 
   static final Color _appBarColor = Color.fromRGBO(220, 220, 220, 1);
 
@@ -52,13 +54,6 @@ class NavigationBar<T> extends StatelessWidget {
           )
         ]
       )
-    );
-  }
-
-  FloatingActionButton returnActionButton() {
-    return FloatingActionButton(
-      child: Icon(Icons.home_rounded),
-      onPressed: () {  },
     );
   }
 

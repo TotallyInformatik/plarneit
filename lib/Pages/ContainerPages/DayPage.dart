@@ -1,18 +1,17 @@
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
 import 'package:plarneit/JsonHandler.dart';
 import 'package:plarneit/Pages/ContainerPages/ContainerPage.dart';
-import 'package:plarneit/Pages/ContainerPages/Navigationbar.dart';
-import 'package:plarneit/UserMadeWidget/NoteWidget.dart';
-import 'package:plarneit/UserMadeWidget/TaskWidget.dart';
 import 'package:plarneit/WidgetContainers/NotesContainer.dart';
 import 'package:plarneit/WidgetContainers/TaskContainer.dart';
 import 'package:plarneit/main.dart';
 import 'package:plarneit/utils/conversion.dart';
-import '../../WidgetContainers/WidgetContainer.dart';
 
-class DayPage extends ContainerPage<DateTime> {
+///
+/// DayPage
+/// A ContainerPage with a task container and a note container
+///
+
+class DayPage extends ContainerPage {
 
   static final double listContainerInnerPadding = 20;
 

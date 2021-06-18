@@ -1,6 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:plarneit/Data/DataClass.dart';
 
+///
+/// SettingsData:
+/// contains all Data regarding settings of app
+/// creates instances of SettingsData to change in SettingsPage
+/// toMap() and fromJsonData() are used for writing to the settings.json file.
+///
+
 class SettingsData extends DataClass {
 
   static final String autoDeletionPeriodTag = "autoDeletionPeriodTag";

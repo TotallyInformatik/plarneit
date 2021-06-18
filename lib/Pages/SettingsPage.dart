@@ -5,11 +5,10 @@ import 'package:plarneit/JsonHandler.dart';
 import 'package:plarneit/main.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-/// content:
-/// information abt app -> Developer, Website, used libraries (f)
-/// auto deletion duration (f)
-/// file opening
-/// (Account)
+///
+/// SettingsPage
+/// Not much to say here either...
+///
 
 
 class SettingsPage extends StatefulWidget {
@@ -62,7 +61,7 @@ class _SettingsPageState extends State<SettingsPage> {
 
   String determineAutoDeletionDisplay(double autoDeletionPeriod) {
     int value = autoDeletionPeriod.round();
-    return value < SettingsData.autoDeletionPeriodMaximumValue ? "${value} days" : "never";
+    return value < SettingsData.autoDeletionPeriodMaximumValue ? "$value days" : "never";
   }
 
   Widget appInformationSection() {
@@ -91,7 +90,8 @@ class _SettingsPageState extends State<SettingsPage> {
             listTile("cupertino_icons", subtitle: "1.0.2"),
             listTile("path_provider", subtitle: "2.0.1"),
             listTile("url_launcher", subtitle: "6.0.6"),
-            listTile("open_file", subtitle: "3.2.1")
+            listTile("open_file", subtitle: "3.2.1"),
+            listTile("flutter_launcher_icons", subtitle: "0.9.0")
           ],
         )
       ],

@@ -1,6 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:plarneit/WidgetContainers/LongtermNotesContainer.dart';
 
+
+///
+/// WidgetData
+/// WidgetData is the data used for the widgets that users create -> tasks, notes, longtermnotes
+/// It is used to ensure that the data passed from dialogs and from json files are always in the correct format
+///
+
 abstract class WidgetData {
 
   static final String titleTag = "title";
@@ -12,6 +19,10 @@ abstract class WidgetData {
   WidgetData(this.title, this.description);
 
 }
+
+///
+/// All Subclasses of WidgetData contain additional Data that those widgets need
+///
 
 class TaskData extends WidgetData {
 

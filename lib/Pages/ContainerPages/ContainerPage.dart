@@ -4,18 +4,24 @@ import 'package:plarneit/Pages/ContainerPages/Navigationbar.dart';
 import 'package:plarneit/WidgetContainers/WidgetContainer.dart';
 import 'package:plarneit/main.dart';
 
-abstract class ContainerPage<T> extends StatelessWidget {
+///
+/// ContainerPage
+/// An Abstract Widget Statelesswidget used for DayPage and LongtermPage as their
+/// structure is very similar and both need similar attributes
+///
 
-  /// T -> Identifier type
+
+abstract class ContainerPage extends StatelessWidget {
 
   static final double listContainerInnerPadding = 20;
 
-  final T identifier;
+  final DateTime identifier;
   final JsonHandlerCollection jsonCollection;
   final BuildContext context;
 
   ContainerPage(this.identifier, this.jsonCollection, this.context, {Key key}) : super(key: key);
 
+  /// function used for getting all json data from according json files for Containers
   Future<Map> configureObjectsMap(JsonHandler jsonHandler, String identifier) async {
     Map<String, dynamic> jsonContents = await jsonHandler.readFile();
     Map<String, dynamic> objectsMap = jsonContents[identifier];
@@ -27,6 +33,7 @@ abstract class ContainerPage<T> extends StatelessWidget {
     }
   }
 
+  /// functions that determine what happens when the navigationbar buttons are clicked
   void nextFunction(BuildContext context);
   void prevFunction(BuildContext context);
   void homeFunction(BuildContext context);

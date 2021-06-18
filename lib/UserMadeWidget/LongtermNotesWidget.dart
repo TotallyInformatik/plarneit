@@ -1,18 +1,29 @@
 import 'package:flutter/material.dart';
 import 'package:plarneit/Controllers.dart';
+import 'package:plarneit/Data/WidgetData.dart';
 import 'package:plarneit/JsonHandler.dart';
 import 'package:plarneit/UserInput/Dialogs.dart';
 import 'package:plarneit/UserMadeWidget/ID.dart';
-import 'package:plarneit/UserMadeWidget/NoteWidget.dart';
 import 'package:plarneit/UserMadeWidget/UserMadeWidgetBase.dart';
-import 'file:///C:/Users/Ruine/OneDrive/Desktop/Rui/Programming/CodingProjects/Unfinished/plarneit/lib/Data/WidgetData.dart';
-import 'package:plarneit/WidgetContainers/LongtermNotesContainer.dart';
 import 'package:plarneit/utils/conversion.dart';
+
+///
+/// LongtermNotesWidget
+/// A widget that basically has the same structure as a note-widget
+/// however, the json file of longterm notes widgets also have to keep track of
+/// the term the widget belongs to.
+/// This way, the "updateAddition" function has to be altered by ONE line
+///
+/// Because the UserMadeWidgetBase class uses a generic to know which type of Data
+/// this widget uses, this class cannot simply inherit from NotesWidget, leading
+/// to a lot of "wet" code.
+/// In Germany we say "doppelt gemoppelt :((((((((("
+///
 
 class LongtermNotesWidget extends UserMadeWidgetBase<LongtermNotesData> {
 
   LongtermNotesWidget(LongtermNotesData widgetInformation, WidgetContainerStatusController statusController, WidgetId id, Function widgetDeletionFunction, JsonHandler jsonHandler, DateTime identifier) :
-        super(widgetInformation, statusController, id, widgetDeletionFunction, jsonHandler, identifier.xToString(yearOnly: true), "note");
+        super(widgetInformation, statusController, id, widgetDeletionFunction, jsonHandler, identifier.xToString(yearOnly: true));
 
   @override
   State<StatefulWidget> createState() =>

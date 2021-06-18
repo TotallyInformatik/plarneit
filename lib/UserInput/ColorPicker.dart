@@ -1,52 +1,53 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:plarneit/UserInput/PickerBase.dart';
-import 'package:plarneit/utils/conversion.dart';
 import '../Controllers.dart';
 
+///
+/// ColorWidget
+/// Round Widgets that represent Colors that can be clicked on
+///
 
-class ColorWidget extends StatefulWidget {
+class ColorWidget extends StatelessWidget {
 
   final double size;
   final Color color;
   final Function onTapControllerFunction;
   static final double widgetPadding = 5;
-  static final Color selectedBorderColor = Color.fromRGBO(61, 61, 61, 1);
 
   const ColorWidget(this.size, this.color, this.onTapControllerFunction, {Key key}) : super(key: key);
-
-  @override
-  State<StatefulWidget> createState() => _ColorWidgetState();
-
-}
-
-class _ColorWidgetState extends State<ColorWidget> {
 
   @override
   Widget build(BuildContext context) {
     return Padding(
       padding: EdgeInsets.all(ColorWidget.widgetPadding),
       child: InkWell(
-        borderRadius: BorderRadius.all(Radius.circular(this.widget.size / 2)),
-        onTap: () {
-          //this.toggleSelected();
-          this.widget.onTapControllerFunction();
-        },
-        child: Container(
-          height: this.widget.size,
-          width: this.widget.size,
-          decoration: BoxDecoration(
-            color: this.widget.color,
-            borderRadius: BorderRadius.all(Radius.circular(this.widget.size / 2)),
-            //border: this._selected ? Border.all(color: ColorWidget.selectedBorderColor) : null
-          ),
-        )
+          borderRadius: BorderRadius.all(Radius.circular(this.size / 2)),
+          onTap: () {
+            //this.toggleSelected();
+            this.onTapControllerFunction();
+          },
+          child: Container(
+            height: this.size,
+            width: this.size,
+            decoration: BoxDecoration(
+              color: this.color,
+              borderRadius: BorderRadius.all(Radius.circular(this.size / 2)),
+              //border: this._selected ? Border.all(color: ColorWidget.selectedBorderColor) : null
+            ),
+          )
       ),
     );
   }
 
 }
 
+///
+/// ColorPicker
+/// Picker that is used to pick colors when creating notes
+/// Uses ColorWidget to represent the options and passes a function that sets
+/// the chosen color to the color of the ColorWidget
+///
 
 class ColorPicker extends PickerBase<ColorPickerController> {
   final List<Color> colors;
