@@ -183,7 +183,6 @@ class PlarneitApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    displayJsonContents();
     deleteOutdatedShorttermWidgets();
 
     double mediaQueryWidth = window.physicalSize.width / window.devicePixelRatio;
