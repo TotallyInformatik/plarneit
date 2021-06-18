@@ -1,7 +1,17 @@
 import 'dart:ui';
-
 import 'package:flutter/material.dart';
 
+///
+/// Controllers:
+/// The Controller file contains controllers that save values so that different classes can
+/// get that value and act accordingly.
+/// This has to be done because many attributes in stateful widgets have to be tracked by other
+/// widgets too, but since those attribtues are located in the (usually private) state classes,
+/// you cannot just get the value with the dot-notation
+///
+/// Since every controller keeps track of one value, a base class -> PickerController<T> is used to make
+/// code dry
+///
 
 class PickerController<T> {
 

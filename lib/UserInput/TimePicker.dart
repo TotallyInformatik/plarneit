@@ -5,6 +5,11 @@ import 'package:plarneit/main.dart';
 import 'package:plarneit/utils/conversion.dart';
 import '../Controllers.dart';
 
+///
+/// TimePicker
+/// Subclass of PickerBase but really just calls the showTimePicker function and
+/// saves the chosen value using a controller
+///
 
 class TimePicker extends PickerBase<TimePickerController> {
 

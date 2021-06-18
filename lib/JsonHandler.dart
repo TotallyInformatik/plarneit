@@ -1,8 +1,11 @@
 import 'dart:convert';
 import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:path_provider/path_provider.dart';
+
+///
+/// Classes to keep track of json information
+///
 
 class JsonHandlerWidget extends InheritedWidget {
 
@@ -29,6 +32,8 @@ class JsonHandlerCollection {
   JsonHandlerCollection(this.noteHandler, this.taskHandler, this.longtermGoalsHandler, this.settingsHandler);
 
 }
+
+
 
 class JsonHandler {
 

@@ -2,13 +2,18 @@ import 'package:flutter/material.dart';
 import 'package:plarneit/JsonHandler.dart';
 import 'package:plarneit/Pages/ContainerPages/ContainerPage.dart';
 import 'package:plarneit/UserInput/Dialogs.dart';
-import 'file:///C:/Users/Ruine/OneDrive/Desktop/Rui/Programming/CodingProjects/Unfinished/plarneit/lib/Data/WidgetData.dart';
 import 'package:plarneit/WidgetContainers/LongtermNotesContainer.dart';
-import 'package:plarneit/WidgetContainers/WidgetContainer.dart';
 import 'package:plarneit/main.dart';
 import 'package:plarneit/utils/conversion.dart';
 
-class LongtermPage extends ContainerPage<DateTime> {
+///
+/// LongtermPage
+/// Page with three LongtermNotesContainers
+/// Each Container is for one term
+/// each Page reflects one year
+///
+
+class LongtermPage extends ContainerPage {
 
   LongtermPage(DateTime year, JsonHandlerCollection jsonCollection, BuildContext context) : super(year, jsonCollection, context);
 

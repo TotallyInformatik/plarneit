@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:plarneit/Data/WidgetData.dart';
 import 'package:plarneit/JsonHandler.dart';
 import 'package:plarneit/UserInput/Dialogs.dart';
 import 'package:plarneit/UserMadeWidget/ID.dart';
 import 'package:plarneit/UserMadeWidget/NoteWidget.dart';
-import 'package:plarneit/UserMadeWidget/TaskWidget.dart';
 import 'package:plarneit/UserMadeWidget/UserMadeWidgetBase.dart';
-import 'file:///C:/Users/Ruine/OneDrive/Desktop/Rui/Programming/CodingProjects/Unfinished/plarneit/lib/Data/WidgetData.dart';
 import 'package:plarneit/WidgetContainers/WidgetContainer.dart';
 import 'package:plarneit/utils/conversion.dart';
 

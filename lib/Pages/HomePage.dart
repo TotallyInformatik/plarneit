@@ -1,11 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:plarneit/JsonHandler.dart';
-import 'package:plarneit/Pages/ContainerPages/ContainerPage.dart';
 import 'package:plarneit/Pages/ContainerPages/DayPage.dart';
 import 'package:plarneit/Pages/ContainerPages/LongtermPage.dart';
-import 'package:plarneit/Pages/ContainerPages/Navigationbar.dart';
 import 'package:plarneit/Pages/SettingsPage.dart';
 import 'package:plarneit/main.dart';
+
+
+///
+/// HomePage
+/// Not much to say here...
+///
 
 class HomePage extends StatelessWidget {
 

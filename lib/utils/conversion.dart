@@ -1,5 +1,14 @@
 import 'package:flutter/material.dart';
 
+///
+/// some classes and extensions that help when writing to the json files
+/// since json file cannot just take dart objects as values or as keys, these objects
+/// must be converted into strings when writing to json files and back to the respective
+/// objects when loading the widgets from the file.
+///
+/// These classes and extensions do that.
+///
+
 extension timeX on TimeOfDay {
 
   static final _connector = ":";
@@ -71,6 +80,8 @@ class Conversion {
 
 }
 
+/// the following functions etc. are just used to display the date in a fancy way
+/// on DayPage
 
 const Map<int, String> MONTH_TO_STRING = {
   1: "January",

@@ -1,12 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:plarneit/Data/SettingsData.dart';
-import 'package:plarneit/IndentifierWidget.dart';
 import 'package:plarneit/Controllers.dart';
+import 'package:plarneit/Data/WidgetData.dart';
 import 'package:plarneit/UserInput/Dialogs.dart';
 import 'package:plarneit/UserMadeWidget/ID.dart';
-import 'file:///C:/Users/Ruine/OneDrive/Desktop/Rui/Programming/CodingProjects/Unfinished/plarneit/lib/Data/WidgetData.dart';
 import 'package:plarneit/JsonHandler.dart';
 import 'package:plarneit/main.dart';
+
+///
+/// UserMadeWidgetBase
+/// since all user-created widgets have roughly the same structure,
+/// a superclass is used to ensure unity in their design
+///
 
 abstract class UserMadeWidgetBase<T extends WidgetData> extends StatefulWidget {
 
@@ -17,15 +22,36 @@ abstract class UserMadeWidgetBase<T extends WidgetData> extends StatefulWidget {
 
   final T widgetInformation;
   final WidgetId id;
-  final WidgetContainerStatusController statusController;
+  final WidgetContainerStatusController statusController; // the click function of widgets vary according to the status of its container, thats why the container is passed as an attribtue too
   final Function widgetDeletionFunction;
   final JsonHandler jsonHandler;
   final String identifier;
-  final String widgetIdPrefix;
-
-  UserMadeWidgetBase(this.widgetInformation, this.statusController, this.id, this.widgetDeletionFunction, this.jsonHandler, this.identifier, this.widgetIdPrefix, {Key key}) : super(key: key) {
+  ///
+  /// The attributes identifier needs a little explanation:
+  /// all json information of user made widgets are stored in an object in a json
+  /// file. This json file has this structure:
+  /// {
+  ///   <identifier>: {
+  ///     <widget-id> : {
+  ///       <dynamic-widget-attributes>: <dynamic-values>
+  ///       etc.
+  ///     }
+  ///     etc.
+  ///   }
+  /// }
+  /// Every Widget belongs to a certain date (notes and tasks) or year (longtermnotes).
+  /// This means that every widget must keep track of which date / year it belongs to
+  /// when its properties are being written to a json file.
+  /// The identifier is that key.
+  ///
+  UserMadeWidgetBase(this.widgetInformation, this.statusController, this.id, this.widgetDeletionFunction, this.jsonHandler, this.identifier, {Key key}) : super(key: key) {
     initializeJson();
   }
+
+  ///
+  /// the following functions (including and especially the abstract updateAddition function)
+  /// are all used to write data into the according json files
+  ///
 
   Map<String, String> returnJsonBase(WidgetData widgetInformation) {
     Map<String, String> result = {};
@@ -34,6 +60,8 @@ abstract class UserMadeWidgetBase<T extends WidgetData> extends StatefulWidget {
     return result;
   }
 
+  /// is called when creating the widget and adds this widget to json file if
+  /// it has just been added by user
   void initializeJson() async {
     Map<String, dynamic> currentJsonContent = await this.jsonHandler.readFile();
     currentJsonContent.putIfAbsent(this.identifier, () => Map<String, dynamic>()); // creates widgets for that day if needed...
@@ -44,6 +72,7 @@ abstract class UserMadeWidgetBase<T extends WidgetData> extends StatefulWidget {
     this.jsonHandler.writeToJson(currentJsonContent);
   }
 
+  /// updates json information
   void updateJson(T newWidgetInformation) async {
     Map<String, dynamic> toUpdate = this.returnJsonBase(newWidgetInformation);
     toUpdate.addAll(this.updateAddition(newWidgetInformation));
@@ -53,7 +82,10 @@ abstract class UserMadeWidgetBase<T extends WidgetData> extends StatefulWidget {
     this.jsonHandler.writeToJson(currentJsonContent);
   }
 
+  /// since every subclass (user created widget) has its own additional attributes
+  /// this abstract function returns all the data that has to be added to the json map
   Map updateAddition(T newWidgetInformation);
+
 
   void deleteJson() async {
     Map<String, dynamic> currentJsonContent = await this.jsonHandler.readFile();

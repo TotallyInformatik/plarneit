@@ -118,12 +118,6 @@ class PlarneitApp extends StatelessWidget {
   static final double contentResponseWidth1 = 500;
   static final double contentResponseWidth2 = 320; // dieses Attribut legt fest, ab wann die Schriftgröße geändert wird
 
-  void _resetJson() {
-    jsonHandlerCollection.noteHandler.writeToJson({});
-    jsonHandlerCollection.taskHandler.writeToJson({});
-    jsonHandlerCollection.longtermGoalsHandler.writeToJson({});
-  }
-
   void deleteWidgets(JsonHandler handler, double autoDeletionPeriod) async {
     Map contents = await handler.readFile();
     List<String> toDelete = []; // list of keys to delete from taskhandler

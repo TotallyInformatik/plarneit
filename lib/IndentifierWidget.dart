@@ -1,5 +1,11 @@
 import 'package:flutter/cupertino.dart';
 
+///
+/// For a detailed explanation of identifiers -> UserMadeWidgetBase.dart
+/// InheritedWidget is used so that the identifier doesn't have to be passed into every class
+///
+
+
 class Identifier<T> extends InheritedWidget {
 
   final T identifier;

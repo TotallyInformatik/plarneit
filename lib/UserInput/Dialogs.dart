@@ -1,11 +1,11 @@
-import 'dart:ffi';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:plarneit/Controllers.dart';
 import 'package:plarneit/UserInput/ColorPicker.dart';
-import 'file:///C:/Users/Ruine/OneDrive/Desktop/Rui/Programming/CodingProjects/Unfinished/plarneit/lib/Data/WidgetData.dart';
-import '../Controllers.dart';
-import 'TimePicker.dart';
+import 'package:plarneit/Data/WidgetData.dart';
+import 'package:plarneit/UserInput/TimePicker.dart';
+
+
 
 class CustomDialogs {
 

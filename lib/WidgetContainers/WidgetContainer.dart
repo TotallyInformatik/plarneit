@@ -1,16 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-import 'package:plarneit/IndentifierWidget.dart';
 import 'package:plarneit/Controllers.dart';
-import 'package:plarneit/JsonHandler.dart';
+import 'package:plarneit/Data/WidgetData.dart';
 import 'package:plarneit/Pages/ContainerPages/DayPage.dart';
 import 'package:plarneit/UserMadeWidget/ID.dart';
-import 'package:plarneit/UserMadeWidget/NoteWidget.dart';
-import 'file:///C:/Users/Ruine/OneDrive/Desktop/Rui/Programming/CodingProjects/Unfinished/plarneit/lib/Data/WidgetData.dart';
-import 'package:plarneit/utils/conversion.dart';
-import '../UserInput/Dialogs.dart';
-import '../UserMadeWidget/TaskWidget.dart';
-import '../UserMadeWidget/UserMadeWidgetBase.dart';
+import 'package:plarneit/UserMadeWidget/UserMadeWidgetBase.dart';
 
 abstract class WidgetContainer extends StatefulWidget {
 
@@ -87,9 +81,9 @@ abstract class WidgetContainerState<T extends WidgetData> extends State<WidgetCo
       }
 
       toDeleteIndex = newWidgets.indexOf(toDelete);
-      newWidgets[toDeleteIndex] = null;
+      newWidgets[toDeleteIndex] = null; /// the element at that position must be set to null to delete it entirely, else flutter does some weird funky bug
       this.widgets = newWidgets;
-      // this.nextWidgetId--; explicitly DON'T do this
+      // this.nextWidgetId--; explicitly DON'T do this, else widgets may overwrite eachothers json information
     });
 
     widget.deleteJson();
@@ -143,6 +137,14 @@ abstract class WidgetContainerState<T extends WidgetData> extends State<WidgetCo
                   scrollDirection: Axis.horizontal,
                   itemCount: this.widgets.length,
                   itemBuilder: (BuildContext context, int index) {
+
+                    /// since widgets have to be deleted using a weird workaround that leaves
+                    /// null values in a list, null values must be detected when building the listview
+                    /// those have to be removed entirely when building again, because for some reason,
+                    /// if the code just sets the value of the widget that is to be deleted to null
+                    /// and then removes that element from the list entirely consecutively, flutter
+                    /// just insists on making that one bug pop up
+                    ///
                     if (this.widgets[index] == null) {
                       toDeleteIndex.add(index);
                       return Container();
