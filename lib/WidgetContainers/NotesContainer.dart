@@ -47,7 +47,7 @@ class _NoteContainerState extends WidgetContainerState<NotesData> {
         }
 
         this.setState(() {
-          List<UserMadeWidgetBase> newWidgets = this.widgets;
+          List<UserMadeWidgetBase<NotesData>> newWidgets = this.widgets;
 
           newWidgets.add(createWidget(
               NotesData(

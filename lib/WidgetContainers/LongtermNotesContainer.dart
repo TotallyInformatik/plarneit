@@ -52,7 +52,7 @@ class _LongtermNotesContainer extends WidgetContainerState<LongtermNotesData> {
         if (Conversion.enumFromString(widget.value[LongtermNotesData.termTag], Term.values) == this._term) {
 
           this.setState(() {
-            List<UserMadeWidgetBase> newWidgets = this.widgets;
+            List<UserMadeWidgetBase<LongtermNotesData>> newWidgets = this.widgets;
 
             newWidgets.add(createWidget(
                 LongtermNotesData(

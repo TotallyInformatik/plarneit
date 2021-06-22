@@ -65,7 +65,7 @@ abstract class WidgetContainerState<T extends WidgetData> extends State<WidgetCo
     int toDeleteIndex;
 
     setState(() {
-      List<UserMadeWidgetBase> newWidgets = [];
+      List<UserMadeWidgetBase<T>> newWidgets = [];
       newWidgets.addAll(this.widgets);
 
       UserMadeWidgetBase toDelete;

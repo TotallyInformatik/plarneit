@@ -45,7 +45,7 @@ class _TaskContainerState extends WidgetContainerState<TaskData> {
         }
 
         this.setState(() {
-          List<UserMadeWidgetBase> newWidgets = this.widgets;
+          List<UserMadeWidgetBase<TaskData>> newWidgets = this.widgets;
           newWidgets.add(createWidget(
               TaskData(
                   widget.value[WidgetData.titleTag],
@@ -61,10 +61,6 @@ class _TaskContainerState extends WidgetContainerState<TaskData> {
       }
     }
     this.nextWidgetId = highestIdInt + 1;
-  }
-
-  int _convertTimeToComparableNumber(TimeOfDay timeOfDay) {
-    return timeOfDay.hour * 100 + timeOfDay.minute;
   }
 
   @override
