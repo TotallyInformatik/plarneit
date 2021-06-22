@@ -24,7 +24,7 @@ extension timeX on TimeOfDay {
 
   static TimeOfDay fromString(String timeString) {
     List<String> time = timeString.split("$_connector");
-    return TimeOfDay(hour: int.parse(time[0]), minute: int.parse(time[0]));
+    return TimeOfDay(hour: int.parse(time[0]), minute: int.parse(time[1]));
   }
 
 }

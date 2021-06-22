@@ -63,8 +63,13 @@ class _TaskContainerState extends WidgetContainerState<TaskData> {
     this.nextWidgetId = highestIdInt + 1;
   }
 
+  int _convertTimeToComparableNumber(TimeOfDay timeOfDay) {
+    return timeOfDay.hour * 100 + timeOfDay.minute;
+  }
+
   @override
   Widget build(BuildContext context) {
+
     return this.returnStandardBuild(context);
   }
 

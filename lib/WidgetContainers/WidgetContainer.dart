@@ -28,7 +28,7 @@ abstract class WidgetContainer extends StatefulWidget {
 abstract class WidgetContainerState<T extends WidgetData> extends State<WidgetContainer> {
 
   int nextWidgetId;
-  List<UserMadeWidgetBase> widgets;
+  List<UserMadeWidgetBase<T>> widgets;
   final WidgetContainerStatusController statusController = WidgetContainerStatusController();
 
 
@@ -108,7 +108,7 @@ abstract class WidgetContainerState<T extends WidgetData> extends State<WidgetCo
                         iconSize: IconTheme.of(context).size,
                         icon: Icon(Icons.add_rounded),
                         onPressed: () async {
-                          List<UserMadeWidgetBase> newWidgets = [];
+                          List<UserMadeWidgetBase<T>> newWidgets = [];
                           newWidgets.addAll(this.widgets);
                           newWidgets.add(await this.addWidget());
                           this.widgets = newWidgets;
@@ -144,13 +144,14 @@ abstract class WidgetContainerState<T extends WidgetData> extends State<WidgetCo
                     /// if the code just sets the value of the widget that is to be deleted to null
                     /// and then removes that element from the list entirely consecutively, flutter
                     /// just insists on making that one bug pop up
-                    ///
+
                     if (this.widgets[index] == null) {
                       toDeleteIndex.add(index);
                       return Container();
                     } else {
                       return this.widgets[index];
                     }
+
                   },
                 ),
               )
