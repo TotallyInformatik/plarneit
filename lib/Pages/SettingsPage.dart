@@ -171,7 +171,7 @@ class _SettingsPageState extends State<SettingsPage> {
     return ListTile(
         title: Text(handler.fileName),
         onTap: () async {
-          OpenFile.open(await handler.localPath);
+          OpenFile.open("${await handler.localPath}/${handler.fileName}");
         }
     );
   }

@@ -1,4 +1,3 @@
-import 'dart:io';
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
@@ -7,10 +6,7 @@ import 'package:plarneit/JsonHandler.dart';
 import 'package:plarneit/Pages/HomePage.dart';
 import 'package:plarneit/utils/conversion.dart';
 
-import 'Pages/ContainerPages/DayPage.dart';
-
 void main() {
-
   runApp(PlarneitApp());
 }
 
