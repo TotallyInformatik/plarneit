@@ -5,9 +5,14 @@ import 'package:plarneit/Data/SettingsData.dart';
 import 'package:plarneit/JsonHandler.dart';
 import 'package:plarneit/Pages/HomePage.dart';
 import 'package:plarneit/utils/conversion.dart';
+import 'package:flutter/services.dart';
 
 void main() {
-  runApp(PlarneitApp());
+  WidgetsFlutterBinding.ensureInitialized();
+  SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp])
+    .then((_) {
+      runApp(PlarneitApp());
+  });
 }
 
 class PlarneitApp extends StatelessWidget {
