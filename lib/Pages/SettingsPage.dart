@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:open_file/open_file.dart';
 import 'package:plarneit/Data/SettingsData.dart';
 import 'package:plarneit/JsonHandler.dart';
 import 'package:plarneit/main.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:yaml/yaml.dart';
 
 ///
 /// SettingsPage
@@ -64,37 +66,73 @@ class _SettingsPageState extends State<SettingsPage> {
     return value < SettingsData.autoDeletionPeriodMaximumValue ? "$value days" : "never";
   }
 
-  Widget appInformationSection() {
+  Future<Widget> appInformationSection() async {
 
-    const websiteUrl = "https://totallyinformatik.github.io/PlanifySite/";
+    const String websiteUrl = "https://totallyinformatik.github.io/PlanifySite/";
 
-    return ExpansionTile(
-      initiallyExpanded: true,
-      title: Text("App Information", style: Theme.of(context).primaryTextTheme.headline3),
-      childrenPadding: _expansionTilePadding,
-      children: [
-        listTile("App Name: Plarneit", subtitle: "Mobile Version of Planify"),
-        listTile("Version 1.0.0"),
-        ListTile(
-          title: Text("Website"),
-          subtitle: Text(websiteUrl),
-          onTap: () async {
-            launch(websiteUrl);
-          },
-        ),
-        listTile("Made by Rui Zhang in 2021", subtitle: "(TotallyInformatik)"),
-        ExpansionTile(
-          title: Text("Used Libraries", style: Theme.of(context).primaryTextTheme.headline4),
-          childrenPadding: _expansionTilePadding,
-          children: [
-            listTile("cupertino_icons", subtitle: "1.0.2"),
-            listTile("path_provider", subtitle: "2.0.1"),
-            listTile("url_launcher", subtitle: "6.0.6"),
-            listTile("open_file", subtitle: "3.2.1"),
-            listTile("flutter_launcher_icons", subtitle: "0.9.0")
-          ],
-        )
-      ],
+    return FutureBuilder(
+      future: rootBundle.loadString("pubspec.yaml"),
+      builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
+
+        if (snapshot.hasData) {
+          var yaml = loadYaml(snapshot.data);
+
+          Map dependencies = yaml["dependencies"];
+          List<ListTile> dependencyTiles = [];
+          for (MapEntry dependency in dependencies.entries) {
+            try {
+              dependencyTiles.add(listTile(dependency.key, subtitle: dependency.value));
+            } catch (Exception) {
+              dependencyTiles.add(listTile(dependency.key));
+            }
+          }
+
+          Map devdep = yaml["dev_dependencies"];
+          List<ListTile> devdependencyTiles = [];
+          for (MapEntry dependency in devdep.entries) {
+            try {
+              devdependencyTiles.add(listTile(dependency.key, subtitle: dependency.value));
+            } catch (Exception) {
+              devdependencyTiles.add(listTile(dependency.key));
+            }
+          }
+
+          return ExpansionTile(
+            initiallyExpanded: true,
+            title: Text("App Information", style: Theme.of(context).primaryTextTheme.headline3),
+            childrenPadding: _expansionTilePadding,
+            children: [
+              listTile("App Name: ${yaml["name"]}", subtitle: "Mobile Version of Planify"),
+              listTile("Version ${yaml["version"]}"),
+              ListTile(
+                title: Text("Website"),
+                subtitle: Text(websiteUrl),
+                onTap: () async {
+                  launch(websiteUrl);
+                },
+              ),
+              listTile("Made by ${yaml["authors"][0]} in 2021", subtitle: "(TotallyInformatik)"),
+              ExpansionTile(
+                  title: Text("Dependencies", style: Theme.of(context).primaryTextTheme.headline4),
+                  childrenPadding: _expansionTilePadding,
+                  children: dependencyTiles
+              ),
+              ExpansionTile(
+                  title: Text("Dev Dependencies", style: Theme.of(context).primaryTextTheme.headline4),
+                  childrenPadding: _expansionTilePadding,
+                  children: devdependencyTiles
+              )
+            ],
+          );
+
+        }
+        return ExpansionTile(
+          initiallyExpanded: true,
+          title: Text("App Information", style: Theme.of(context).primaryTextTheme.headline3)
+        );
+
+
+      },
     );
   }
   Widget appSettingsSection(String autoDeletionDisplay, double autoDeletionPeriod) {
@@ -134,7 +172,7 @@ class _SettingsPageState extends State<SettingsPage> {
           ExpansionTile(
             title: Text("Deletion Notification", style: Theme.of(context).primaryTextTheme.headline4),
             children: [
-              listTile("", subtitle: "determines whether a  confirmation notification will popup when deleting widgets."),
+              listTile("", subtitle: "determines whether a confirmation notification will popup when deleting widgets."),
               ListTile(
                   title: Text("activate notifications"),
                   leading: Radio(
@@ -199,20 +237,33 @@ class _SettingsPageState extends State<SettingsPage> {
           title: Text("Settings", style: Theme.of(context).primaryTextTheme.headline1)
       ),
       body: Scrollbar(
-        controller: scrollController,
-        child: ListView(
           controller: scrollController,
-            children: [Container(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    appInformationSection(),
-                    appSettingsSection(autoDeletionDisplay, autoDeletionPeriod),
-                    appFileOpeningSection(JsonHandlerWidget.of(context))
-                  ],
-                )
-            )]
-        )
+          child: ListView(
+              controller: scrollController,
+              children: [Container(
+                  child: FutureBuilder(
+                    future: appInformationSection(),
+                    builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
+
+                      if (snapshot.hasData) {
+                        Widget appInformationSection = snapshot.data;
+                        print("snapshot: $appInformationSection");
+
+                        return Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            appInformationSection,
+                            appSettingsSection(autoDeletionDisplay, autoDeletionPeriod),
+                            appFileOpeningSection(JsonHandlerWidget.of(context))
+                          ],
+                        );
+                      }
+                      return Column();
+
+                    }
+                  )
+              )]
+          )
       )
     );
 

@@ -1,0 +1,37 @@
+1. SettingsPage (f)
+2. Outdated Removal (f)
+
+code reformat:
+- change widgetData to take in map and parse map to result in Attributes ( just like in SettingsData)
+- change attributes of classes with many attributes to be positional but required
+- change optional attributes of functions to optional, not positional via "[argument]"
+
+
+sorting algo:
+    for (int i = 0; i<this.widgets.length; i++) {
+      int min = i;
+      if (this.widgets[i] == null) {
+        continue;
+      }
+      for (int newMin = i+1; newMin<this.widgets.length; newMin++) {
+        if (this.widgets[newMin] == null) {
+          continue;
+        }
+
+        TimeOfDay newMinWidgetInformationStarttime = this.widgets[newMin].widgetInformation.starttime;
+        TimeOfDay currentMinWidgetInformationStarttime = this.widgets[min].widgetInformation.starttime;
+        TimeOfDay newMinWidgetInformationEndtime = this.widgets[newMin].widgetInformation.endtime;
+        TimeOfDay currentMinWidgetInformationEndtime = this.widgets[min].widgetInformation.endtime;
+
+        if ((_convertTimeToComparableNumber(newMinWidgetInformationStarttime) < _convertTimeToComparableNumber(currentMinWidgetInformationStarttime)) ||
+            (_convertTimeToComparableNumber(newMinWidgetInformationStarttime) == _convertTimeToComparableNumber(currentMinWidgetInformationStarttime) &&
+                _convertTimeToComparableNumber(newMinWidgetInformationEndtime) < _convertTimeToComparableNumber(currentMinWidgetInformationEndtime))) {
+          min = newMin;
+        }
+      }
+
+      UserMadeWidgetBase temp = this.widgets[i];
+      this.widgets[i] = this.widgets[min];
+      this.widgets[min] = temp;
+
+    }
