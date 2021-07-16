@@ -89,7 +89,14 @@ abstract class UserMadeWidgetBase<T extends WidgetData> extends StatefulWidget {
 
   void deleteJson() async {
     Map<String, dynamic> currentJsonContent = await this.jsonHandler.readFile();
-    currentJsonContent[this.identifier].remove(this.id.toString());
+    dynamic identifierContents = currentJsonContent[this.identifier];
+    identifierContents.remove(this.id.toString());
+
+    if (identifierContents.length <= 0) {
+      // this means that this date does not have any contents anymore
+      currentJsonContent.remove(this.identifier);
+    }
+
     this.jsonHandler.writeToJson(currentJsonContent);
   }
 

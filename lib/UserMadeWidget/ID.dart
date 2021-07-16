@@ -8,7 +8,7 @@
 abstract class WidgetId {
   final int number;
   final String prefix;
-  static final String connector = "-";
+  static final String connector = "+";
 
   WidgetId(this.number, this.prefix);
 
