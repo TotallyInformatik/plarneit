@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:plarneit/Data/DataClass.dart';
 import 'package:plarneit/WidgetContainers/LongtermNotesContainer.dart';
+import 'package:plarneit/utils/conversion.dart';
 
 
 ///
@@ -8,7 +10,7 @@ import 'package:plarneit/WidgetContainers/LongtermNotesContainer.dart';
 /// It is used to ensure that the data passed from dialogs and from json files are always in the correct format
 ///
 
-abstract class WidgetData {
+abstract class WidgetData extends DataClass {
 
   static final String titleTag = "title";
   static final String descriptionTag = "description";
@@ -17,6 +19,13 @@ abstract class WidgetData {
   final String description;
 
   WidgetData(this.title, this.description);
+
+  Map toMap() {
+    return {
+      titleTag: this.title,
+      descriptionTag: this.description
+    };
+  }
 
 }
 
@@ -34,6 +43,16 @@ class TaskData extends WidgetData {
 
   TaskData(String title, String description, this.starttime, this.endtime) : super(title, description);
 
+  @override
+  Map toMap() {
+    Map map = {
+      starttimeTag: this.starttime.xToString()   ,
+      endtimeTag: this.endtime.xToString(),
+    };
+    map.addAll(super.toMap());
+    return map;
+  }
+
 }
 
 class NotesData extends WidgetData {
@@ -43,6 +62,15 @@ class NotesData extends WidgetData {
   final Color color;
 
   NotesData(String title, String description, this.color) : super(title, description);
+
+  @override
+  Map toMap() {
+    Map map = {
+      colorTag: this.color.xToString()
+    };
+    map.addAll(super.toMap());
+    return map;
+  }
 
 
 }
@@ -54,5 +82,14 @@ class LongtermNotesData extends NotesData {
   final Term term;
 
   LongtermNotesData(String title, String description, Color color, this.term) : super(title, description, color);
+
+  @override
+  Map toMap() {
+    Map map = {
+      termTag: Conversion.enumToString(this.term)
+    };
+    map.addAll(super.toMap());
+    return map;
+  }
 
 }

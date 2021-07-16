@@ -18,14 +18,6 @@ class TaskWidget extends UserMadeWidgetBase<TaskData> {
   @override
   State<StatefulWidget> createState() => _TaskWidgetState();
 
-  @override
-  Map<String, String> updateAddition(TaskData newWidgetInformation) {
-    Map<String, String> result = {};
-    result[TaskData.starttimeTag] = newWidgetInformation.starttime.xToString();
-    result[TaskData.endtimeTag] = newWidgetInformation.endtime.xToString();
-
-    return result;
-  }
 }
 
 class _TaskWidgetState extends UserMadeWidgetBaseState<TaskData> {

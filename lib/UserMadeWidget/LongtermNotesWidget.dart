@@ -29,15 +29,6 @@ class LongtermNotesWidget extends UserMadeWidgetBase<LongtermNotesData> {
   State<StatefulWidget> createState() =>
       _LongtermNotesWidgetState();
 
-  @override
-  Map updateAddition(LongtermNotesData newWidgetInformation) {
-    Map<String, String> result = {};
-    result[NotesData.colorTag] = newWidgetInformation.color.xToString();
-    result[LongtermNotesData.termTag] = Conversion.enumToString(newWidgetInformation.term);
-
-    return result;
-  }
-
 }
 
 class _LongtermNotesWidgetState extends UserMadeWidgetBaseState<LongtermNotesData> {

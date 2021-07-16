@@ -48,43 +48,23 @@ abstract class UserMadeWidgetBase<T extends WidgetData> extends StatefulWidget {
     initializeJson();
   }
 
-  ///
-  /// the following functions (including and especially the abstract updateAddition function)
-  /// are all used to write data into the according json files
-  ///
-
-  Map<String, String> returnJsonBase(WidgetData widgetInformation) {
-    Map<String, String> result = {};
-    result[WidgetData.titleTag] = widgetInformation.title;
-    result[WidgetData.descriptionTag] = widgetInformation.description;
-    return result;
-  }
-
   /// is called when creating the widget and adds this widget to json file if
   /// it has just been added by user
   void initializeJson() async {
     Map<String, dynamic> currentJsonContent = await this.jsonHandler.readFile();
     currentJsonContent.putIfAbsent(this.identifier, () => Map<String, dynamic>()); // creates widgets for that day if needed...
-    Map<String, String> jsonBase = this.returnJsonBase(this.widgetInformation);
-    jsonBase.addAll(this.updateAddition(this.widgetInformation));
 
-    currentJsonContent[this.identifier].putIfAbsent(this.id.toString(), () => jsonBase); // this is not static programming (bruh)
+    currentJsonContent[this.identifier].putIfAbsent(this.id.toString(), () => this.widgetInformation.toMap()); // this is not static programming (bruh)
     this.jsonHandler.writeToJson(currentJsonContent);
   }
 
   /// updates json information
   void updateJson(T newWidgetInformation) async {
-    Map<String, dynamic> toUpdate = this.returnJsonBase(newWidgetInformation);
-    toUpdate.addAll(this.updateAddition(newWidgetInformation));
 
     Map<String, dynamic> currentJsonContent = await this.jsonHandler.readFile();
-    currentJsonContent[this.identifier][this.id.toString()] = toUpdate;
+    currentJsonContent[this.identifier][this.id.toString()] = newWidgetInformation.toMap();
     this.jsonHandler.writeToJson(currentJsonContent);
   }
-
-  /// since every subclass (user created widget) has its own additional attributes
-  /// this abstract function returns all the data that has to be added to the json map
-  Map updateAddition(T newWidgetInformation);
 
 
   void deleteJson() async {

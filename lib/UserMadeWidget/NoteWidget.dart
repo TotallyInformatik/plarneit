@@ -17,14 +17,6 @@ class NoteWidget extends UserMadeWidgetBase<NotesData> {
   State<StatefulWidget> createState() =>
       NoteWidgetState();
 
-  @override
-  Map<String, String> updateAddition(NotesData newWidgetInformation) {
-    Map<String, String> result = {};
-    result[NotesData.colorTag] = newWidgetInformation.color.xToString();
-
-    return result;
-  }
-
 }
 
 class NoteWidgetState extends UserMadeWidgetBaseState<NotesData> {

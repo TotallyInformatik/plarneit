@@ -79,7 +79,6 @@ class JsonHandler {
     final fileExists = file.exists();
     if (await fileExists) {
       file.writeAsStringSync(jsonEncode(jsonContent));
-      print(await readFile());
     } else {
       print("file does not exist!!!");
     }
