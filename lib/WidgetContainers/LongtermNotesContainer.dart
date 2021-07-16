@@ -47,9 +47,9 @@ class _LongtermNotesContainer extends WidgetContainerState<LongtermNotesData> {
     if (await this.widget.startingWidgetsMap != null) {
       for (MapEntry widget in (await this.widget.startingWidgetsMap).entries) {
 
-        WidgetId newId = WidgetId.fromString(widget.key);
-
         if (Conversion.enumFromString(widget.value[LongtermNotesData.termTag], Term.values) == this._term) {
+
+          NoteId id = WidgetId.fromString(widget.key);
 
           this.setState(() {
             List<UserMadeWidgetBase<LongtermNotesData>> newWidgets = this.widgets;
@@ -61,7 +61,7 @@ class _LongtermNotesContainer extends WidgetContainerState<LongtermNotesData> {
                     colorX.fromString(widget.value[NotesData.colorTag]),
                     Conversion.enumFromString(widget.value[LongtermNotesData.termTag], Term.values)
                 ),
-                newId
+                id
             ));
 
             this.widgets = newWidgets;
@@ -80,6 +80,8 @@ class _LongtermNotesContainer extends WidgetContainerState<LongtermNotesData> {
   }
 
   /// da alle drei LongtermNotesContainers dieselbe ID nutzen, muss immer die nächste Identifikationsnummer gefunden werden, wenn ein Widget hinzugefügt wird
+
+  /*
   Future<int> getNextId() async {
 
     int currentHighestId = 1;
@@ -99,6 +101,7 @@ class _LongtermNotesContainer extends WidgetContainerState<LongtermNotesData> {
     }
 
   }
+   */
 
   @override
   Future<UserMadeWidgetBase<LongtermNotesData>> addWidget() async {
@@ -111,7 +114,7 @@ class _LongtermNotesContainer extends WidgetContainerState<LongtermNotesData> {
             widgetInformation.color,
             this._term
           ),
-          NoteId(await getNextId())
+          NoteId.newId()
       );
     }
   }

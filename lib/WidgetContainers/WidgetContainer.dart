@@ -28,7 +28,6 @@ abstract class WidgetContainer extends StatefulWidget {
 
 abstract class WidgetContainerState<T extends WidgetData> extends State<WidgetContainer> {
 
-  int nextWidgetId;
   List<UserMadeWidgetBase<T>> widgets;
   final WidgetContainerStatusController statusController = WidgetContainerStatusController();
 
@@ -54,7 +53,6 @@ abstract class WidgetContainerState<T extends WidgetData> extends State<WidgetCo
   @override
   void initState() {
     super.initState();
-    this.nextWidgetId = 1;
     this.widgets = [];
     this.initializeWidgets(this.context);
   }
@@ -112,11 +110,10 @@ abstract class WidgetContainerState<T extends WidgetData> extends State<WidgetCo
                           List<UserMadeWidgetBase<T>> newWidgets = [];
                           newWidgets.addAll(this.widgets);
                           newWidgets.add(await this.addWidget());
-                          this.widgets = newWidgets;
-
-                          setState(() {
-                            this.nextWidgetId++;
+                          this.setState(() {
+                            this.widgets = newWidgets;
                           });
+
                         }
                     ),
                     controllerIconButton(0.15, ContainerStatus.EDITING, Icons.edit_rounded, Icons.edit_off),

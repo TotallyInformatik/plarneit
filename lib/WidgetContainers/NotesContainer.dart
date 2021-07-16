@@ -37,14 +37,10 @@ class _NoteContainerState extends WidgetContainerState<NotesData> {
 
   @override
   void initializeWidgets(BuildContext context) async {
-    int highestIdInt = 0;
     if (await this.widget.startingWidgetsMap != null) {
       for (MapEntry widget in (await this.widget.startingWidgetsMap).entries) {
 
-        WidgetId newId = WidgetId.fromString(widget.key);
-        if (newId.number > highestIdInt) {
-          highestIdInt = newId.number;
-        }
+        NoteId id = WidgetId.fromString(widget.key);
 
         this.setState(() {
           List<UserMadeWidgetBase<NotesData>> newWidgets = this.widgets;
@@ -55,7 +51,7 @@ class _NoteContainerState extends WidgetContainerState<NotesData> {
                   widget.value[WidgetData.descriptionTag],
                   colorX.fromString(widget.value[NotesData.colorTag])
               ),
-              newId // increments id count
+              id
           ));
 
           this.widgets = newWidgets;
@@ -63,7 +59,6 @@ class _NoteContainerState extends WidgetContainerState<NotesData> {
         });
       }
     }
-    this.nextWidgetId = highestIdInt + 1;
   }
 
   @override
@@ -75,7 +70,7 @@ class _NoteContainerState extends WidgetContainerState<NotesData> {
   Future<UserMadeWidgetBase<WidgetData>> addWidget() async {
     NotesData widgetInformation = await CustomDialogs.showNoteEditDialog(context);
     if (widgetInformation != null) {
-      return createWidget(widgetInformation, NoteId(this.nextWidgetId));
+      return createWidget(widgetInformation, NoteId.newId());
     }
   }
 

@@ -1,4 +1,6 @@
 
+import 'package:uuid/uuid.dart';
+
 ///
 /// WidgetId
 /// Classes that ensure that the ids of widgets in json files are always
@@ -6,9 +8,12 @@
 ///
 
 abstract class WidgetId {
-  final int number;
+  final String number;
   final String prefix;
+
   static final String connector = "+";
+  static final Uuid uuidGenerator = new Uuid();
+
 
   WidgetId(this.number, this.prefix);
 
@@ -19,11 +24,11 @@ abstract class WidgetId {
   static WidgetId fromString(String idString) {
     List<String> info = idString.split(connector);
     String prefix = info[0];
-    int number = int.parse(info[1]);
+    String uuid = info[1];
     if (prefix == TaskId.setPrefix) {
-      return TaskId(number);
+      return TaskId(uuid);
     } else if (prefix == NoteId.setPrefix) {
-      return NoteId(number);
+      return NoteId(uuid);
     } else {
       throw Exception("parsing failed");
     }
@@ -34,7 +39,11 @@ abstract class WidgetId {
 class TaskId extends WidgetId {
   static final String setPrefix = "task";
 
-  TaskId(int number) : super(number, setPrefix);
+  TaskId(String uuid) : super(uuid, setPrefix);
+
+  static WidgetId newId() {
+    return TaskId(WidgetId.uuidGenerator.v4());
+  }
 }
 
 /// NoteId is used by longterm notes as well as standard notes
@@ -42,5 +51,9 @@ class NoteId extends WidgetId {
 
   static final String setPrefix = "note";
 
-  NoteId(int number) : super(number, setPrefix);
+  NoteId(String uuid) : super(uuid, setPrefix);
+
+  static WidgetId newId() {
+    return NoteId(WidgetId.uuidGenerator.v4());
+  }
 }

@@ -35,32 +35,27 @@ class _TaskContainerState extends WidgetContainerState<TaskData> {
 
   @override
   void initializeWidgets(BuildContext context) async {
-    int highestIdInt = 0;
     if (await this.widget.startingWidgetsMap != null) {
       for (MapEntry widget in (await this.widget.startingWidgetsMap).entries) {
 
-        WidgetId newId = WidgetId.fromString(widget.key);
-        if (newId.number > highestIdInt) {
-          highestIdInt = newId.number;
-        }
+        TaskId id = WidgetId.fromString(widget.key);
 
         this.setState(() {
           List<UserMadeWidgetBase<TaskData>> newWidgets = this.widgets;
           newWidgets.add(createWidget(
-              TaskData(
-                  widget.value[WidgetData.titleTag],
-                  widget.value[WidgetData.descriptionTag],
-                  timeX.fromString(widget.value[TaskData.starttimeTag]),
-                  timeX.fromString(widget.value[TaskData.endtimeTag])
-              ),
-              newId
+            TaskData(
+                widget.value[WidgetData.titleTag],
+                widget.value[WidgetData.descriptionTag],
+                timeX.fromString(widget.value[TaskData.starttimeTag]),
+                timeX.fromString(widget.value[TaskData.endtimeTag])
+            ),
+            id
           ));
 
           this.widgets = newWidgets;
         });
       }
     }
-    this.nextWidgetId = highestIdInt + 1;
   }
 
   @override
@@ -73,7 +68,7 @@ class _TaskContainerState extends WidgetContainerState<TaskData> {
   Future<UserMadeWidgetBase<WidgetData>> addWidget() async {
     TaskData widgetInformation = await CustomDialogs.showTaskEditDialog(context);
     if (widgetInformation != null) {
-      return createWidget(widgetInformation, TaskId(this.nextWidgetId));
+      return createWidget(widgetInformation, TaskId.newId());
     }
   }
 
