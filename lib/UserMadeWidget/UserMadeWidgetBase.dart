@@ -108,6 +108,9 @@ abstract class UserMadeWidgetBaseState<T extends WidgetData> extends State<UserM
   String title;
   String description;
 
+  static String titlePlaceholder = "title";
+  static String descriptionPlaceholder = "description";
+
   @override
   void initState() {
     super.initState();
@@ -125,10 +128,12 @@ abstract class UserMadeWidgetBaseState<T extends WidgetData> extends State<UserM
 
     double containerSize = UserMadeWidgetBase.widgetSize + UserMadeWidgetBase.widgetPadding;
 
+
     TextTheme theme = invertFontColor ? Theme.of(context).primaryTextTheme : Theme.of(context).accentTextTheme;
+    TextStyle placeholderTheme = theme.bodyText1.apply(color: Color.fromRGBO(117, 117, 117, 1));
     List<Widget> children = [
-      Text(this.title, style: theme.headline5),
-      Text(this.description, style: theme.bodyText1)
+      this.title == "" ? Text(titlePlaceholder, style: placeholderTheme) : Text(this.title, style: theme.headline5),
+      this.description == ""?  Text(descriptionPlaceholder, style: placeholderTheme) : Text(this.description, style: theme.bodyText1)
     ];
 
     children.addAll(additionalChildren);
@@ -150,6 +155,7 @@ abstract class UserMadeWidgetBaseState<T extends WidgetData> extends State<UserM
                         splashColor: Colors.white.withOpacity(0.4),
                         borderRadius: BorderRadius.all(Radius.circular(UserMadeWidgetBase.widgetBorderRadius)),
                         onTap: () async {
+
                           switch(this.widget.statusController.value) {
                             case ContainerStatus.EDITING:
                               this.editingFunction();
@@ -164,6 +170,7 @@ abstract class UserMadeWidgetBaseState<T extends WidgetData> extends State<UserM
                             case ContainerStatus.STANDBY:
                               break;
                           }
+
                         },
                         child: Container(
                             width: UserMadeWidgetBase.widgetSize,

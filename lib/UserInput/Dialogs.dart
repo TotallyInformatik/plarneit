@@ -106,7 +106,6 @@ class CustomDialogs {
     return null;
   }
 
-  static final _maxTextLength = 50;
   static Future<T> showEditDialog<T extends WidgetData>(BuildContext context, TextEditingController titleController, TextEditingController descriptionController, Function onSubmit, List<Widget> additionalInput, {String title, String description}) async {
 
     titleController.text = title;
@@ -117,8 +116,6 @@ class CustomDialogs {
     List<Widget> input = [
       TextFormField(
           style: Theme.of(context).primaryTextTheme.bodyText1,
-          validator: textFieldValidator,
-          maxLength: _maxTextLength,
           decoration: InputDecoration(
               hintText: "title"
           ),
@@ -126,8 +123,6 @@ class CustomDialogs {
       ),
       TextFormField(
           style: Theme.of(context).primaryTextTheme.bodyText1,
-          validator: textFieldValidator,
-          maxLength: _maxTextLength,
           decoration: InputDecoration(
               hintText: "description"
           ),
