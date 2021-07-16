@@ -10,7 +10,7 @@ import 'package:plarneit/utils/conversion.dart';
 
 class TaskWidget extends UserMadeWidgetBase<TaskData> {
 
-  static final double timeBottomMargin = 10;
+  static final double timeBottomMargin = 5;
 
    TaskWidget(TaskData widgetInformation, WidgetContainerStatusController statusController, WidgetId id, Function widgetDeletionFunction, JsonHandler jsonHandler, DateTime identifier, {Key key})
       : super(widgetInformation, statusController, id, widgetDeletionFunction, jsonHandler, identifier.xToString(), key: key);

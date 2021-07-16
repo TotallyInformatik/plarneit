@@ -123,6 +123,7 @@ class CustomDialogs {
       ),
       TextFormField(
           style: Theme.of(context).primaryTextTheme.bodyText1,
+          maxLines: 3,
           decoration: InputDecoration(
               hintText: "description"
           ),

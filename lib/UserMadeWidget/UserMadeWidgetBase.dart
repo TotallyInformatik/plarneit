@@ -16,8 +16,8 @@ import 'package:plarneit/main.dart';
 abstract class UserMadeWidgetBase<T extends WidgetData> extends StatefulWidget {
 
   static final double widgetSize = 200.0;
-  static final double widgetPadding = 10.0;
-  static final double widgetInnerPadding = 30.0;
+  static final double widgetMargin = 10.0;
+  static final double widgetInnerPadding = 20.0;
   static final double widgetBorderRadius = 30.0;
 
   final T widgetInformation;
@@ -126,7 +126,7 @@ abstract class UserMadeWidgetBaseState<T extends WidgetData> extends State<UserM
       {Color noteColor,
         bool invertFontColor = false}) {
 
-    double containerSize = UserMadeWidgetBase.widgetSize + UserMadeWidgetBase.widgetPadding;
+    double containerSize = UserMadeWidgetBase.widgetSize + UserMadeWidgetBase.widgetMargin;
 
 
     TextTheme theme = invertFontColor ? Theme.of(context).primaryTextTheme : Theme.of(context).accentTextTheme;
@@ -136,13 +136,13 @@ abstract class UserMadeWidgetBaseState<T extends WidgetData> extends State<UserM
       this.description == ""?  Text(descriptionPlaceholder, style: placeholderTheme) : Text(this.description, style: theme.bodyText1)
     ];
 
-    children.addAll(additionalChildren);
+    additionalChildren.addAll(children);
 
     return Container(
         height: containerSize,
         width: containerSize,
         child: Padding(
-            padding: EdgeInsets.all(UserMadeWidgetBase.widgetPadding),
+            padding: EdgeInsets.all(UserMadeWidgetBase.widgetMargin),
             child: Material(
                 child: Ink(
                     width: UserMadeWidgetBase.widgetSize,
@@ -175,11 +175,11 @@ abstract class UserMadeWidgetBaseState<T extends WidgetData> extends State<UserM
                         child: Container(
                             width: UserMadeWidgetBase.widgetSize,
                             height: UserMadeWidgetBase.widgetSize,
+                            padding: EdgeInsets.all(UserMadeWidgetBase.widgetInnerPadding),
                             child: ListView(
-                                padding: EdgeInsets.all(UserMadeWidgetBase.widgetInnerPadding),
                                 physics: ClampingScrollPhysics(),
                                 scrollDirection: Axis.vertical,
-                                children: children
+                                children: additionalChildren
                             )
                         )
                     )

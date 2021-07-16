@@ -11,7 +11,7 @@ abstract class WidgetContainer extends StatefulWidget {
 
   // Layout attributes
   static final double widgetSize = UserMadeWidgetBase.widgetSize;
-  static final double widgetPadding = UserMadeWidgetBase.widgetPadding;
+  static final double widgetPadding = UserMadeWidgetBase.widgetMargin;
   static final double sidePadding = DayPage.listContainerInnerPadding;
   static final Color widgetContainerBackgroundColor = Color.fromRGBO(240, 240, 240, 1);
 
