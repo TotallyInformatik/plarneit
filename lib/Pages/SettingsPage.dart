@@ -135,72 +135,85 @@ class _SettingsPageState extends State<SettingsPage> {
       },
     );
   }
-  Widget appSettingsSection(String autoDeletionDisplay, double autoDeletionPeriod) {
+
+  ExpansionTile autoDeletionPeriodSection() {
+
+    double autoDeletionPeriod = this._settingsData.autoDeletionPeriod != null ? this._settingsData.autoDeletionPeriod : 3.0;
+    String autoDeletionDisplay = this.determineAutoDeletionDisplay(autoDeletionPeriod);
+
+    return ExpansionTile(
+      title: Text("Auto Deletion Period: $autoDeletionDisplay", style: Theme.of(context).primaryTextTheme.headline4),
+      children: [
+        listTile("All widgets that are assigned to a date earlier than the deletion period will be deleted automatically when staring the app"),
+        SliderTheme(
+            data: SliderThemeData(
+                thumbColor: PlarneitApp.DARK_GRAY,
+                activeTrackColor: PlarneitApp.DARK_GRAY.withOpacity(0.7),
+                inactiveTrackColor: PlarneitApp.DARK_GRAY.withOpacity(0.3),
+                activeTickMarkColor: PlarneitApp.COLOR_WHITE,
+                inactiveTickMarkColor: PlarneitApp.DARK_GRAY.withOpacity(0.2)
+            ),
+            child: Slider(
+                min: 1,
+                max: 7,
+                value: autoDeletionPeriod,
+                onChanged: (double value) {
+                  setState(() {
+                    this._settingsData.autoDeletionPeriod = value.roundToDouble();
+                    this.updateSettings();
+                  });
+                },
+                divisions: 5,
+                label: autoDeletionDisplay
+            )
+        )
+      ],
+    );
+  }
+
+  ExpansionTile deletionNotificationSection() {
+    return ExpansionTile(
+      title: Text("Deletion Notification", style: Theme.of(context).primaryTextTheme.headline4),
+      children: [
+        listTile("", subtitle: "determines whether a confirmation notification will popup when deleting widgets."),
+        ListTile(
+            title: Text("activate notifications"),
+            leading: Radio(
+              value: true,
+              groupValue: this._settingsData.deletionPopup,
+              onChanged: (bool value) {
+                this.setState(() {
+                  this._settingsData.deletionPopup = value;
+                  this.updateSettings();
+                });
+              },
+            )
+        ),
+        ListTile(
+            title: Text("deactivate notifications"),
+            leading: Radio(
+              value: false,
+              groupValue: this._settingsData.deletionPopup,
+              onChanged: (bool value) {
+                this.setState(() {
+                  this._settingsData.deletionPopup = value;
+                  this.updateSettings();
+                });
+              },
+            )
+        )
+      ],
+    );
+  }
+
+  Widget appSettingsSection() {
     return ExpansionTile(
         initiallyExpanded: true,
-        title: Text("Settings", style: Theme.of(context).primaryTextTheme.headline3),
+        title: Text("Preferences", style: Theme.of(context).primaryTextTheme.headline3),
         childrenPadding: _expansionTilePadding,
         children: [
-          ExpansionTile(
-            title: Text("Auto Deletion Period: $autoDeletionDisplay", style: Theme.of(context).primaryTextTheme.headline4),
-            children: [
-              listTile("All widgets that are assigned to a date earlier than the deletion period will be deleted automatically when staring the app"),
-              SliderTheme(
-                  data: SliderThemeData(
-                      thumbColor: PlarneitApp.DARK_GRAY,
-                      activeTrackColor: PlarneitApp.DARK_GRAY.withOpacity(0.7),
-                      inactiveTrackColor: PlarneitApp.DARK_GRAY.withOpacity(0.3),
-                      activeTickMarkColor: PlarneitApp.COLOR_WHITE,
-                      inactiveTickMarkColor: PlarneitApp.DARK_GRAY.withOpacity(0.2)
-                  ),
-                  child: Slider(
-                      min: 1,
-                      max: 7,
-                      value: autoDeletionPeriod,
-                      onChanged: (double value) {
-                        setState(() {
-                          this._settingsData.autoDeletionPeriod = value.roundToDouble();
-                          this.updateSettings();
-                        });
-                      },
-                      divisions: 5,
-                      label: autoDeletionDisplay
-                  )
-              )
-            ],
-          ),
-          ExpansionTile(
-            title: Text("Deletion Notification", style: Theme.of(context).primaryTextTheme.headline4),
-            children: [
-              listTile("", subtitle: "determines whether a confirmation notification will popup when deleting widgets."),
-              ListTile(
-                  title: Text("activate notifications"),
-                  leading: Radio(
-                    value: true,
-                    groupValue: this._settingsData.deletionPopup,
-                    onChanged: (bool value) {
-                      this.setState(() {
-                        this._settingsData.deletionPopup = value;
-                        this.updateSettings();
-                      });
-                    },
-                  )
-              ),
-              ListTile(
-                  title: Text("deactivate notifications"),
-                  leading: Radio(
-                    value: false,
-                    groupValue: this._settingsData.deletionPopup,
-                    onChanged: (bool value) {
-                      this.setState(() {
-                        this._settingsData.deletionPopup = value;
-                        this.updateSettings();
-                      });
-                    },
-                  )
-              )
-            ],
-          )
+          autoDeletionPeriodSection(),
+          deletionNotificationSection()
         ]
     );
   }
@@ -229,9 +242,6 @@ class _SettingsPageState extends State<SettingsPage> {
   @override
   Widget build(BuildContext context) {
 
-    double autoDeletionPeriod = this._settingsData.autoDeletionPeriod != null ? this._settingsData.autoDeletionPeriod : 3.0;
-    String autoDeletionDisplay = this.determineAutoDeletionDisplay(autoDeletionPeriod);
-
     return Scaffold(
       appBar: AppBar(
           title: Text("Settings", style: Theme.of(context).primaryTextTheme.headline1)
@@ -247,13 +257,12 @@ class _SettingsPageState extends State<SettingsPage> {
 
                       if (snapshot.hasData) {
                         Widget appInformationSection = snapshot.data;
-                        print("snapshot: $appInformationSection");
 
                         return Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             appInformationSection,
-                            appSettingsSection(autoDeletionDisplay, autoDeletionPeriod),
+                            appSettingsSection(),
                             appFileOpeningSection(JsonHandlerWidget.of(context))
                           ],
                         );

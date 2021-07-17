@@ -63,7 +63,7 @@ class _TimePickerState extends State<TimePicker> {
                       );
                     }
                 );
-                if (selectedTime.hour != null && selectedTime.minute != null) {
+                if (selectedTime != null) {
                   this.widget.controller.value = selectedTime;
                   setState(() {
                     this._selectedTime = selectedTime;

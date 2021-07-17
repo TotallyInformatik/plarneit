@@ -38,7 +38,8 @@ class _LongtermNotesContainer extends WidgetContainerState<LongtermNotesData> {
         id,
         this.widgetDeletionFunction,
         JsonHandlerWidget.of(context).longtermGoalsHandler,
-        this.widget.identifier
+        this.widget.identifier,
+        key: UniqueKey()
     );
   }
 

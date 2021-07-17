@@ -31,7 +31,8 @@ class _NoteContainerState extends WidgetContainerState<NotesData> {
         id,
         this.widgetDeletionFunction,
         JsonHandlerWidget.of(context).noteHandler,
-        this.widget.identifier
+        this.widget.identifier,
+        key: UniqueKey()
     );
   }
 

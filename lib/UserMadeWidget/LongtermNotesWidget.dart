@@ -22,8 +22,8 @@ import 'package:plarneit/utils/conversion.dart';
 
 class LongtermNotesWidget extends UserMadeWidgetBase<LongtermNotesData> {
 
-  LongtermNotesWidget(LongtermNotesData widgetInformation, WidgetContainerStatusController statusController, WidgetId id, Function widgetDeletionFunction, JsonHandler jsonHandler, DateTime identifier) :
-        super(widgetInformation, statusController, id, widgetDeletionFunction, jsonHandler, identifier.xToString(yearOnly: true));
+  LongtermNotesWidget(LongtermNotesData widgetInformation, WidgetContainerStatusController statusController, WidgetId id, Function widgetDeletionFunction, JsonHandler jsonHandler, DateTime identifier, {Key key}) :
+        super(widgetInformation, statusController, id, widgetDeletionFunction, jsonHandler, identifier.xToString(yearOnly: true), key: key);
 
   @override
   State<StatefulWidget> createState() =>

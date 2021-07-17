@@ -29,7 +29,8 @@ class _TaskContainerState extends WidgetContainerState<TaskData> {
         id,
         this.widgetDeletionFunction,
         JsonHandlerWidget.of(context).taskHandler,
-        this.widget.identifier
+        this.widget.identifier,
+        key: UniqueKey()
     );
   }
 

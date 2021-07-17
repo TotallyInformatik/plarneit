@@ -6,7 +6,6 @@ import 'package:plarneit/Pages/ContainerPages/DayPage.dart';
 import 'package:plarneit/UserMadeWidget/ID.dart';
 import 'package:plarneit/UserMadeWidget/UserMadeWidgetBase.dart';
 
-// TODO: use FutureBuilders!!!
 abstract class WidgetContainer extends StatefulWidget {
 
   // Layout attributes
@@ -61,28 +60,11 @@ abstract class WidgetContainerState<T extends WidgetData> extends State<WidgetCo
 
     // this function works correctly
 
-    int toDeleteIndex;
-
     setState(() {
       List<UserMadeWidgetBase<T>> newWidgets = [];
       newWidgets.addAll(this.widgets);
-
-      UserMadeWidgetBase toDelete;
-      for (UserMadeWidgetBase currentWidget in newWidgets) {
-
-        if (currentWidget != null) {
-          if (currentWidget.id == widget.id) {
-            toDelete = currentWidget;
-            break;
-          }
-        }
-
-      }
-
-      toDeleteIndex = newWidgets.indexOf(toDelete);
-      newWidgets[toDeleteIndex] = null; /// the element at that position must be set to null to delete it entirely, else flutter does some weird funky bug
+      newWidgets.remove(widget);
       this.widgets = newWidgets;
-      // this.nextWidgetId--; explicitly DON'T do this, else widgets may overwrite eachothers json information
     });
 
     widget.deleteJson();
@@ -135,21 +117,7 @@ abstract class WidgetContainerState<T extends WidgetData> extends State<WidgetCo
                   scrollDirection: Axis.horizontal,
                   itemCount: this.widgets.length,
                   itemBuilder: (BuildContext context, int index) {
-
-                    /// since widgets have to be deleted using a weird workaround that leaves
-                    /// null values in a list, null values must be detected when building the listview
-                    /// those have to be removed entirely when building again, because for some reason,
-                    /// if the code just sets the value of the widget that is to be deleted to null
-                    /// and then removes that element from the list entirely consecutively, flutter
-                    /// just insists on making that one bug pop up
-
-                    if (this.widgets[index] == null) {
-                      toDeleteIndex.add(index);
-                      return Container();
-                    } else {
-                      return this.widgets[index];
-                    }
-
+                    return this.widgets[index];
                   },
                 ),
               )
