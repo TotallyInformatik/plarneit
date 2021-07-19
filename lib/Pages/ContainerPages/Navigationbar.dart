@@ -12,10 +12,10 @@ class NavigationBar extends StatelessWidget {
 
   final FloatingActionButtonLocation location = FloatingActionButtonLocation.centerFloat;
 
-  final Function homeFunction;
-  final Function prevFunction;
-  final Function nextFunction;
-  final Function calendarFunction;
+  final void Function(BuildContext context) homeFunction;
+  final void Function(BuildContext context) prevFunction;
+  final void Function(BuildContext context) nextFunction;
+  final void Function(BuildContext context) calendarFunction;
 
   NavigationBar(this.homeFunction, this.prevFunction, this.nextFunction, this.calendarFunction);
 

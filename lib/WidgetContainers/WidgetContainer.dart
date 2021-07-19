@@ -74,7 +74,6 @@ abstract class WidgetContainerState<T extends WidgetData> extends State<WidgetCo
   Widget returnStandardBuild(BuildContext context) {
 
     double containerHeight = WidgetContainer.widgetSize + WidgetContainer.widgetPadding;
-    List<int> toDeleteIndex = [];
 
     Widget result = Column(
         children: [
@@ -123,10 +122,6 @@ abstract class WidgetContainerState<T extends WidgetData> extends State<WidgetCo
               )
           )]
     );
-
-    for (int i in toDeleteIndex) {
-      this.widgets.removeAt(i);
-    }
 
     return result;
 

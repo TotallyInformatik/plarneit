@@ -12,7 +12,7 @@ class ColorWidget extends StatelessWidget {
 
   final double size;
   final Color color;
-  final Function onTapControllerFunction;
+  final void Function() onTapControllerFunction;
   static final double widgetPadding = 5;
 
   const ColorWidget(this.size, this.color, this.onTapControllerFunction, {Key key}) : super(key: key);
@@ -33,7 +33,6 @@ class ColorWidget extends StatelessWidget {
             decoration: BoxDecoration(
               color: this.color,
               borderRadius: BorderRadius.all(Radius.circular(this.size / 2)),
-              //border: this._selected ? Border.all(color: ColorWidget.selectedBorderColor) : null
             ),
           )
       ),
@@ -49,18 +48,18 @@ class ColorWidget extends StatelessWidget {
 /// the chosen color to the color of the ColorWidget
 ///
 
-class ColorPicker extends PickerBase<ColorPickerController> {
+class ListColorPicker extends PickerBase<ColorPickerController> {
   final List<Color> colors;
   final double size;
 
-  ColorPicker(String title, ColorPickerController controller, this.colors, this.size) : super(title, controller);
+  ListColorPicker(String title, ColorPickerController controller, this.colors, this.size) : super(title, controller);
 
   @override
   State<StatefulWidget> createState() => _ColorPickerState();
 
 }
 
-class _ColorPickerState extends State<ColorPicker> {
+class _ColorPickerState extends State<ListColorPicker> {
 
   Color _selectedColor;
 

@@ -21,7 +21,6 @@ class HomePage extends StatelessWidget {
   static final double titleHeight = 0.2;
 
   Widget homePageButton(BuildContext context, IconData icon, String title, Function pressFunction) {
-    print(MediaQuery.of(context).size.width);
     return ElevatedButton.icon(
           onPressed: pressFunction,
           icon: Icon(icon, color: Colors.black),

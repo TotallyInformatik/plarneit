@@ -1,17 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_colorpicker/flutter_colorpicker.dart';
 import 'package:open_file/open_file.dart';
 import 'package:plarneit/Data/SettingsData.dart';
 import 'package:plarneit/JsonHandler.dart';
+import 'package:plarneit/UserInput/ColorPicker.dart';
 import 'package:plarneit/main.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:yaml/yaml.dart';
+import 'package:plarneit/UserInput/Dialogs.dart';
 
 ///
 /// SettingsPage
 /// Not much to say here either...
 ///
 
+
+// TODO: fix bug with Color picker package
 
 class SettingsPage extends StatefulWidget {
 
@@ -31,7 +36,7 @@ class _SettingsPageState extends State<SettingsPage> {
   static final _expansionTilePadding = EdgeInsets.symmetric(vertical: 20);
 
   final ScrollController scrollController = ScrollController();
-  SettingsData _settingsData = SettingsData(3, true);
+  SettingsData _settingsData = SettingsData.fromJsonData(SettingsData.standardMap);
 
 
   ListTile listTile(String title, {String subtitle}) {
@@ -43,6 +48,7 @@ class _SettingsPageState extends State<SettingsPage> {
 
   void setSettings() async {
     Map information = await this.widget.settingsInformation;
+
     this.setState(() {
       this._settingsData = SettingsData.fromJsonData(information);
     });
@@ -138,13 +144,13 @@ class _SettingsPageState extends State<SettingsPage> {
 
   ExpansionTile autoDeletionPeriodSection() {
 
-    double autoDeletionPeriod = this._settingsData.autoDeletionPeriod != null ? this._settingsData.autoDeletionPeriod : 3.0;
+    double autoDeletionPeriod = this._settingsData.autoDeletionPeriod;
     String autoDeletionDisplay = this.determineAutoDeletionDisplay(autoDeletionPeriod);
 
     return ExpansionTile(
       title: Text("Auto Deletion Period: $autoDeletionDisplay", style: Theme.of(context).primaryTextTheme.headline4),
       children: [
-        listTile("All widgets that are assigned to a date earlier than the deletion period will be deleted automatically when staring the app"),
+        listTile("", subtitle: "All widgets that are assigned to a date earlier than the deletion period will be deleted automatically when staring the app"),
         SliderTheme(
             data: SliderThemeData(
                 thumbColor: PlarneitApp.DARK_GRAY,
@@ -206,6 +212,63 @@ class _SettingsPageState extends State<SettingsPage> {
     );
   }
 
+  ExpansionTile noteColorSelectionSection() {
+
+    double noteColorWidgetHeight = 60;
+
+    return ExpansionTile(
+      title: Text("Note Colors", style: Theme.of(context).primaryTextTheme.headline4),
+      children: [
+        listTile("", subtitle: "Choose up to 4 colors that you can choose when creating notes. The first color represents the standard note color that is chosen."),
+        Container(
+            constraints: BoxConstraints.expand(
+              width: MediaQuery.of(context).size.width,
+              height: noteColorWidgetHeight,
+            ),
+            padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+            child: ListView.builder(
+              itemCount: this._settingsData.noteColors.length,
+              itemBuilder: (BuildContext context, int index) {
+                Color color = this._settingsData.noteColors[index];
+                return ColorWidget(noteColorWidgetHeight, color, () {
+                  CustomDialogs.showCustomDialog(
+                      context,
+                      "Change color",
+                      [
+                        SingleChildScrollView(
+                            child: ColorPicker(
+                              pickerColor: color,
+                              onColorChanged: (Color newColor) {
+                                this.setState(() {
+                                  this._settingsData.noteColors[index] = newColor;
+                                  this.updateSettings();
+                                });
+                              },
+                              showLabel: true,
+                              pickerAreaHeightPercent: 0.8,
+                            )
+                        )
+                      ],
+                      [
+                        TextButton(
+                          child: const Text('Confirm Selection'),
+                          onPressed: () {
+                            Navigator.of(context).pop();
+                          },
+                        ),
+                      ]
+                  );
+                });
+              },
+              scrollDirection: Axis.horizontal,
+
+            )
+        )
+      ]
+    );
+  }
+
+
   Widget appSettingsSection() {
     return ExpansionTile(
         initiallyExpanded: true,
@@ -213,7 +276,8 @@ class _SettingsPageState extends State<SettingsPage> {
         childrenPadding: _expansionTilePadding,
         children: [
           autoDeletionPeriodSection(),
-          deletionNotificationSection()
+          deletionNotificationSection(),
+          noteColorSelectionSection()
         ]
     );
   }

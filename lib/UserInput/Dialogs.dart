@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:plarneit/Controllers.dart';
+import 'package:plarneit/Data/SettingsData.dart';
+import 'package:plarneit/JsonHandler.dart';
 import 'package:plarneit/UserInput/ColorPicker.dart';
 import 'package:plarneit/Data/WidgetData.dart';
 import 'package:plarneit/UserInput/TimePicker.dart';
@@ -106,12 +108,10 @@ class CustomDialogs {
     return null;
   }
 
-  static Future<T> showEditDialog<T extends WidgetData>(BuildContext context, TextEditingController titleController, TextEditingController descriptionController, Function onSubmit, List<Widget> additionalInput, {String title, String description}) async {
+  static Future<T> showEditDialog<T extends WidgetData>(BuildContext context, TextEditingController titleController, TextEditingController descriptionController, void Function() onSubmit, List<Widget> additionalInput, {String title, String description}) async {
 
     titleController.text = title;
     descriptionController.text = description;
-
-    final _formKey = GlobalKey<FormState>();
 
     List<Widget> input = [
       TextFormField(
@@ -145,13 +145,10 @@ class CustomDialogs {
           IconButton(
             icon: Icon(Icons.done_rounded),
             onPressed: () {
-              if (_formKey.currentState.validate()) {
-                onSubmit();
-              }
+              onSubmit();
             },
           )
-        ],
-        formKey: _formKey
+        ]
     );
   }
 
@@ -182,13 +179,8 @@ class CustomDialogs {
   }
 
 
-  static final List<Color> noteColors = [
-    Color.fromRGBO(255, 242, 171, 1),
-    Color.fromRGBO(203, 241, 196, 1),
-    Color.fromRGBO(255, 204, 229, 1),
-    Color.fromRGBO(205, 233, 255, 1),
-  ];
-  static Future<NotesData> showNoteEditDialog(BuildContext context, {String title, String description, Color color}) {
+  static Future<NotesData> showNoteEditDialog(BuildContext context, {String title, String description, Color color}) async {
+    List<Color> noteColors = SettingsData.fromJsonData((await JsonHandlerWidget.of(context).settingsHandler.readFile())).noteColors;
     TextEditingController titleController = TextEditingController();
     TextEditingController descriptionController = TextEditingController();
     ColorPickerController colorPickerController = ColorPickerController(noteColors, noteColors.contains(color) ? noteColors.indexOf(color) : 0);
@@ -198,9 +190,9 @@ class CustomDialogs {
         context,
         titleController,
         descriptionController,
-            () => Navigator.of(context).pop(NotesData(titleController.text, descriptionController.text, colorPickerController.selectedColor)),
+        () => Navigator.of(context).pop(NotesData(titleController.text, descriptionController.text, colorPickerController.selectedColor)),
         [
-          ColorPicker("color", colorPickerController, noteColors, 20.0)
+          ListColorPicker("color", colorPickerController, noteColors, 20.0)
         ],
         title: title,
         description: description

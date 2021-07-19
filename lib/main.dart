@@ -112,10 +112,7 @@ class PlarneitApp extends StatelessWidget {
     JsonHandler(taskStorage),
     JsonHandler(noteStorage),
     JsonHandler(longtermGoalsStorage),
-    JsonHandler(settingsStorage, initialMap: {
-      SettingsData.autoDeletionPeriodTag: 3.0,
-      SettingsData.deletionPopupTag: true
-    })
+    JsonHandler(settingsStorage, initialMap: SettingsData.standardMap)
   );
 
   static final double contentResponseWidth1 = 500;
@@ -187,6 +184,7 @@ class PlarneitApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     deleteOutdatedShorttermWidgets();
+    displayJsonContents();
 
     double mediaQueryWidth = window.physicalSize.width / window.devicePixelRatio;
     return MaterialApp(
