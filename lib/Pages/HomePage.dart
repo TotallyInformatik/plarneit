@@ -4,6 +4,7 @@ import 'package:plarneit/Pages/ContainerPages/DayPage.dart';
 import 'package:plarneit/Pages/ContainerPages/LongtermPage.dart';
 import 'package:plarneit/Pages/SettingsPage.dart';
 import 'package:plarneit/main.dart';
+import 'package:plarneit/utils/classes/Pair.dart';
 
 
 ///
@@ -43,6 +44,29 @@ class HomePage extends StatelessWidget {
     );
   }
 
+  String determineHomePageGreeting() {
+
+    Map<Pair, String> timeToPartOfDay = {
+      new Pair<int, int>(0, 11): "Morning",
+      new Pair<int, int>(12, 18): "Afternoon",
+      new Pair<int, int>(19, 23): "Evening"
+    };
+    TimeOfDay currentTime = TimeOfDay.now();
+
+    for (MapEntry entry in timeToPartOfDay.entries) {
+
+      Pair interval = entry.key;
+
+      if (interval.e1 <= currentTime.hour && currentTime.hour <= interval.e2) {
+        return entry.value;
+      }
+
+    }
+
+    return "Morning";
+
+  }
+
   @override
   Widget build(BuildContext context) {
 
@@ -65,7 +89,11 @@ class HomePage extends StatelessWidget {
                 children: [
                 Padding(
                     padding: EdgeInsets.only(top: 100, left: elementPadding),
-                    child: Text("Plarneit", style: Theme.of(context).primaryTextTheme.headline1, textAlign: TextAlign.left)
+                    child: Text("Good ${this.determineHomePageGreeting()}", style: Theme.of(context).primaryTextTheme.headline1, textAlign: TextAlign.left),
+                ),
+                Padding(
+                  padding: EdgeInsets.only(left: elementPadding),
+                  child: Text("What's on the agenda today?"),
                 ),
                 Padding(
                   padding: EdgeInsets.all(elementPadding),
@@ -73,8 +101,8 @@ class HomePage extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
-                      homePageButton(context, Icons.assignment_rounded, "Shortterm Planning", () => openPage(context, DayPage(DateTime.now(), PlarneitApp.jsonHandlerCollection, context))),
-                      homePageButton(context, Icons.assignment_rounded, "Longterm Planning", () => openPage(context, LongtermPage(DateTime.now(), PlarneitApp.jsonHandlerCollection, context))),
+                      homePageButton(context, Icons.assignment_rounded, "Short Term", () => openPage(context, DayPage(DateTime.now(), PlarneitApp.jsonHandlerCollection, context))),
+                      homePageButton(context, Icons.assignment_rounded, "Long Term", () => openPage(context, LongtermPage(DateTime.now(), PlarneitApp.jsonHandlerCollection, context))),
                       homePageButton(context, Icons.settings, "Settings", () => openPage(context, SettingsPage(PlarneitApp.jsonHandlerCollection.settingsHandler.readFile()))),
                     ],
                   )

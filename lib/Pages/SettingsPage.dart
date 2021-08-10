@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_colorpicker/flutter_colorpicker.dart';
@@ -15,8 +16,6 @@ import 'package:plarneit/UserInput/Dialogs.dart';
 /// Not much to say here either...
 ///
 
-
-// TODO: fix bug with Color picker package
 
 class SettingsPage extends StatefulWidget {
 
@@ -88,23 +87,10 @@ class _SettingsPageState extends State<SettingsPage> {
           for (MapEntry dependency in dependencies.entries) {
             try {
               dependencyTiles.add(listTile(dependency.key, subtitle: dependency.value));
-            } catch (Exception) {
-              dependencyTiles.add(listTile(dependency.key));
-            }
-          }
-
-          Map devdep = yaml["dev_dependencies"];
-          List<ListTile> devdependencyTiles = [];
-          for (MapEntry dependency in devdep.entries) {
-            try {
-              devdependencyTiles.add(listTile(dependency.key, subtitle: dependency.value));
-            } catch (Exception) {
-              devdependencyTiles.add(listTile(dependency.key));
-            }
+            } catch (Exception) {}
           }
 
           return ExpansionTile(
-            initiallyExpanded: true,
             title: Text("App Information", style: Theme.of(context).primaryTextTheme.headline3),
             childrenPadding: _expansionTilePadding,
             children: [
@@ -119,14 +105,22 @@ class _SettingsPageState extends State<SettingsPage> {
               ),
               listTile("Made by ${yaml["authors"][0]} in 2021", subtitle: "(TotallyInformatik)"),
               ExpansionTile(
-                  title: Text("Dependencies", style: Theme.of(context).primaryTextTheme.headline4),
+                  title: Text("Development Packages", style: Theme.of(context).primaryTextTheme.headline4),
                   childrenPadding: _expansionTilePadding,
                   children: dependencyTiles
               ),
+              /*
               ExpansionTile(
                   title: Text("Dev Dependencies", style: Theme.of(context).primaryTextTheme.headline4),
                   childrenPadding: _expansionTilePadding,
                   children: devdependencyTiles
+              ),
+              */
+              ListTile(
+                title: Text("Dependencies and Licenses", style: Theme.of(context).primaryTextTheme.headline4),
+                onTap: () {
+                  showLicensePage(context: context);
+                }
               )
             ],
           );
@@ -148,6 +142,7 @@ class _SettingsPageState extends State<SettingsPage> {
     String autoDeletionDisplay = this.determineAutoDeletionDisplay(autoDeletionPeriod);
 
     return ExpansionTile(
+      initiallyExpanded: true,
       title: Text("Auto Deletion Period: $autoDeletionDisplay", style: Theme.of(context).primaryTextTheme.headline4),
       children: [
         listTile("", subtitle: "All widgets that are assigned to a date earlier than the deletion period will be deleted automatically when staring the app"),
@@ -179,6 +174,7 @@ class _SettingsPageState extends State<SettingsPage> {
 
   ExpansionTile deletionNotificationSection() {
     return ExpansionTile(
+      initiallyExpanded: true,
       title: Text("Deletion Notification", style: Theme.of(context).primaryTextTheme.headline4),
       children: [
         listTile("", subtitle: "determines whether a confirmation notification will popup when deleting widgets."),
@@ -217,6 +213,7 @@ class _SettingsPageState extends State<SettingsPage> {
     double noteColorWidgetHeight = 60;
 
     return ExpansionTile(
+      initiallyExpanded: true,
       title: Text("Note Colors", style: Theme.of(context).primaryTextTheme.headline4),
       children: [
         listTile("", subtitle: "Choose up to 4 colors that you can choose when creating notes. The first color represents the standard note color that is chosen."),
@@ -250,8 +247,8 @@ class _SettingsPageState extends State<SettingsPage> {
                         )
                       ],
                       [
-                        TextButton(
-                          child: const Text('Confirm Selection'),
+                        IconButton(
+                          icon: Icon(Icons.done_rounded),
                           onPressed: () {
                             Navigator.of(context).pop();
                           },
@@ -325,14 +322,13 @@ class _SettingsPageState extends State<SettingsPage> {
                         return Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            appInformationSection,
                             appSettingsSection(),
-                            appFileOpeningSection(JsonHandlerWidget.of(context))
+                            appInformationSection,
+                            appFileOpeningSection(JsonHandlerWidget.of(context)),
                           ],
                         );
                       }
                       return Column();
-
                     }
                   )
               )]

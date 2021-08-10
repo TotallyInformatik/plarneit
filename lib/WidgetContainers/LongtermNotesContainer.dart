@@ -44,65 +44,9 @@ class _LongtermNotesContainer extends WidgetContainerState<LongtermNotesData> {
   }
 
   @override
-  void initializeWidgets(BuildContext context) async {
-    if (await this.widget.startingWidgetsMap != null) {
-      for (MapEntry widget in (await this.widget.startingWidgetsMap).entries) {
-
-        if (Conversion.enumFromString(widget.value[LongtermNotesData.termTag], Term.values) == this._term) {
-
-          NoteId id = WidgetId.fromString(widget.key);
-
-          this.setState(() {
-            List<UserMadeWidgetBase<LongtermNotesData>> newWidgets = this.widgets;
-
-            newWidgets.add(createWidget(
-                LongtermNotesData(
-                    widget.value[WidgetData.titleTag],
-                    widget.value[WidgetData.descriptionTag],
-                    colorX.fromString(widget.value[NotesData.colorTag]),
-                    Conversion.enumFromString(widget.value[LongtermNotesData.termTag], Term.values)
-                ),
-                id
-            ));
-
-            this.widgets = newWidgets;
-
-          });
-
-        }
-      }
-    }
-  }
-
-
-  @override
   Widget build(BuildContext context) {
     return this.returnStandardBuild(context);
   }
-
-  /// da alle drei LongtermNotesContainers dieselbe ID nutzen, muss immer die nächste Identifikationsnummer gefunden werden, wenn ein Widget hinzugefügt wird
-
-  /*
-  Future<int> getNextId() async {
-
-    int currentHighestId = 1;
-    Map<String, dynamic> currentJsonContent = await JsonHandlerWidget.of(context).longtermGoalsHandler.readFile();
-    Map<String, dynamic> longtermWidgets = currentJsonContent[this.widget.identifier.xToString(yearOnly: true)];
-
-    if (longtermWidgets != null) {
-      longtermWidgets.keys.forEach((String key) {
-        int id = WidgetId.fromString(key).number;
-        if (id > currentHighestId) {
-          currentHighestId = id;
-        }
-      });
-      return currentHighestId + 1;
-    } else {
-      return 1;
-    }
-
-  }
-   */
 
   @override
   Future<UserMadeWidgetBase<LongtermNotesData>> addWidget() async {
@@ -118,6 +62,28 @@ class _LongtermNotesContainer extends WidgetContainerState<LongtermNotesData> {
           NoteId.newId()
       );
     }
+  }
+
+  @override
+  UserMadeWidgetBase<LongtermNotesData> initializeWidgetFromMap(MapEntry<dynamic, dynamic> widgetData) {
+
+    if (Conversion.enumFromString(widgetData.value[LongtermNotesData.termTag], Term.values) == this._term) {
+      NoteId id = WidgetId.fromString(widgetData.key);
+
+      return createWidget(
+          LongtermNotesData(
+              widgetData.value[WidgetData.titleTag],
+              widgetData.value[WidgetData.descriptionTag],
+              colorX.fromString(widgetData.value[NotesData.colorTag]),
+              Conversion.enumFromString(
+                  widgetData.value[LongtermNotesData.termTag], Term.values)
+          ),
+          id
+      );
+    } else {
+      return null;
+    }
+
   }
 
 }

@@ -34,8 +34,8 @@ abstract class WidgetContainerState<T extends WidgetData> extends State<WidgetCo
 
   /// should always be async
   Future<UserMadeWidgetBase> addWidget();
-  void initializeWidgets(BuildContext context);
   UserMadeWidgetBase<T> createWidget(T widgetInformation, WidgetId id);
+  UserMadeWidgetBase<T> initializeWidgetFromMap(MapEntry widgetData);
 
   IconButton controllerIconButton(double sizeOffset, ContainerStatus status, IconData standrdIcon, IconData turnOffIcon) {
     return IconButton(
@@ -47,6 +47,24 @@ abstract class WidgetContainerState<T extends WidgetData> extends State<WidgetCo
         });
       },
     );
+  }
+
+
+
+  void initializeWidgets(BuildContext context) async {
+    List<UserMadeWidgetBase<T>> initializedWidgetList = [];
+    if (await this.widget.startingWidgetsMap != null) {
+      for (MapEntry widgetData in (await this.widget.startingWidgetsMap).entries) {
+          UserMadeWidgetBase<T> newWidget = initializeWidgetFromMap(widgetData);
+          if (newWidget != null) {
+            initializedWidgetList.add(newWidget);
+          }
+      }
+    }
+
+    setState(() {
+      this.widgets = initializedWidgetList;
+    });
   }
 
   @override
@@ -88,9 +106,14 @@ abstract class WidgetContainerState<T extends WidgetData> extends State<WidgetCo
                         iconSize: IconTheme.of(context).size,
                         icon: Icon(Icons.add_rounded),
                         onPressed: () async {
+
                           List<UserMadeWidgetBase<T>> newWidgets = [];
                           newWidgets.addAll(this.widgets);
-                          newWidgets.add(await this.addWidget());
+                          UserMadeWidgetBase newWidget = await this.addWidget();
+                          if (newWidget != null) {
+                            newWidgets.add(newWidget);
+                          }
+
                           this.setState(() {
                             this.widgets = newWidgets;
                           });

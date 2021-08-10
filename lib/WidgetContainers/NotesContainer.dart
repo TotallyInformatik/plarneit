@@ -37,32 +37,6 @@ class _NoteContainerState extends WidgetContainerState<NotesData> {
   }
 
   @override
-  void initializeWidgets(BuildContext context) async {
-    if (await this.widget.startingWidgetsMap != null) {
-      for (MapEntry widget in (await this.widget.startingWidgetsMap).entries) {
-
-        NoteId id = WidgetId.fromString(widget.key);
-
-        this.setState(() {
-          List<UserMadeWidgetBase<NotesData>> newWidgets = this.widgets;
-
-          newWidgets.add(createWidget(
-              NotesData(
-                  widget.value[WidgetData.titleTag],
-                  widget.value[WidgetData.descriptionTag],
-                  colorX.fromString(widget.value[NotesData.colorTag])
-              ),
-              id
-          ));
-
-          this.widgets = newWidgets;
-
-        });
-      }
-    }
-  }
-
-  @override
   Widget build(BuildContext context) {
     return this.returnStandardBuild(context);
   }
@@ -73,6 +47,21 @@ class _NoteContainerState extends WidgetContainerState<NotesData> {
     if (widgetInformation != null) {
       return createWidget(widgetInformation, NoteId.newId());
     }
+  }
+
+  @override
+  UserMadeWidgetBase<NotesData> initializeWidgetFromMap(MapEntry<dynamic, dynamic> widgetData) {
+
+    NoteId id = WidgetId.fromString(widgetData.key);
+
+    return createWidget(
+        NotesData(
+            widgetData.value[WidgetData.titleTag],
+            widgetData.value[WidgetData.descriptionTag],
+            colorX.fromString(widgetData.value[NotesData.colorTag])
+        ),
+        id
+    );
   }
 
 }

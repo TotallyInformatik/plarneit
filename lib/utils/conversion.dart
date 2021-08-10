@@ -27,6 +27,18 @@ extension timeX on TimeOfDay {
     return TimeOfDay(hour: int.parse(time[0]), minute: int.parse(time[1]));
   }
 
+  int compareTo(TimeOfDay time) {
+
+    int difference = (this.hour - time.hour) * 100 + (this.minute - time.minute);
+
+    if (difference != 0) {
+      int absoluteDifference = difference.abs();
+      return difference ~/ absoluteDifference; // this is integer division, cool
+    }
+    return 0;
+
+  }
+
 }
 
 extension colorX on Color {

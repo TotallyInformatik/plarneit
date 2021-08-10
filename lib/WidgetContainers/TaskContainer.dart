@@ -20,6 +20,26 @@ class TaskContainer extends WidgetContainer {
 
 class _TaskContainerState extends WidgetContainerState<TaskData> {
 
+  void initState() {
+    super.initState();
+  }
+
+  @override
+  void setState(fn) {
+    super.setState(fn);
+
+    // sorts everytime the state updates so that tasks will always stay sorted
+    this.widgets.sort((taskA, taskB) {
+      int starttimeComparisonResult = taskA.widgetInformation.starttime.compareTo(taskB.widgetInformation.starttime);
+      if (starttimeComparisonResult == 0) {
+        int endtimeComparisonResult = taskA.widgetInformation.endtime.compareTo(taskB.widgetInformation.endtime);
+        return endtimeComparisonResult;
+      } else {
+        return starttimeComparisonResult;
+      }
+    });
+
+  }
 
   @override
   UserMadeWidgetBase<TaskData> createWidget(TaskData widgetInformation, WidgetId id) {
@@ -35,31 +55,6 @@ class _TaskContainerState extends WidgetContainerState<TaskData> {
   }
 
   @override
-  void initializeWidgets(BuildContext context) async {
-    if (await this.widget.startingWidgetsMap != null) {
-      for (MapEntry widget in (await this.widget.startingWidgetsMap).entries) {
-
-        TaskId id = WidgetId.fromString(widget.key);
-
-        this.setState(() {
-          List<UserMadeWidgetBase<TaskData>> newWidgets = this.widgets;
-          newWidgets.add(createWidget(
-            TaskData(
-                widget.value[WidgetData.titleTag],
-                widget.value[WidgetData.descriptionTag],
-                timeX.fromString(widget.value[TaskData.starttimeTag]),
-                timeX.fromString(widget.value[TaskData.endtimeTag])
-            ),
-            id
-          ));
-
-          this.widgets = newWidgets;
-        });
-      }
-    }
-  }
-
-  @override
   Widget build(BuildContext context) {
 
     return this.returnStandardBuild(context);
@@ -71,6 +66,22 @@ class _TaskContainerState extends WidgetContainerState<TaskData> {
     if (widgetInformation != null) {
       return createWidget(widgetInformation, TaskId.newId());
     }
+  }
+
+  @override
+  UserMadeWidgetBase<TaskData> initializeWidgetFromMap(MapEntry<dynamic, dynamic> widgetData) {
+
+    TaskId id = WidgetId.fromString(widgetData.key);
+
+    return createWidget(
+        TaskData(
+            widgetData.value[WidgetData.titleTag],
+            widgetData.value[WidgetData.descriptionTag],
+            timeX.fromString(widgetData.value[TaskData.starttimeTag]),
+            timeX.fromString(widgetData.value[TaskData.endtimeTag])
+        ),
+        id
+    );
   }
 
 }
