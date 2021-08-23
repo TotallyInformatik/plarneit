@@ -87,9 +87,6 @@ class Conversion {
   static T enumFromString<T>(String key, List<T> values) =>
       values.firstWhere((v) => key == enumToString(v), orElse: () => null);
 
-
-  // color conversion
-
 }
 
 /// the following functions etc. are just used to display the date in a fancy way

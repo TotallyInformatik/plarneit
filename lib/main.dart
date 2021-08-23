@@ -106,13 +106,15 @@ class PlarneitApp extends StatelessWidget {
 
   static final String taskStorage = "tasks.json";
   static final String noteStorage = "notes.json";
-  static final String longtermGoalsStorage = "longterm-goals.json";
-  static final String settingsStorage = "settings.json";
+  static final String longtermGoalsStorage = "longtermGoals.json";
+  static final String settingsStorage = "applicationPreferences.json";
+  static final String cloudSettingsStorage = "cloudPreferences.json";
   static final JsonHandlerCollection jsonHandlerCollection = new JsonHandlerCollection(
     JsonHandler(taskStorage),
     JsonHandler(noteStorage),
     JsonHandler(longtermGoalsStorage),
-    JsonHandler(settingsStorage, initialMap: SettingsData.standardMap)
+    JsonHandler(settingsStorage, initialMap: SettingsData.standardMap),
+    JsonHandler(cloudSettingsStorage, ),
   );
 
   static final double contentResponseWidth1 = 500;
