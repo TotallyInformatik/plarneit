@@ -2,6 +2,8 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 
 ///
+/// @author: Rui Zhang (TotallyInformatik)
+///
 /// Controllers:
 /// The Controller file contains controllers that save values so that different classes can
 /// get that value and act accordingly.

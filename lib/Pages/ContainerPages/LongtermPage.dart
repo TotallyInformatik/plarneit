@@ -7,6 +7,8 @@ import 'package:plarneit/main.dart';
 import 'package:plarneit/utils/conversion.dart';
 
 ///
+/// @author: Rui Zhang (TotallyInformatik)
+///
 /// LongtermPage
 /// Page with three LongtermNotesContainers
 /// Each Container is for one term

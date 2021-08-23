@@ -6,6 +6,12 @@ import 'package:plarneit/Pages/ContainerPages/DayPage.dart';
 import 'package:plarneit/UserMadeWidget/ID.dart';
 import 'package:plarneit/UserMadeWidget/UserMadeWidgetBase.dart';
 
+///
+/// @author: Rui Zhang (TotallyInformatik)
+///
+/// An abstract class defining the way a widget container should work.
+///
+
 abstract class WidgetContainer extends StatefulWidget {
 
   // Layout attributes

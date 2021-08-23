@@ -8,6 +8,8 @@ import 'package:plarneit/JsonHandler.dart';
 import 'package:plarneit/main.dart';
 
 ///
+/// @author: Rui Zhang (TotallyInformatik)
+///
 /// UserMadeWidgetBase
 /// since all user-created widgets have roughly the same structure,
 /// a superclass is used to ensure unity in their design

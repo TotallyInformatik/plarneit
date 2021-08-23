@@ -4,6 +4,8 @@ import 'package:plarneit/Controllers.dart';
 import 'package:plarneit/UserInput/Dialogs.dart';
 
 ///
+/// @author: Rui Zhang (TotallyInformatik)#
+///
 /// PickerBase:
 /// An Abstract widget for all custom pickers -> DatePicker, ColorPicker
 /// Every Picker uses a controller so that the chosen value can be used by dialogs etc.

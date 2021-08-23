@@ -8,6 +8,10 @@ import 'package:plarneit/UserMadeWidget/ID.dart';
 import 'package:plarneit/UserMadeWidget/UserMadeWidgetBase.dart';
 import 'package:plarneit/utils/conversion.dart';
 
+///
+/// @author: Rui Zhang (TotallyInformatik)
+///
+
 class TaskWidget extends UserMadeWidgetBase<TaskData> {
 
   static final double timeBottomMargin = 5;

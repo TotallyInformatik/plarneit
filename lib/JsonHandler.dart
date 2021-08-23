@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:path_provider/path_provider.dart';
 
 ///
+/// @author: Rui Zhang (TotallyInformatik)
 /// Classes to keep track of json information
 ///
 

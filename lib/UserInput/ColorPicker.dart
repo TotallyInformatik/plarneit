@@ -4,6 +4,11 @@ import 'package:plarneit/UserInput/PickerBase.dart';
 import '../Controllers.dart';
 
 ///
+/// @author: Rui Zhang (TotallyInformatik)
+///
+
+
+
 /// ColorWidget
 /// Round Widgets that represent Colors that can be clicked on
 ///

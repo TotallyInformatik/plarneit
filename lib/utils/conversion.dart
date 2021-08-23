@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 
 ///
+/// @author: Rui Zhang (TotallyInformatik)
+///
 /// some classes and extensions that help when writing to the json files
 /// since json file cannot just take dart objects as values or as keys, these objects
 /// must be converted into strings when writing to json files and back to the respective

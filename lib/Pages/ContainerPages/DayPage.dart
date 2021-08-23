@@ -7,6 +7,8 @@ import 'package:plarneit/main.dart';
 import 'package:plarneit/utils/conversion.dart';
 
 ///
+/// @author: Rui Zhang (TotallyInformatik)
+///
 /// DayPage
 /// A ContainerPage with a task container and a note container
 ///

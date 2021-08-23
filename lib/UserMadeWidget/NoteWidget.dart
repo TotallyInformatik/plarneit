@@ -8,6 +8,10 @@ import 'package:plarneit/UserMadeWidget/ID.dart';
 import 'package:plarneit/UserMadeWidget/UserMadeWidgetBase.dart';
 import 'package:plarneit/utils/conversion.dart';
 
+///
+/// @author: Rui Zhang (TotallyInformatik)
+///
+
 class NoteWidget extends UserMadeWidgetBase<NotesData> {
 
   NoteWidget(WidgetData widgetInformation, WidgetContainerStatusController statusController, WidgetId id, Function widgetDeletionFunction, JsonHandler jsonHandler, DateTime identifier, {Key key})

@@ -8,6 +8,10 @@ import 'package:plarneit/UserMadeWidget/UserMadeWidgetBase.dart';
 import 'package:plarneit/WidgetContainers/WidgetContainer.dart';
 import 'package:plarneit/utils/conversion.dart';
 
+///
+/// @author: Rui Zhang (TotallyInformatik)
+///
+
 enum Term {
   EARLY,
   MID,

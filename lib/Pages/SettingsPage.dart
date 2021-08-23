@@ -12,6 +12,8 @@ import 'package:yaml/yaml.dart';
 import 'package:plarneit/UserInput/Dialogs.dart';
 
 ///
+/// @author: Rui Zhang (TotallyInformatik)
+///
 /// SettingsPage
 /// Not much to say here either...
 ///

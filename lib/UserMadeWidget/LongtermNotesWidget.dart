@@ -8,6 +8,8 @@ import 'package:plarneit/UserMadeWidget/UserMadeWidgetBase.dart';
 import 'package:plarneit/utils/conversion.dart';
 
 ///
+/// @author: Rui Zhang (TotallyInformatik)
+///
 /// LongtermNotesWidget
 /// A widget that basically has the same structure as a note-widget
 /// however, the json file of longterm notes widgets also have to keep track of

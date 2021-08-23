@@ -5,6 +5,8 @@ import 'package:plarneit/WidgetContainers/WidgetContainer.dart';
 import 'package:plarneit/main.dart';
 
 ///
+/// @author: Rui Zhang (TotallyInformatik)
+///
 /// ContainerPage
 /// An Abstract Widget Statelesswidget used for DayPage and LongtermPage as their
 /// structure is very similar and both need similar attributes

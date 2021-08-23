@@ -2,6 +2,8 @@
 import 'package:uuid/uuid.dart';
 
 ///
+/// @author: Rui Zhang (TotallyInformatik)
+///
 /// WidgetId
 /// Classes that ensure that the ids of widgets in json files are always
 /// in the same format

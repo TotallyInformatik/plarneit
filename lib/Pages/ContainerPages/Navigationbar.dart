@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
 ///
+/// @author: Rui Zhang (TotallyInformatik)
+///
 /// Standard Navigationbar used for ContainerPages
 /// All Functions of Buttons must be defined
 ///

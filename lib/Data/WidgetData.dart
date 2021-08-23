@@ -5,6 +5,11 @@ import 'package:plarneit/utils/conversion.dart';
 
 
 ///
+/// @author: Rui Zhang (TotallyInformatik)
+///
+
+
+///
 /// WidgetData
 /// WidgetData is the data used for the widgets that users create -> tasks, notes, longtermnotes
 /// It is used to ensure that the data passed from dialogs and from json files are always in the correct format

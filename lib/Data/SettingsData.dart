@@ -3,6 +3,8 @@ import 'package:plarneit/Data/DataClass.dart';
 import 'package:plarneit/utils/conversion.dart';
 
 ///
+/// @author: Rui Zhang (TotallyInformatik)
+///
 /// SettingsData:
 /// contains all Data regarding settings of app
 /// creates instances of SettingsData to change in SettingsPage

@@ -7,7 +7,9 @@ import 'package:plarneit/UserInput/ColorPicker.dart';
 import 'package:plarneit/Data/WidgetData.dart';
 import 'package:plarneit/UserInput/TimePicker.dart';
 
-
+///
+/// @author: Rui Zhang (TotallyInformatik)
+///
 
 class CustomDialogs {
 

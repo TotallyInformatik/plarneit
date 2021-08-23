@@ -8,6 +8,8 @@ import 'package:plarneit/utils/classes/Pair.dart';
 
 
 ///
+/// @author: Rui Zhang (TotallyInformatik)
+///
 /// HomePage
 /// Not much to say here...
 ///

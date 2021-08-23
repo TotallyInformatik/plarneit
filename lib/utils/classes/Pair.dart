@@ -1,3 +1,6 @@
+
+/// @author: Rui Zhang (TotallyInformatik)
+
 class Pair<T, G> {
 
   final T e1;

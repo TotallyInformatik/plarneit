@@ -6,7 +6,11 @@ import 'package:plarneit/JsonHandler.dart';
 import 'package:plarneit/Pages/HomePage.dart';
 import 'package:plarneit/utils/conversion.dart';
 import 'package:flutter/services.dart';
-import 'package:uuid/uuid.dart';
+
+///
+/// @author: Rui Zhang (TotallyInformatik)
+///
+
 
 void main() {
 
