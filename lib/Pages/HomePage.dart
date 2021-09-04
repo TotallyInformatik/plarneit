@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:plarneit/Firebase/firebase-test.dart';
 import 'package:plarneit/JsonHandler.dart';
 import 'package:plarneit/Pages/ContainerPages/DayPage.dart';
 import 'package:plarneit/Pages/ContainerPages/LongtermPage.dart';
@@ -106,6 +107,16 @@ class HomePage extends StatelessWidget {
                       homePageButton(context, Icons.assignment_rounded, "Short Term", () => openPage(context, DayPage(DateTime.now(), PlarneitApp.jsonHandlerCollection, context))),
                       homePageButton(context, Icons.assignment_rounded, "Long Term", () => openPage(context, LongtermPage(DateTime.now(), PlarneitApp.jsonHandlerCollection, context))),
                       homePageButton(context, Icons.settings, "Settings", () => openPage(context, SettingsPage(PlarneitApp.jsonHandlerCollection.settingsHandler.readFile()))),
+                      ElevatedButton.icon(
+                          onPressed: () async {
+                            test();
+                          },
+                          icon: Icon(Icons.cloud, color: Colors.black),
+                          label: Text("Cloud-Synchronization", style: Theme.of(context).primaryTextTheme.headline4),
+                          style: ButtonStyle(
+                            backgroundColor: MaterialStateProperty.all<Color>(buttonColor),
+                          )
+                      )
                     ],
                   )
               )
