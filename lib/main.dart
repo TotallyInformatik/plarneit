@@ -5,6 +5,7 @@ import 'package:plarneit/Data/SettingsData.dart';
 import 'package:plarneit/JsonHandler.dart';
 import 'package:plarneit/Pages/HomePage.dart';
 import 'package:plarneit/utils/conversion.dart';
+import 'package:plarneit/Firebase/firebase-init.dart';
 import 'package:flutter/services.dart';
 
 ///
@@ -12,9 +13,11 @@ import 'package:flutter/services.dart';
 ///
 
 
-void main() {
+void main() async {
 
   WidgetsFlutterBinding.ensureInitialized();
+
+  await initializeFirebase();
   SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp])
     .then((_) {
       runApp(PlarneitApp());

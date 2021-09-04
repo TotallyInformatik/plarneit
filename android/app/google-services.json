@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "242981823253",
+    "firebase_url": "https://planify-cloudsync-default-rtdb.europe-west1.firebasedatabase.app",
+    "project_id": "planify-cloudsync",
+    "storage_bucket": "planify-cloudsync.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:242981823253:android:1d022e8a2d16eb02247f1c",
+        "android_client_info": {
+          "package_name": "com.totallyturing.plarneit"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "242981823253-bis9sl5s4h63h8ahqq064stamb9b4l6g.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB3xBXgZ5G_4sld_pr5cW893yYEf0i_V3o"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "242981823253-bis9sl5s4h63h8ahqq064stamb9b4l6g.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
