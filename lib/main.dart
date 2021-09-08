@@ -8,6 +8,8 @@ import 'package:plarneit/utils/conversion.dart';
 import 'package:plarneit/Firebase/firebase-init.dart';
 import 'package:flutter/services.dart';
 
+import 'Data/CloudSettingsData.dart';
+
 ///
 /// @author: Rui Zhang (TotallyInformatik)
 ///
@@ -121,7 +123,7 @@ class PlarneitApp extends StatelessWidget {
     JsonHandler(noteStorage),
     JsonHandler(longtermGoalsStorage),
     JsonHandler(settingsStorage, initialMap: SettingsData.standardMap),
-    JsonHandler(cloudSettingsStorage, ),
+    JsonHandler(cloudSettingsStorage, initialMap: CloudSettingsData.standardMap),
   );
 
   static final double contentResponseWidth1 = 500;

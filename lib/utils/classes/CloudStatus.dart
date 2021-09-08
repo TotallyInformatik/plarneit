@@ -1,5 +1,7 @@
 enum CloudStatusType {
-  ERROR,
+  FIREBASE_ERROR,
+  INTERNAL_ERROR,
+  CLIENT_ERROR,
   SUCCESS
 }
 
