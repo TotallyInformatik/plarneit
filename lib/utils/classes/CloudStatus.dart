@@ -1,17 +1,24 @@
-enum CloudStatusType {
+enum ErrorCloudStatusType {
   FIREBASE_ERROR,
   INTERNAL_ERROR,
-  CLIENT_ERROR,
-  SUCCESS
+  CLIENT_ERROR
 }
 
 class CloudStatus {
 
-  static String clientInternalErrorMessage = "An internal error occurred on the client side.";
-
-  CloudStatusType statusType;
   String statusMessage;
 
-  CloudStatus(this.statusType, this.statusMessage);
+  CloudStatus(this.statusMessage);
+
+}
+
+class ErrorCloudStatus extends CloudStatus {
+
+  static final String clientInternalErrorMessage = "An internal error occurred on the client side.";
+
+  ErrorCloudStatusType statusType;
+  String errorMessage;
+
+  ErrorCloudStatus(this.statusType, String statusMessage, this.errorMessage) : super(statusMessage);
 
 }

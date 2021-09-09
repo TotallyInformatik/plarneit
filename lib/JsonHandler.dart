@@ -31,7 +31,19 @@ class JsonHandlerCollection {
   final JsonHandler settingsHandler;
   final JsonHandler cloudSettingsHandler;
 
-  JsonHandlerCollection(this.noteHandler, this.taskHandler, this.longtermGoalsHandler, this.settingsHandler, this.cloudSettingsHandler);
+  final List<JsonHandler> applicationJsonHandlers = [];
+  final List<JsonHandler> settingsJsonHandlers = [];
+
+  JsonHandlerCollection(this.noteHandler, this.taskHandler, this.longtermGoalsHandler, this.settingsHandler, this.cloudSettingsHandler) {
+
+    applicationJsonHandlers.add(this.taskHandler);
+    applicationJsonHandlers.add(this.noteHandler);
+    applicationJsonHandlers.add(this.longtermGoalsHandler);
+
+    settingsJsonHandlers.add(this.settingsHandler);
+    settingsJsonHandlers.add(this.cloudSettingsHandler);
+
+  }
 
 }
 
